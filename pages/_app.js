@@ -1,7 +1,19 @@
-import '../styles/globals.css'
+import React from 'react';
+import PropTypes from 'prop-types';
+import ThemeProvider from '@material-ui/styles/ThemeProvider';
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
-}
+import '../styles/globals.css';
+import theme from '../theme';
 
-export default MyApp
+const MyApp = ({ Component, pageProps }) => (
+  <ThemeProvider theme={theme}>
+    <Component {...pageProps} />
+  </ThemeProvider>
+);
+
+MyApp.propTypes = {
+  Component: PropTypes.any,
+  pageProps: PropTypes.any,
+};
+
+export default MyApp;
