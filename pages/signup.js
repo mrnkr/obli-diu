@@ -7,25 +7,30 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-// import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-// import Snackbar from '@material-ui/core/Snackbar';
-// import CloseIcon from '@material-ui/icons/Close';
-import LockIcon from '@material-ui/icons/Lock';
-import Link from 'next/link';
+import PersonAdd from '@material-ui/icons/Person';
+import { Link } from '@material-ui/core';
 
-const Signin = () => {
+const SignUp = () => {
   const classes = useStyles();
-  // const signin = useSignin();
 
   const formik = useFormik({
     initialValues: {
       email: '',
+      userName: '',
       password: '',
+      confirmPassword: '',
     },
     validationSchema: yup.object().shape({
       email: yup.string().email().required(),
+      userName: yup.string().email().required(),
       password: yup.string().required(),
+      confirmPassword: yup.string().when('password', {
+        is: (val) => (val && val.length > 0 ? true : false),
+        then: yup
+          .string()
+          .oneOf([yup.ref('password')], 'Both password need to be the same'),
+      }),
     }),
     validateOnChange: false,
     validateOnBlur: true,
@@ -41,7 +46,7 @@ const Signin = () => {
         <form onSubmit={formik.handleSubmit}>
           <CardContent>
             <Avatar className={classes.decoration}>
-              <LockIcon />
+              <PersonAdd />
             </Avatar>
             <TextField
               className={classes.input}
@@ -56,6 +61,18 @@ const Signin = () => {
               fullWidth
             />
             <TextField
+              className={classes.input}
+              name="userName"
+              type="text"
+              value={formik.values.userName}
+              onChange={formik.handleChange}
+              label="User Name"
+              error={!!formik.errors.userName}
+              helperText={formik.errors.userName}
+              autoFocus
+              fullWidth
+            />
+            <TextField
               name="password"
               type="password"
               value={formik.values.password}
@@ -65,35 +82,29 @@ const Signin = () => {
               helperText={formik.errors.password}
               fullWidth
             />
+            <TextField
+              name="confirmPassword"
+              type="password"
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              label="Confirm Password"
+              error={!!formik.errors.confirmPassword}
+              helperText={formik.errors.confirmPassword}
+              fullWidth
+            />
           </CardContent>
 
           <CardActions>
             <div className={classes.filler} />
-            <Link href="/signup">
-              <Button size="small">SIGN UP</Button>
+            <Link href="/">
+              <Button size="small">SIGN IN</Button>
             </Link>
             <Button size="small" type="submit">
-              SIGN IN
+              SIGN UP
             </Button>
           </CardActions>
         </form>
       </Card>
-
-      {/* <Snackbar
-        open={!!signin.error}
-        autoHideDuration={6000}
-        onClose={signin.clearError}
-        message={signin.error}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={signin.clearError}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-      /> */}
     </div>
   );
 };
@@ -125,4 +136,4 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default Signin;
+export default SignUp;
