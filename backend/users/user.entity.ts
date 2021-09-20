@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 @ObjectType()
 @Entity()
 export class User {
-  @Field(type => ID)
+  @Field((type) => ID)
   @PrimaryGeneratedColumn()
   id: number;
 

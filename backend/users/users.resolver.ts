@@ -1,20 +1,22 @@
-
-import { ParseIntPipe } from '@nestjs/common';
+import { Logger, ParseIntPipe } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { User } from './user.model';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
-@Resolver('User')
+@Resolver((of) => User)
 export class UsersResolver {
+  private readonly logger = new Logger(UsersResolver.name);
+
   constructor(private readonly usersService: UsersService) {}
 
-  @Query(returns => [User])
+  @Query((returns) => [User])
   async users(): Promise<User[]> {
+    this.logger.log('users');
     return this.usersService.findAll();
   }
 
-  @Query(returns => User)
+  @Query((returns) => User)
   async user(
     @Args('id', ParseIntPipe)
     id: number,
@@ -22,7 +24,7 @@ export class UsersResolver {
     return this.usersService.findOneById(id);
   }
 
-  @Mutation(returns => User)
+  @Mutation((returns) => User)
   async createUser(@Args('input') args: CreateUserDto): Promise<User> {
     const createdUser = await this.usersService.create(args);
     return createdUser;
