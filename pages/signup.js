@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -7,47 +7,67 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
 import PersonAdd from '@material-ui/icons/Person';
-import { Link } from '@material-ui/core';
+import useSignup from '../hooks/useSignup';
+import ScreenBlocker from '../components/ScreenBlocker/ScreenBlocker';
 
 const SignUp = () => {
   const classes = useStyles();
+  const signup = useSignup();
 
   const formik = useFormik({
     initialValues: {
       email: '',
-      userName: '',
+      displayName: '',
       password: '',
       confirmPassword: '',
     },
     validationSchema: yup.object().shape({
+      displayName: yup.string().required(),
       email: yup.string().email().required(),
-      userName: yup.string().email().required(),
       password: yup.string().required(),
       confirmPassword: yup.string().when('password', {
         is: (val) => (val && val.length > 0 ? true : false),
         then: yup
           .string()
-          .oneOf([yup.ref('password')], 'Both password need to be the same'),
+          .oneOf([yup.ref('password')], "Passwords don't match"),
       }),
     }),
     validateOnChange: false,
     validateOnBlur: true,
     validateOnMount: false,
-    onSubmit: (values) => {
-      console.log(values);
-    },
+    onSubmit: signup.signup,
   });
+
+  const goBack = useCallback(() => {
+    window.history.back();
+  }, []);
 
   return (
     <div className={classes.self}>
+      <ScreenBlocker visible={signup.loading} />
       <Card>
         <form onSubmit={formik.handleSubmit}>
           <CardContent>
             <Avatar className={classes.decoration}>
               <PersonAdd />
             </Avatar>
+            <TextField
+              className={classes.input}
+              name="displayName"
+              type="text"
+              value={formik.values.displayName}
+              onChange={formik.handleChange}
+              label="User Name"
+              error={!!formik.errors.displayName}
+              helperText={formik.errors.displayName}
+              autoFocus
+              fullWidth
+            />
             <TextField
               className={classes.input}
               name="email"
@@ -57,22 +77,10 @@ const SignUp = () => {
               label="Email"
               error={!!formik.errors.email}
               helperText={formik.errors.email}
-              autoFocus
               fullWidth
             />
             <TextField
               className={classes.input}
-              name="userName"
-              type="text"
-              value={formik.values.userName}
-              onChange={formik.handleChange}
-              label="User Name"
-              error={!!formik.errors.userName}
-              helperText={formik.errors.userName}
-              autoFocus
-              fullWidth
-            />
-            <TextField
               name="password"
               type="password"
               value={formik.values.password}
@@ -96,15 +104,31 @@ const SignUp = () => {
 
           <CardActions>
             <div className={classes.filler} />
-            <Link href="/">
-              <Button size="small">SIGN IN</Button>
-            </Link>
+            <Button size="small" onClick={goBack}>
+              SIGN IN
+            </Button>
             <Button size="small" type="submit">
               SIGN UP
             </Button>
           </CardActions>
         </form>
       </Card>
+
+      <Snackbar
+        open={!!signup.error}
+        autoHideDuration={6000}
+        onClose={signup.clearError}
+        message={signup.error}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={signup.clearError}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
     </div>
   );
 };
