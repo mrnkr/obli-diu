@@ -6,13 +6,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 
 @Resolver((of) => User)
 export class UsersResolver {
-  private readonly logger = new Logger(UsersResolver.name);
-
   constructor(private readonly usersService: UsersService) {}
 
   @Query((returns) => [User])
   async users(): Promise<User[]> {
-    this.logger.log('users');
     return this.usersService.findAll();
   }
 

@@ -8,4 +8,10 @@ const handler = (req: NextApiRequest, res: NextApiResponse) =>
     res.on('finish', resolve);
   });
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export default handler;
