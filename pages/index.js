@@ -7,16 +7,17 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-// import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-// import Snackbar from '@material-ui/core/Snackbar';
-// import CloseIcon from '@material-ui/icons/Close';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
 import LockIcon from '@material-ui/icons/Lock';
 import Link from 'next/link';
+import useSignin from '../hooks/useSignin';
 
 const Signin = () => {
   const classes = useStyles();
-  // const signin = useSignin();
+  const signin = useSignin();
 
   const formik = useFormik({
     initialValues: {
@@ -30,9 +31,7 @@ const Signin = () => {
     validateOnChange: false,
     validateOnBlur: true,
     validateOnMount: false,
-    onSubmit: (values) => {
-      console.log(values);
-    },
+    onSubmit: signin.signin,
   });
 
   return (
@@ -69,7 +68,7 @@ const Signin = () => {
 
           <CardActions>
             <div className={classes.filler} />
-            <Link href="/signup">
+            <Link href="/signup" passHref>
               <Button size="small">SIGN UP</Button>
             </Link>
             <Button size="small" type="submit">
@@ -79,7 +78,7 @@ const Signin = () => {
         </form>
       </Card>
 
-      {/* <Snackbar
+      <Snackbar
         open={!!signin.error}
         autoHideDuration={6000}
         onClose={signin.clearError}
@@ -93,7 +92,7 @@ const Signin = () => {
             <CloseIcon fontSize="small" />
           </IconButton>
         }
-      /> */}
+      />
     </div>
   );
 };

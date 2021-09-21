@@ -1,41 +1,29 @@
 import { useState, useEffect, useCallback } from 'react';
 import { gql, useMutation } from '@apollo/client';
+import useGqlError from './useGqlError';
 
 const SIGNUP_MUTATION = gql`
   mutation Signup($input: CreateUserDto!) {
-    createUser(input: $input) {
-      id
-      displayName
-      email
-    }
+    createUser(input: $input)
   }
 `;
 
 const useSignup = () => {
-  const [err, setErr] = useState();
-
-  const [mutateFn, { loading, error }] = useMutation(SIGNUP_MUTATION);
-
-  useEffect(() => {
-    if (error && error.message) {
-      setErr(error.message);
-    }
-  }, [error]);
+  const [mutateFn, { loading, error: gqlError }] = useMutation(SIGNUP_MUTATION);
+  const [error, clearError] = useGqlError(gqlError);
 
   const signup = useCallback(
-    async ({ displayName, email, password }) => {
-      await mutateFn({
-        variables: { input: { displayName, email, password } },
+    async ({ confirmPassword, ...input }) => {
+      const { data } = await mutateFn({
+        variables: { input },
       });
+
+      localStorage.setItem('token', data.createUser);
     },
     [mutateFn],
   );
 
-  const clearError = useCallback(() => {
-    setErr();
-  }, []);
-
-  return { signup, loading, error: err, clearError };
+  return { signup, loading, error, clearError };
 };
 
 export default useSignup;

@@ -1,5 +1,7 @@
-import { Logger, ParseIntPipe } from '@nestjs/common';
+import { ParseIntPipe, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CurrentUser } from '../auth/current-user.decorator';
+import { GqlAuthGuard } from '../auth/gql-auth.guard';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -21,8 +23,14 @@ export class UsersResolver {
     return this.usersService.findOneById(id);
   }
 
-  @Mutation((returns) => User)
-  async createUser(@Args('input') args: CreateUserDto): Promise<User> {
+  @Query((returns) => User)
+  @UseGuards(GqlAuthGuard)
+  me(@CurrentUser() currentUser: User): User {
+    return currentUser;
+  }
+
+  @Mutation((returns) => String)
+  async createUser(@Args('input') args: CreateUserDto): Promise<string> {
     const createdUser = await this.usersService.create(args);
     return createdUser;
   }

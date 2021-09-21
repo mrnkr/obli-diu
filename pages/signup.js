@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import PersonAdd from '@material-ui/icons/Person';
+import Link from 'next/link';
 import useSignup from '../hooks/useSignup';
 import ScreenBlocker from '../components/ScreenBlocker/ScreenBlocker';
 
@@ -21,8 +22,8 @@ const SignUp = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
       displayName: '',
+      email: '',
       password: '',
       confirmPassword: '',
     },
@@ -31,7 +32,7 @@ const SignUp = () => {
       email: yup.string().email().required(),
       password: yup.string().required(),
       confirmPassword: yup.string().when('password', {
-        is: (val) => (val && val.length > 0 ? true : false),
+        is: (val) => val?.length > 0,
         then: yup
           .string()
           .oneOf([yup.ref('password')], "Passwords don't match"),
@@ -42,10 +43,6 @@ const SignUp = () => {
     validateOnMount: false,
     onSubmit: signup.signup,
   });
-
-  const goBack = useCallback(() => {
-    window.history.back();
-  }, []);
 
   return (
     <div className={classes.self}>
@@ -104,9 +101,9 @@ const SignUp = () => {
 
           <CardActions>
             <div className={classes.filler} />
-            <Button size="small" onClick={goBack}>
-              SIGN IN
-            </Button>
+            <Link href="/" passHref>
+              <Button size="small">SIGN IN</Button>
+            </Link>
             <Button size="small" type="submit">
               SIGN UP
             </Button>
