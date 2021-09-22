@@ -31,7 +31,7 @@ export class UsersResolver {
 
   @Mutation((returns) => String)
   async createUser(@Args('input') args: CreateUserDto): Promise<string> {
-    const createdUser = await this.usersService.create(args);
-    return createdUser;
+    const token = await this.usersService.create(args);
+    return token;
   }
 }
