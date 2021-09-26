@@ -10,7 +10,7 @@ import { CommonModule } from './common/common.module';
   imports: [
     DatabaseModule.forRoot(),
     GraphQLModule.forRoot({
-      autoSchemaFile: './backend/schema.gql',
+      autoSchemaFile: true,
       path: 'api/graphql',
     }),
     AuthModule,
