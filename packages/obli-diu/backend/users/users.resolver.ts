@@ -17,8 +17,8 @@ export class UsersResolver {
 
   @Query((returns) => User)
   async user(
-    @Args('id', ParseIntPipe)
-    id: number,
+    @Args('id')
+    id: string,
   ): Promise<User> {
     return this.usersService.findOneById(id);
   }
