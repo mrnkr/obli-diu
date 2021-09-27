@@ -1,33 +1,35 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type';
-import { nanoid } from 'nanoid/non-secure';
-import { getConnectionOptions } from 'typeorm';
+import { ConfigType } from '@nestjs/config';
+import { TypegooseModule } from 'nestjs-typegoose';
+import {
+  TypegooseClass,
+  TypegooseClassWithOptions,
+} from 'nestjs-typegoose/dist/typegoose-class.interface';
+import dbConfig from '../config/db.config';
+
+type EntityClass = TypegooseClass | TypegooseClassWithOptions;
 
 @Module({})
 export class DatabaseModule {
-  static connName = nanoid();
-
   static forRoot(): DynamicModule {
     return {
       module: DatabaseModule,
       imports: [
-        TypeOrmModule.forRootAsync({
-          name: DatabaseModule.connName,
-          useFactory: async () =>
-            Object.assign(await getConnectionOptions(), {
-              autoLoadEntities: true,
-            }),
+        TypegooseModule.forRootAsync({
+          inject: [dbConfig.KEY],
+          useFactory: (config: ConfigType<typeof dbConfig>) => ({
+            uri: config.connString,
+          }),
         }),
       ],
     };
   }
 
-  static forFeature(entities: EntityClassOrSchema[]): DynamicModule {
+  static forFeature(entities: EntityClass[]): DynamicModule {
     return {
       module: DatabaseModule,
-      imports: [TypeOrmModule.forFeature(entities, DatabaseModule.connName)],
-      exports: [TypeOrmModule],
+      imports: [TypegooseModule.forFeature(entities)],
+      exports: [TypegooseModule],
     };
   }
 }

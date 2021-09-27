@@ -1,30 +1,27 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { modelOptions, prop, pre } from '@typegoose/typegoose';
 import * as bcrypt from 'bcrypt';
 
+@pre<User>('save', async function hashPassword() {
+  const salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt);
+})
 @ObjectType()
-@Entity()
+@modelOptions({ schemaOptions: { timestamps: true } })
 export class User {
   @Field((type) => ID)
-  @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Field()
-  @Column()
+  @prop()
   displayName: string;
 
   @Field()
-  @Column({ unique: true })
+  @prop({ unique: true })
   email: string;
 
-  @Column()
+  @prop()
   password: string;
-
-  @BeforeInsert()
-  async hashPassword(): Promise<void> {
-    const salt = await bcrypt.genSalt();
-    this.password = await bcrypt.hash(this.password, salt);
-  }
 
   async checkPassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
