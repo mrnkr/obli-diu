@@ -19,6 +19,9 @@ const useSignin = () => {
       });
 
       localStorage.setItem('token', data.login);
+      document.dispatchEvent(new Event('login'));
+
+      window.location.href = 'home';
     },
     [mutateFn],
   );

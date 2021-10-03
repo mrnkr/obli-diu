@@ -5,6 +5,7 @@ import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from './config/config.module';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
+import { ChatroomsModule } from './chatrooms/chatrooms.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CommonModule } from './common/common.module';
       path: 'api/graphql',
     }),
     AuthModule,
+    ChatroomsModule,
     CommonModule,
     ConfigModule,
     UsersModule,
