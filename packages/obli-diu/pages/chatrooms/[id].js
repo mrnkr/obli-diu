@@ -17,7 +17,12 @@ import withRouterParams from '../../components/withRouterParams/withRouterParams
 const Chat = ({ params }) => {
   const user = useAuth();
   const classes = useStyles();
-  const { data: chatroom, sendMessage } = useChatroom(params.id);
+  const {
+    data: chatroom,
+    sendMessage,
+    notifyStartWriting,
+    notifyStopWriting,
+  } = useChatroom(params.id);
 
   return (
     <Grid container component={Paper} className={classes.chatSection}>
@@ -30,7 +35,11 @@ const Chat = ({ params }) => {
           ))}
         </List>
         <Divider />
-        <Composer onClickSend={sendMessage} />
+        <Composer
+          onClickSend={sendMessage}
+          onStartWriting={notifyStartWriting}
+          onStopWriting={notifyStopWriting}
+        />
       </Grid>
     </Grid>
   );

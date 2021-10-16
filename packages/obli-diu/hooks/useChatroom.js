@@ -18,13 +18,25 @@ const FETCH_ONCE = gql`
         displayName
         email
       }
+      status
       createdAt
       updatedAt
     }
   }
 `;
 
-const SUBSCRIPTION = gql`
+const CHATROOM_SUBSCRIPTION = gql`
+  subscription ChatroomUpdates {
+    chatroomUpdated {
+      id
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+const MSG_SUBSCRIPTION = gql`
   subscription NewMessage($chatroomId: String!) {
     messageReceived(id: $chatroomId) {
       id
@@ -36,7 +48,16 @@ const SUBSCRIPTION = gql`
   }
 `;
 
-const MUTATION = gql`
+const STATUS_UPDATE_MUTATION = gql`
+  mutation UpdateStatus($input: SetStatusForUserDto!) {
+    setStatusForUser(input: $input) {
+      id
+      status
+    }
+  }
+`;
+
+const SEND_MSG_MUTATION = gql`
   mutation SendMessage($input: SendMessageDto!) {
     sendMessage(input: $input) {
       id
@@ -69,11 +90,35 @@ const useChatroom = (chatroomId) => {
   });
   const [error, clearError] = useGqlError(gqlError);
 
-  const [mutateFn] = useMutation(MUTATION);
+  const [statusUpdateMutation] = useMutation(STATUS_UPDATE_MUTATION);
+  const [sendMsgMutation] = useMutation(SEND_MSG_MUTATION);
 
   useEffect(() => {
     const unsubscribe = subscribeToMore({
-      document: SUBSCRIPTION,
+      document: CHATROOM_SUBSCRIPTION,
+      variables: {
+        chatroomId,
+      },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const updatedChatroom = subscriptionData.data.chatroomUpdated;
+
+        return {
+          ...prev,
+          chatroom: {
+            ...prev.chatroom,
+            ...updatedChatroom,
+          },
+        };
+      },
+    });
+
+    return unsubscribe;
+  }, [chatroomId, subscribeToMore]);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToMore({
+      document: MSG_SUBSCRIPTION,
       variables: {
         chatroomId,
       },
@@ -94,9 +139,31 @@ const useChatroom = (chatroomId) => {
     return unsubscribe;
   }, [chatroomId, subscribeToMore]);
 
+  const notifyStartWriting = useCallback(async () => {
+    await statusUpdateMutation({
+      variables: {
+        input: {
+          chatroomId,
+          status: 'Writing',
+        },
+      },
+    });
+  }, [chatroomId, statusUpdateMutation]);
+
+  const notifyStopWriting = useCallback(async () => {
+    await statusUpdateMutation({
+      variables: {
+        input: {
+          chatroomId,
+          status: 'Idle',
+        },
+      },
+    });
+  }, [chatroomId, statusUpdateMutation]);
+
   const sendMessage = useCallback(
     async (messageBody) => {
-      await mutateFn({
+      await sendMsgMutation({
         variables: {
           input: {
             chatroomId,
@@ -105,7 +172,7 @@ const useChatroom = (chatroomId) => {
         },
       });
     },
-    [chatroomId, mutateFn],
+    [chatroomId, sendMsgMutation],
   );
 
   return {
@@ -114,6 +181,8 @@ const useChatroom = (chatroomId) => {
     error,
     clearError,
     sendMessage,
+    notifyStartWriting,
+    notifyStopWriting,
   };
 };
 
