@@ -80,7 +80,10 @@ const useStyles = makeStyles((theme) => ({
     borderRight: '0px solid #e0e0e0',
   },
   chatHeader: {
-    padding: 8,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingRight: 16,
+    paddingLeft: 8,
   },
   avatar: {
     width: 48,
@@ -90,6 +93,12 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 8,
   },
   [theme.breakpoints.up('md')]: {
+    chatHeader: {
+      paddingTop: 8,
+      paddingBottom: 8,
+      paddingRight: 16,
+      paddingLeft: 16,
+    },
     borderRight500: {
       borderRight: '1px solid #e0e0e0',
     },
