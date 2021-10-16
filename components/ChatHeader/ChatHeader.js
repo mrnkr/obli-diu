@@ -7,6 +7,9 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import { IconButton } from '@material-ui/core';
+import Link from 'next/link';
 import useUserStatus from '../../hooks/useUserStatus';
 
 const ChatHeader = ({ chatroom, user }) => {
@@ -22,10 +25,20 @@ const ChatHeader = ({ chatroom, user }) => {
     [otherUser],
   );
 
+  const classes = useStyles();
+
   return (
     <>
       <ListItem>
         <ListItemIcon>
+          <Link href="/home" passHref>
+            <IconButton
+              aria-label="back"
+              color="primary"
+              className={classes.routerBack}>
+              <ArrowBack />
+            </IconButton>
+          </Link>
           <Avatar
             alt={userName}
             src={`https://www.gravatar.com/avatar/${md5(
@@ -65,6 +78,9 @@ const useStyles = makeStyles((theme) => ({
   [theme.breakpoints.up('md')]: {
     borderRight500: {
       borderRight: '1px solid #e0e0e0',
+    },
+    routerBack: {
+      display: 'none',
     },
   },
 }));
