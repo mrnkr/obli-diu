@@ -25,8 +25,8 @@ const Chat = ({ params }) => {
 
   return (
     <Grid container component={Paper} className={classes.chatSection}>
-      <Sidebar />
-      <Grid item xs={9}>
+      <Sidebar className={classes.sidebar} />
+      <Grid item sm={12} md={9}>
         <List className={classes.messageArea}>
           {chatroom.id !== 'dummy' && user && (
             <ChatHeader chatroom={chatroom} user={user} />
@@ -45,7 +45,10 @@ const Chat = ({ params }) => {
   );
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  sidebar: {
+    display: 'none',
+  },
   chatSection: {
     width: '100%',
     height: '100vh',
@@ -55,7 +58,12 @@ const useStyles = makeStyles({
     width: '100%',
     overflowY: 'auto',
   },
-});
+  [theme.breakpoints.up('md')]: {
+    sidebar: {
+      display: 'block',
+    },
+  },
+}));
 
 Chat.propTypes = {
   params: PropTypes.shape({

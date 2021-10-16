@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -17,7 +18,7 @@ import useHeartbeat from '../../hooks/useHeartbeat';
 import ChatroomListItem from './ChatroomListItem';
 import UserListPopup from './UserListPopup';
 
-const Sidebar = () => {
+const Sidebar = ({ className }) => {
   useHeartbeat();
 
   const user = useAuth();
@@ -35,7 +36,7 @@ const Sidebar = () => {
         onPress={closeUserListPopup}
         handleClose={closeUserListPopup}
       />
-      <Grid xs={12} md={3} item className={classes.borderRight500}>
+      <Grid xs={12} md={3} item className={`${classes.sidebar} ${className}`}>
         <List>
           <ListItem key={user?.email}>
             <ListItemIcon>
@@ -70,14 +71,22 @@ const Sidebar = () => {
 };
 
 const useStyles = makeStyles((theme) => ({
-  borderRight500: {
+  sidebar: {
     borderRight: '0px solid #e0e0e0',
   },
   [theme.breakpoints.up('md')]: {
-    borderRight500: {
+    sidebar: {
       borderRight: '1px solid #e0e0e0',
     },
   },
 }));
+
+Sidebar.propTypes = {
+  className: PropTypes.string,
+};
+
+Sidebar.defaultProps = {
+  className: '',
+};
 
 export default Sidebar;

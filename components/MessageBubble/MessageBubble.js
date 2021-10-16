@@ -12,7 +12,8 @@ const MessageBubble = ({ message, user }) => {
   return (
     <ListItem>
       <Grid
-        xs={6}
+        sm={11}
+        md={6}
         container
         className={
           user?.id === message.sender
@@ -21,13 +22,9 @@ const MessageBubble = ({ message, user }) => {
         }>
         <Grid item xs={12}>
           <ListItemText
-            className={classes.bubbleText}
+            className={classes.listItemText}
             align={user?.id === message.sender ? 'left' : 'right'}
-            primary={message.body}></ListItemText>
-        </Grid>
-        <Grid item xs={12}>
-          <ListItemText
-            align={user?.id === message.sender ? 'left' : 'right'}
+            primary={message.body}
             secondary={formatDistance(new Date(message.createdAt), new Date(), {
               addSuffix: true,
             })}></ListItemText>
@@ -37,26 +34,36 @@ const MessageBubble = ({ message, user }) => {
   );
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   bubbleAreaLeft: {
-    background: '#008000',
-    borderRadius: '15px',
+    background: theme.palette.primary.main,
+    color: theme.palette.text.primary,
+    borderRadius: 16,
+    borderBottomRightRadius: 0,
     alignContent: 'left',
     marginLeft: 'auto',
-    padding: 8,
-    display: 'flex',
+    paddingLeft: 8,
+    paddingRight: 8,
   },
   bubbleAreaRight: {
-    background: '#0000ff',
-    borderRadius: '15px',
+    background: theme.palette.background.default,
+    color: theme.palette.text.primary,
+    borderRadius: 16,
+    borderBottomLeftRadius: 0,
     alignContent: 'right',
-    padding: 8,
-    display: 'flex',
+    paddingLeft: 8,
+    paddingRight: 8,
   },
-  bubbleText: {
-    display: 'flex',
+  listItemText: {
+    '& > span': {
+      overflowWrap: 'anywhere',
+      textAlign: 'left',
+    },
+    '& > p': {
+      textAlign: 'right',
+    },
   },
-});
+}));
 
 MessageBubble.propTypes = {
   message: PropTypes.shape({

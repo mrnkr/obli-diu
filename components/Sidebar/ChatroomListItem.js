@@ -7,8 +7,11 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const ChatroomListItem = ({ chatroom, user }) => {
+  const classes = useStyles();
+
   const otherUser = useMemo(
     () => chatroom.users.find((u) => u.id !== user?.id),
     [chatroom, user],
@@ -46,11 +49,24 @@ const ChatroomListItem = ({ chatroom, user }) => {
             )}`}
           />
         </ListItemIcon>
-        <ListItemText primary={userName} secondary={lastMessage} />
+        <ListItemText
+          primary={userName}
+          secondary={lastMessage}
+          className={classes.listItemText}
+        />
       </ListItem>
     </Link>
   );
 };
+
+const useStyles = makeStyles({
+  listItemText: {
+    '& > p': {
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+    },
+  },
+});
 
 ChatroomListItem.propTypes = {
   chatroom: PropTypes.shape({
