@@ -19,6 +19,7 @@ const useSignup = () => {
       });
 
       localStorage.setItem('token', data.createUser);
+      document.dispatchEvent(new Event('login'));
     },
     [mutateFn],
   );
