@@ -5,9 +5,23 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
 import Tooltip from '@material-ui/core/Tooltip';
+import useChangeEffect from '../../hooks/useChangeEffect';
 
 const Composer = (props) => {
   const [msg, setMsg] = useState('');
+
+  useChangeEffect((cur, prev) => {
+    const startedWriting = prev?.length === 0 && cur?.length > 0;
+    const stoppedWriting = prev?.length > 0 && cur?.length === 0;
+
+    if (startedWriting) {
+      props.onStartWriting();
+    }
+
+    if (stoppedWriting) {
+      props.onStopWriting();
+    }
+  }, msg);
 
   const onClickSend = useCallback(() => {
     props.onClickSend(msg);
@@ -53,6 +67,8 @@ const Composer = (props) => {
 
 Composer.propTypes = {
   onClickSend: PropTypes.func.isRequired,
+  onStartWriting: PropTypes.func,
+  onStopWriting: PropTypes.func,
 };
 
 export default Composer;
