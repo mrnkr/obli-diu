@@ -37,10 +37,11 @@ const Sidebar = ({ className }) => {
         handleClose={closeUserListPopup}
       />
       <Grid xs={12} md={3} item className={`${classes.sidebar} ${className}`}>
-        <List>
+        <List className={classes.mainList}>
           <ListItem key={user?.email}>
             <ListItemIcon>
               <Avatar
+                className={classes.avatar}
                 alt={userName}
                 src={`https://www.gravatar.com/avatar/${md5(
                   user?.email ?? '',
@@ -73,6 +74,13 @@ const Sidebar = ({ className }) => {
 const useStyles = makeStyles((theme) => ({
   sidebar: {
     borderRight: '0px solid #e0e0e0',
+  },
+  mainList: {
+    padding: 0,
+  },
+  avatar: {
+    width: 48,
+    height: 48,
   },
   [theme.breakpoints.up('md')]: {
     sidebar: {

@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   messageArea: {
+    padding: 0,
     height: '88vh',
     width: '100%',
     overflowY: 'auto',

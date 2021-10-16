@@ -29,7 +29,7 @@ const ChatHeader = ({ chatroom, user }) => {
 
   return (
     <>
-      <ListItem>
+      <ListItem className={classes.chatHeader}>
         <ListItemIcon>
           <Link href="/home" passHref>
             <IconButton
@@ -40,6 +40,7 @@ const ChatHeader = ({ chatroom, user }) => {
             </IconButton>
           </Link>
           <Avatar
+            className={classes.avatar}
             alt={userName}
             src={`https://www.gravatar.com/avatar/${md5(
               otherUser?.email ?? '',
@@ -74,6 +75,13 @@ ChatHeader.propTypes = {
 const useStyles = makeStyles((theme) => ({
   borderRight500: {
     borderRight: '0px solid #e0e0e0',
+  },
+  chatHeader: {
+    padding: 8,
+  },
+  avatar: {
+    width: 48,
+    height: 48,
   },
   [theme.breakpoints.up('md')]: {
     borderRight500: {
