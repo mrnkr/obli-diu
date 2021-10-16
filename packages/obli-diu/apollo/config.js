@@ -14,7 +14,7 @@ const httpAuthLink = setContext((_, { headers }) => {
 });
 
 const rawHttpLink = new HttpLink({
-  uri: 'http://localhost:5000/api/graphql',
+  uri: `https://${process.env.NEXT_PUBLIC_API_URL}`,
   credentials: 'same-origin',
 });
 
@@ -24,7 +24,7 @@ const wsLink = () => {
   const token = localStorage.getItem('token');
   return process.browser
     ? new WebSocketLink({
-        uri: 'ws://localhost:5000/api/graphql',
+        uri: `wss://${process.env.NEXT_PUBLIC_API_URL}`,
         options: {
           reconnect: true,
           connectionParams: {
