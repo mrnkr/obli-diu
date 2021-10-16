@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import PropTypes from 'prop-types';
 import md5 from 'md5';
 import Avatar from '@material-ui/core/Avatar';
@@ -56,5 +57,16 @@ ChatHeader.propTypes = {
     email: PropTypes.string,
   }),
 };
+
+const useStyles = makeStyles((theme) => ({
+  borderRight500: {
+    borderRight: '0px solid #e0e0e0',
+  },
+  [theme.breakpoints.up('md')]: {
+    borderRight500: {
+      borderRight: '1px solid #e0e0e0',
+    },
+  },
+}));
 
 export default ChatHeader;

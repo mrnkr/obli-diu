@@ -32,6 +32,7 @@ const Sidebar = () => {
     <>
       <UserListPopup
         open={userListPopupVisible}
+        onPress={closeUserListPopup}
         handleClose={closeUserListPopup}
       />
       <Grid xs={12} md={3} item className={classes.borderRight500}>
