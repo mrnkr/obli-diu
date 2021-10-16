@@ -47,7 +47,10 @@ const ChatHeader = ({ chatroom, user }) => {
             )}`}
           />
         </ListItemIcon>
-        <ListItemText primary={userName} secondary={status}></ListItemText>
+        <ListItemText
+          primary={userName}
+          secondary={status}
+          className={classes.userName}></ListItemText>
       </ListItem>
       <Divider />
     </>
@@ -83,12 +86,18 @@ const useStyles = makeStyles((theme) => ({
     width: 48,
     height: 48,
   },
+  userName: {
+    marginLeft: 8,
+  },
   [theme.breakpoints.up('md')]: {
     borderRight500: {
       borderRight: '1px solid #e0e0e0',
     },
     routerBack: {
       display: 'none',
+    },
+    userName: {
+      marginLeft: 0,
     },
   },
 }));
