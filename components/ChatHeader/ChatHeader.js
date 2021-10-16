@@ -18,6 +18,11 @@ const ChatHeader = ({ chatroom, user }) => {
     [otherUser],
   );
 
+  const status = useMemo(
+    () => (chatroom?.status?.[otherUser?.id] === 'Writing' ? 'typing...' : ''),
+    [chatroom, otherUser],
+  );
+
   return (
     <>
       <ListItem>
@@ -29,7 +34,7 @@ const ChatHeader = ({ chatroom, user }) => {
             )}`}
           />
         </ListItemIcon>
-        <ListItemText primary={userName}></ListItemText>
+        <ListItemText primary={userName} secondary={status}></ListItemText>
       </ListItem>
       <Divider />
     </>
@@ -45,6 +50,7 @@ ChatHeader.propTypes = {
         email: PropTypes.string,
       }),
     ),
+    status: PropTypes.any,
   }),
   user: PropTypes.shape({
     id: PropTypes.string,
