@@ -7,7 +7,11 @@ const useAuth = () => {
 
   useMountEffect(() => {
     const onLogin = () => {
-      setUserInfo(jwtDecode(localStorage.getItem('token')));
+      const { sub, ...payload } = jwtDecode(localStorage.getItem('token'));
+      setUserInfo({
+        id: sub,
+        ...payload,
+      });
     };
 
     onLogin();

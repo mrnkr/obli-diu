@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
 import useGqlError from './useGqlError';
 
 const SIGNIN_MUTATION = gql`
@@ -9,6 +10,7 @@ const SIGNIN_MUTATION = gql`
 `;
 
 const useSignin = () => {
+  const router = useRouter();
   const [mutateFn, { loading, error: gqlError }] = useMutation(SIGNIN_MUTATION);
   const [error, clearError] = useGqlError(gqlError);
 
@@ -21,9 +23,9 @@ const useSignin = () => {
       localStorage.setItem('token', data.login);
       document.dispatchEvent(new Event('login'));
 
-      window.location.href = 'home';
+      router.push('/home');
     },
-    [mutateFn],
+    [mutateFn, router],
   );
 
   return { signin, loading, error, clearError };

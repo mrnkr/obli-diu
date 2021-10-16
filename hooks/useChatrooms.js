@@ -14,7 +14,9 @@ const FETCH_ONCE = gql`
       lastMessage {
         id
         body
+        sender
         createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -34,7 +36,9 @@ const SUBSCRIPTION = gql`
       lastMessage {
         id
         body
+        sender
         createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -52,26 +56,32 @@ const useChatrooms = () => {
   const [error, clearError] = useGqlError(gqlError);
 
   useMountEffect(() => {
-    subscribeToMore({
+    const unsubscribe = subscribeToMore({
       document: SUBSCRIPTION,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
 
         const updatedChatroom = subscriptionData.data.chatroomUpdated;
         const newChatrooms = [...prev.chatrooms];
-        newChatrooms.splice(
-          newChatrooms.findIndex(
-            (chatroom) => chatroom.id === updatedChatroom.id,
-          ),
-          1,
+
+        const idx = newChatrooms.findIndex(
+          (chatroom) => chatroom.id === updatedChatroom.id,
         );
+
+        if (idx >= 0) {
+          newChatrooms.splice(idx, 1);
+        }
+
         newChatrooms.unshift(updatedChatroom);
 
-        return Object.assign({}, prev, {
+        return {
+          ...prev,
           chatrooms: newChatrooms,
-        });
+        };
       },
     });
+
+    return unsubscribe;
   });
 
   return { loading, data: data?.chatrooms ?? [], error, clearError };
