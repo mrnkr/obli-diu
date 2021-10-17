@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import formatDistance from 'date-fns/formatDistance';
+import { useRouter } from 'next/router';
 import md5 from 'md5';
-import Link from 'next/link';
 import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -12,6 +12,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const ChatroomListItem = ({ chatroom, user }) => {
   const classes = useStyles();
+  const router = useRouter();
 
   const otherUser = useMemo(
     () => chatroom.users.find((u) => u.id !== user?.id),
@@ -39,27 +40,30 @@ const ChatroomListItem = ({ chatroom, user }) => {
     [chatroom, user],
   );
 
+  const goToChatroom = useCallback(async () => {
+    if (router.query?.id === chatroom.id) {
+      return;
+    }
+
+    await router.push(`/chatrooms/${chatroom.id}`);
+    router.reload();
+  }, [chatroom, router]);
+
   return (
-    <Link href={`/chatrooms/${chatroom.id}`} passHref>
-      <div>
-        <ListItem button key={chatroom.id}>
-          <ListItemIcon>
-            <Avatar
-              alt={userName}
-              src={`https://www.gravatar.com/avatar/${md5(
-                otherUser?.email ?? '',
-              )}`}
-            />
-          </ListItemIcon>
-          <ListItemText
-            primary={userName}
-            secondary={lastMessage}
-            className={classes.listItemText}
-          />
-        </ListItem>
-        <Divider variant="inset" component="li" />
-      </div>
-    </Link>
+    <ListItem button key={chatroom.id} onClick={goToChatroom}>
+      <ListItemIcon>
+        <Avatar
+          alt={userName}
+          src={`https://www.gravatar.com/avatar/${md5(otherUser?.email ?? '')}`}
+        />
+      </ListItemIcon>
+      <ListItemText
+        primary={userName}
+        secondary={lastMessage}
+        className={classes.listItemText}
+      />
+      <Divider variant="inset" component="li" />
+    </ListItem>
   );
 };
 
@@ -89,7 +93,6 @@ ChatroomListItem.propTypes = {
       createdAt: PropTypes.string,
       updatedAt: PropTypes.string,
     }),
-    status: PropTypes.any,
   }).isRequired,
   user: PropTypes.shape({
     id: PropTypes.string,
