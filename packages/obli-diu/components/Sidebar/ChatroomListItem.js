@@ -7,8 +7,12 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const ChatroomListItem = ({ chatroom, user }) => {
+  const classes = useStyles();
+
   const otherUser = useMemo(
     () => chatroom.users.find((u) => u.id !== user?.id),
     [chatroom, user],
@@ -37,20 +41,36 @@ const ChatroomListItem = ({ chatroom, user }) => {
 
   return (
     <Link href={`/chatrooms/${chatroom.id}`} passHref>
-      <ListItem button key={chatroom.id}>
-        <ListItemIcon>
-          <Avatar
-            alt={userName}
-            src={`https://www.gravatar.com/avatar/${md5(
-              otherUser?.email ?? '',
-            )}`}
+      <div>
+        <ListItem button key={chatroom.id}>
+          <ListItemIcon>
+            <Avatar
+              alt={userName}
+              src={`https://www.gravatar.com/avatar/${md5(
+                otherUser?.email ?? '',
+              )}`}
+            />
+          </ListItemIcon>
+          <ListItemText
+            primary={userName}
+            secondary={lastMessage}
+            className={classes.listItemText}
           />
-        </ListItemIcon>
-        <ListItemText primary={userName} secondary={lastMessage} />
-      </ListItem>
+        </ListItem>
+        <Divider variant="inset" component="li" />
+      </div>
     </Link>
   );
 };
+
+const useStyles = makeStyles({
+  listItemText: {
+    '& > p': {
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+    },
+  },
+});
 
 ChatroomListItem.propTypes = {
   chatroom: PropTypes.shape({

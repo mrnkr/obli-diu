@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -7,6 +8,8 @@ import SendIcon from '@material-ui/icons/Send';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const Composer = (props) => {
+  const classes = useStyles();
+
   const [msg, setMsg] = useState('');
 
   const onClickSend = useCallback(() => {
@@ -32,7 +35,7 @@ const Composer = (props) => {
   );
 
   return (
-    <Grid container style={{ padding: '20px' }}>
+    <Grid container className={classes.self}>
       <Grid xs={11} item>
         <TextField
           id="outlined-basic-email"
@@ -54,6 +57,12 @@ const Composer = (props) => {
     </Grid>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  self: {
+    padding: 16,
+  },
+}));
 
 Composer.propTypes = {
   onClickSend: PropTypes.func.isRequired,

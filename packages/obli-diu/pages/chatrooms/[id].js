@@ -24,9 +24,9 @@ const Chat = ({ params }) => {
   } = useChatroom(params.id);
 
   return (
-    <Grid container component={Paper} className={classes.chatSection}>
-      <Sidebar />
-      <Grid item xs={9}>
+    <Grid container component={Paper} className={classes.self}>
+      <Sidebar className={classes.sidebar} />
+      <Grid item sm={12} md={9} className={classes.messageGrid}>
         <List className={classes.messageArea}>
           {chatroom.id !== 'dummy' && user && (
             <ChatHeader chatroom={chatroom} user={user} />
@@ -34,6 +34,7 @@ const Chat = ({ params }) => {
           {chatroom.messages.map((message) => (
             <MessageBubble key={message.id} message={message} user={user} />
           ))}
+          <div className={classes.filler} />
         </List>
         <Divider />
         <Composer
@@ -45,17 +46,38 @@ const Chat = ({ params }) => {
   );
 };
 
-const useStyles = makeStyles({
-  chatSection: {
-    width: '100%',
+const useStyles = makeStyles((theme) => ({
+  self: {
     height: '100vh',
   },
+  sidebar: {
+    display: 'none',
+  },
   messageArea: {
-    height: '88vh',
+    padding: 0,
     width: '100%',
     overflowY: 'auto',
+    flex: 1,
   },
-});
+  messageGrid: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    width: '100%',
+  },
+  filler: {
+    flexGrow: 1,
+    width: '100%',
+  },
+  [theme.breakpoints.up('md')]: {
+    sidebar: {
+      display: 'flex',
+    },
+    messageGrid: {
+      width: 'unset',
+    },
+  },
+}));
 
 Chat.propTypes = {
   params: PropTypes.shape({
