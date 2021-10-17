@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Grid from '@material-ui/core/Grid';
@@ -22,6 +22,7 @@ import useAuth from '../../hooks/useAuth';
 import useChatrooms from '../../hooks/useChatrooms';
 import usePopup from '../../hooks/usePopup';
 import useHeartbeat from '../../hooks/useHeartbeat';
+import ColorModeContext from '../../contexts/ColorModeContext';
 import ChatroomListItem from './ChatroomListItem';
 import UserListPopup from './UserListPopup';
 
@@ -33,6 +34,8 @@ const Sidebar = ({ className }) => {
   const { data: chatrooms } = useChatrooms();
   const [userListPopupVisible, showUserListPopup, closeUserListPopup] =
     usePopup();
+
+  const colorMode = useContext(ColorModeContext);
 
   const userName = useMemo(() => user?.displayName ?? user?.email, [user]);
 
@@ -112,7 +115,13 @@ const Sidebar = ({ className }) => {
               <ListItem button>
                 <FormControlLabel
                   className={classes.formControl}
-                  control={<Switch size="small" />}
+                  control={
+                    <Switch
+                      size="small"
+                      checked={colorMode.mode === 'dark'}
+                      onClick={colorMode.toggleColorMode}
+                    />
+                  }
                   label="Dark Mode"
                 />
               </ListItem>
