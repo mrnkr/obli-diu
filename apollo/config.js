@@ -1,4 +1,10 @@
-import { ApolloClient, InMemoryCache, HttpLink, split } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloLink,
+  InMemoryCache,
+  HttpLink,
+  split,
+} from '@apollo/client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { setContext } from 'apollo-link-context';
@@ -14,22 +20,22 @@ const httpAuthLink = setContext((_, { headers }) => {
 });
 
 const rawHttpLink = new HttpLink({
-  uri: `https://${process.env.NEXT_PUBLIC_API_URL}`,
+  uri: `http://${process.env.NEXT_PUBLIC_API_URL}`,
   credentials: 'same-origin',
 });
 
 const httpLink = httpAuthLink.concat(rawHttpLink);
 
 const wsLink = () => {
-  const token = localStorage.getItem('token');
   return process.browser
     ? new WebSocketLink({
-        uri: `wss://${process.env.NEXT_PUBLIC_API_URL}`,
+        uri: `ws://${process.env.NEXT_PUBLIC_API_URL}`,
         options: {
-          reconnect: true,
-          connectionParams: {
-            Authorization: token ? `Bearer ${token}` : '',
+          connectionParams: () => {
+            const token = localStorage.getItem('token');
+            return { Authorization: token ? `Bearer ${token}` : '' };
           },
+          lazy: true,
         },
       })
     : null;

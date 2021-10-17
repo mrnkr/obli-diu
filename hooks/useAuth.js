@@ -2,19 +2,26 @@ import jwtDecode from 'jwt-decode';
 import { useState } from 'react';
 import useMountEffect from './useMountEffect';
 
+const getUserInfoFromLocalStorage = () => {
+  try {
+    const { sub, ...payload } = jwtDecode(localStorage.getItem('token'));
+    return {
+      id: sub,
+      ...payload,
+    };
+  } catch {
+    return undefined;
+  }
+};
+
 const useAuth = () => {
-  const [userInfo, setUserInfo] = useState();
+  const [userInfo, setUserInfo] = useState(getUserInfoFromLocalStorage());
 
   useMountEffect(() => {
     const onLogin = () => {
-      const { sub, ...payload } = jwtDecode(localStorage.getItem('token'));
-      setUserInfo({
-        id: sub,
-        ...payload,
-      });
+      setUserInfo(getUserInfoFromLocalStorage());
     };
 
-    onLogin();
     document.addEventListener('login', onLogin);
     return () => document.removeEventListener('login', onLogin);
   });

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -13,10 +14,19 @@ import MessageBubble from '../../components/MessageBubble';
 import Composer from '../../components/Composer';
 import ChatHeader from '../../components/ChatHeader';
 import withRouterParams from '../../components/withRouterParams/withRouterParams';
+import useMountEffect from '../../hooks/useMountEffect';
 
 const Chat = ({ params }) => {
-  const user = useAuth();
   const classes = useStyles();
+  const router = useRouter();
+  const user = useAuth();
+
+  useMountEffect(() => {
+    if (!user) {
+      router.replace('/');
+    }
+  });
+
   const {
     data: chatroom,
     sendMessage,
