@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import formatDistance from 'date-fns/formatDistance';
 import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
 import ListItemText from '@material-ui/core/ListItemText';
+import { LinkPreview } from '@dhaiwat10/react-link-preview/';
+
+const URL_REGEX =
+  /(((http|https):\/\/)?(www\.)?[-a-zA-Z0-9@:%.\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%\+.~#?&//=]*))/g;
 
 const MessageBubble = ({ message, user }) => {
   const classes = useStyles();
+  const body = useMemo(() => {
+    const urls = message.body.match(URL_REGEX);
+    return (
+      <>
+        {urls?.map((url, idx) => (
+          <LinkPreview className={classes.linkPreview} url={url} key={idx} />
+        ))}
+        {message.body}
+      </>
+    );
+  }, [classes, message]);
 
   return (
     <ListItem>
@@ -24,7 +39,7 @@ const MessageBubble = ({ message, user }) => {
           <ListItemText
             className={classes.listItemText}
             align={user?.id === message.sender ? 'left' : 'right'}
-            primary={message.body}
+            primary={body}
             secondary={formatDistance(new Date(message.createdAt), new Date(), {
               addSuffix: true,
             })}></ListItemText>
@@ -35,6 +50,9 @@ const MessageBubble = ({ message, user }) => {
 };
 
 const useStyles = makeStyles((theme) => ({
+  linkPreview: {
+    marginBottom: 8,
+  },
   bubbleAreaLeft: {
     background: theme.palette.primary.main,
     color: theme.palette.text.primary,
