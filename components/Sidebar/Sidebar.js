@@ -25,6 +25,7 @@ import useHeartbeat from '../../hooks/useHeartbeat';
 import ColorModeContext from '../../contexts/ColorModeContext';
 import ChatroomListItem from './ChatroomListItem';
 import UserListPopup from './UserListPopup';
+import NoChatsPlaceholder from './NoChatsPlaceholder';
 
 const Sidebar = ({ className }) => {
   useHeartbeat();
@@ -50,9 +51,10 @@ const Sidebar = ({ className }) => {
     setAnchorEl(null);
   }, []);
 
-  const handleLogout = useCallback(() => {
+  const handleLogout = useCallback(async () => {
     localStorage.removeItem('token');
-    router.push('/');
+    await router.replace('/');
+    router.reload();
   }, [router]);
 
   const open = useMemo(() => !!anchorEl, [anchorEl]);
@@ -127,13 +129,17 @@ const Sidebar = ({ className }) => {
             </List>
           </Popover>
           <Divider />
-          {chatrooms.map((chatroom) => (
-            <ChatroomListItem
-              key={chatroom.id}
-              chatroom={chatroom}
-              user={user}
-            />
-          ))}
+          {chatrooms.length ? (
+            chatrooms.map((chatroom) => (
+              <ChatroomListItem
+                key={chatroom.id}
+                chatroom={chatroom}
+                user={user}
+              />
+            ))
+          ) : (
+            <NoChatsPlaceholder />
+          )}
         </List>
       </Grid>
     </>
