@@ -1,18 +1,18 @@
 import React, { useCallback, useState, useMemo } from 'react';
-import makeStyles from '@material-ui/core/styles/makeStyles';
 import PropTypes from 'prop-types';
+import dynamic from 'next/dynamic';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
 import Tooltip from '@material-ui/core/Tooltip';
-import Picker from 'emoji-picker-react';
 import Popover from '@material-ui/core/Popover';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
-import useTheme from '@material-ui/core/styles/useTheme';
+
+const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
 const Composer = (props) => {
-  const theme = useTheme();
   const classes = useStyles();
 
   const [msg, setMsg] = useState('');
@@ -63,7 +63,7 @@ const Composer = (props) => {
   return (
     <Grid container className={classes.self}>
       <Grid sm={1} xs={2} item align="center">
-        <Tooltip title="Add emoji" aria-label="emoji">
+        <Tooltip title="Insert emoji" aria-label="emoji">
           <IconButton onClick={openEmojiPopover}>
             <EmojiEmotionsIcon />
           </IconButton>
@@ -78,13 +78,7 @@ const Composer = (props) => {
             vertical: 'bottom',
             horizontal: 'left',
           }}>
-          <Picker
-            // pickerStyle={{
-            //   background: theme.palette.background.paper,
-            //   color: theme.palette.text.primary,
-            // }}
-            onEmojiClick={onEmojiClick}
-          />
+          <EmojiPicker onEmojiClick={onEmojiClick} />
         </Popover>
       </Grid>
       <Grid sm={10} xs={8} item>
