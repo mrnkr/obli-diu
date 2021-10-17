@@ -1,6 +1,7 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useCallback, useEffect } from 'react';
-import useGqlError from './useGqlError';
+import useErrorNotifier from './useErrorNotifier';
+import useLoadingNotifier from './useLoadingNotifier';
 
 const FETCH_ONCE = gql`
   query GetChatroomById($chatroomId: String!) {
@@ -94,17 +95,14 @@ const defaultChatroom = {
 };
 
 const useChatroom = (chatroomId) => {
-  const {
-    loading,
-    data,
-    error: gqlError,
-    subscribeToMore,
-  } = useQuery(FETCH_ONCE, {
+  const { loading, data, error, subscribeToMore } = useQuery(FETCH_ONCE, {
     variables: {
       chatroomId,
     },
   });
-  const [error, clearError] = useGqlError(gqlError);
+
+  useLoadingNotifier(loading);
+  useErrorNotifier(error);
 
   const [logLastActivityMutation] = useMutation(LOG_LAST_ACTIVITY_MUTATION);
   const [sendMsgMutation] = useMutation(SEND_MSG_MUTATION);
@@ -180,10 +178,7 @@ const useChatroom = (chatroomId) => {
   );
 
   return {
-    loading,
     data: data?.chatroom ?? defaultChatroom,
-    error,
-    clearError,
     sendMessage,
     notifyStartWriting,
   };

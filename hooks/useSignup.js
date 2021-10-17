@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import useGqlError from './useGqlError';
+import useErrorNotifier from './useErrorNotifier';
 
 const SIGNUP_MUTATION = gql`
   mutation Signup($input: CreateUserDto!) {
@@ -9,8 +9,8 @@ const SIGNUP_MUTATION = gql`
 `;
 
 const useSignup = () => {
-  const [mutateFn, { loading, error: gqlError }] = useMutation(SIGNUP_MUTATION);
-  const [error, clearError] = useGqlError(gqlError);
+  const [mutateFn, { loading, error }] = useMutation(SIGNUP_MUTATION);
+  useErrorNotifier(error);
 
   const signup = useCallback(
     async ({ confirmPassword, ...input }) => {
@@ -24,7 +24,7 @@ const useSignup = () => {
     [mutateFn],
   );
 
-  return { signup, loading, error, clearError };
+  return { signup, loading };
 };
 
 export default useSignup;
