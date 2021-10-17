@@ -1,6 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
-import useGqlError from './useGqlError';
+import useErrorNotifier from './useErrorNotifier';
 import useMountEffect from './useMountEffect';
+import useLoadingNotifier from './useLoadingNotifier';
 
 const FETCH_ONCE = gql`
   query GetMyChatrooms {
@@ -49,13 +50,10 @@ const SUBSCRIPTION = gql`
 `;
 
 const useChatrooms = () => {
-  const {
-    loading,
-    data,
-    error: gqlError,
-    subscribeToMore,
-  } = useQuery(FETCH_ONCE);
-  const [error, clearError] = useGqlError(gqlError);
+  const { loading, data, error, subscribeToMore } = useQuery(FETCH_ONCE);
+
+  useLoadingNotifier(loading);
+  useErrorNotifier(error);
 
   useMountEffect(() => {
     const unsubscribe = subscribeToMore({
@@ -86,7 +84,7 @@ const useChatrooms = () => {
     return unsubscribe;
   });
 
-  return { loading, data: data?.chatrooms ?? [], error, clearError };
+  return { data: data?.chatrooms ?? [] };
 };
 
 export default useChatrooms;

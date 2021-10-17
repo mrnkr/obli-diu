@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
-import useGqlError from './useGqlError';
+import useErrorNotifier from './useErrorNotifier';
 
 const SIGNIN_MUTATION = gql`
   mutation Signin($input: LoginDto!) {
@@ -11,8 +11,8 @@ const SIGNIN_MUTATION = gql`
 
 const useSignin = () => {
   const router = useRouter();
-  const [mutateFn, { loading, error: gqlError }] = useMutation(SIGNIN_MUTATION);
-  const [error, clearError] = useGqlError(gqlError);
+  const [mutateFn, { loading, error }] = useMutation(SIGNIN_MUTATION);
+  useErrorNotifier(error);
 
   const signin = useCallback(
     async (input) => {
@@ -28,7 +28,7 @@ const useSignin = () => {
     [mutateFn, router],
   );
 
-  return { signin, loading, error, clearError };
+  return { signin, loading };
 };
 
 export default useSignin;

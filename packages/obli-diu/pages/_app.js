@@ -9,6 +9,10 @@ import createTheme from '../theme';
 import useMountEffect from '../hooks/useMountEffect';
 import client from '../apollo/config';
 import ColorModeContext from '../contexts/ColorModeContext';
+import { LoadingContextProvider } from '../contexts/LoadingContext';
+import LoadingIndicator from '../components/LoadingIndicator';
+import { ErrorContextProvider } from '../contexts/ErrorContext';
+import ErrorSnackbar from '../components/ErrorSnackbar';
 
 const MyApp = ({ Component, pageProps }) => {
   const [mode, setMode] = useState('dark');
@@ -40,8 +44,14 @@ const MyApp = ({ Component, pageProps }) => {
       <ApolloProvider client={client}>
         <ColorModeContext.Provider value={colorMode}>
           <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Component {...pageProps} />
+            <LoadingContextProvider>
+              <ErrorContextProvider>
+                <CssBaseline />
+                <LoadingIndicator />
+                <Component {...pageProps} />
+                <ErrorSnackbar />
+              </ErrorContextProvider>
+            </LoadingContextProvider>
           </ThemeProvider>
         </ColorModeContext.Provider>
       </ApolloProvider>

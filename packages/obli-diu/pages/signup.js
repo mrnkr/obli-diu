@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -7,14 +7,11 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
-import Snackbar from '@material-ui/core/Snackbar';
-import CloseIcon from '@material-ui/icons/Close';
 import PersonAdd from '@material-ui/icons/Person';
 import Link from 'next/link';
 import useSignup from '../hooks/useSignup';
-import ScreenBlocker from '../components/ScreenBlocker/ScreenBlocker';
 
 const SignUp = () => {
   const classes = useStyles();
@@ -46,7 +43,6 @@ const SignUp = () => {
 
   return (
     <div className={classes.self}>
-      <ScreenBlocker visible={signup.loading} />
       <Card>
         <form onSubmit={formik.handleSubmit}>
           <CardContent>
@@ -104,28 +100,16 @@ const SignUp = () => {
             <Link href="/" passHref>
               <Button size="small">SIGN IN</Button>
             </Link>
-            <Button size="small" type="submit">
-              SIGN UP
+            <Button size="small" type="submit" disabled={signup.loading}>
+              {signup.loading ? (
+                <CircularProgress size={16} color="default" />
+              ) : (
+                'SIGN UP'
+              )}
             </Button>
           </CardActions>
         </form>
       </Card>
-
-      <Snackbar
-        open={!!signup.error}
-        autoHideDuration={6000}
-        onClose={signup.clearError}
-        message={signup.error}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={signup.clearError}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-      />
     </div>
   );
 };

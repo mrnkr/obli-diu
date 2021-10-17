@@ -2,7 +2,8 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { useCallback, useMemo } from 'react';
 import useAuth from './useAuth';
 import useChatrooms from './useChatrooms';
-import useGqlError from './useGqlError';
+import useErrorNotifier from './useErrorNotifier';
+import useLoadingNotifier from './useLoadingNotifier';
 
 const FETCH_ONCE = gql`
   query GetAllUsers {
@@ -33,8 +34,9 @@ const useUsers = () => {
   const user = useAuth();
   const { data: chatrooms } = useChatrooms();
 
-  const { loading, data, error: gqlError } = useQuery(FETCH_ONCE);
-  const [error, clearError] = useGqlError(gqlError);
+  const { loading, data, error } = useQuery(FETCH_ONCE);
+  useLoadingNotifier(loading);
+  useErrorNotifier(error);
 
   const [mutateFn] = useMutation(MUTATION);
 
@@ -64,7 +66,7 @@ const useUsers = () => {
     [mutateFn],
   );
 
-  return { loading, data: users, error, clearError, createChatroom };
+  return { data: users, createChatroom };
 };
 
 export default useUsers;

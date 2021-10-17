@@ -4,8 +4,9 @@ import add from 'date-fns/add';
 import isAfter from 'date-fns/isAfter';
 import formatDistance from 'date-fns/formatDistance';
 import differenceInSeconds from 'date-fns/differenceInSeconds';
-import useGqlError from './useGqlError';
+import useErrorNotifier from './useErrorNotifier';
 import useInterval from './useInterval';
+import useLoadingNotifier from './useLoadingNotifier';
 
 const FETCH_ONCE = gql`
   query GetUserById($userId: String!) {
@@ -29,17 +30,14 @@ const useUserStatus = (chatroom, userId) => {
   const [onlineStatusObsolete, setOnlineStatusObsolete] = useState(0);
   const [writingStatusObsolete, setWritingStatusObsolete] = useState(0);
 
-  const {
-    loading,
-    data,
-    error: gqlError,
-    subscribeToMore,
-  } = useQuery(FETCH_ONCE, {
+  const { loading, data, error, subscribeToMore } = useQuery(FETCH_ONCE, {
     variables: {
       userId,
     },
   });
-  const [error, clearError] = useGqlError(gqlError);
+
+  useLoadingNotifier(loading);
+  useErrorNotifier(error);
 
   useInterval(() => setOnlineStatusObsolete((value) => value + 1), 30000);
   useInterval(() => setWritingStatusObsolete((value) => value + 1), 5000);
@@ -109,7 +107,7 @@ const useUserStatus = (chatroom, userId) => {
     [isWriting, onlineStatus],
   );
 
-  return { loading, data: status, error, clearError };
+  return { data: status };
 };
 
 export default useUserStatus;
