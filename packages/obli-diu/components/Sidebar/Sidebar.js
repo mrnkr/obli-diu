@@ -13,10 +13,13 @@ import md5 from 'md5';
 import useAuth from '../../hooks/useAuth';
 import useChatrooms from '../../hooks/useChatrooms';
 import usePopup from '../../hooks/usePopup';
+import useHeartbeat from '../../hooks/useHeartbeat';
 import ChatroomListItem from './ChatroomListItem';
 import UserListPopup from './UserListPopup';
 
 const Sidebar = () => {
+  useHeartbeat();
+
   const user = useAuth();
   const classes = useStyles();
   const { data: chatrooms } = useChatrooms();
