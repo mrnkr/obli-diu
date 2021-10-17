@@ -20,7 +20,7 @@ const httpAuthLink = setContext((_, { headers }) => {
 });
 
 const rawHttpLink = new HttpLink({
-  uri: `http://${process.env.NEXT_PUBLIC_API_URL}`,
+  uri: `https://${process.env.NEXT_PUBLIC_API_URL}`,
   credentials: 'same-origin',
 });
 
@@ -29,13 +29,14 @@ const httpLink = httpAuthLink.concat(rawHttpLink);
 const wsLink = () => {
   return process.browser
     ? new WebSocketLink({
-        uri: `ws://${process.env.NEXT_PUBLIC_API_URL}`,
+        uri: `wss://${process.env.NEXT_PUBLIC_API_URL}`,
         options: {
           connectionParams: () => {
             const token = localStorage.getItem('token');
             return { Authorization: token ? `Bearer ${token}` : '' };
           },
           lazy: true,
+          inactivityTimeout: 1000,
         },
       })
     : null;
