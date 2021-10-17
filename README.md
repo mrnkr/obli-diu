@@ -4,7 +4,15 @@ Aplicación de chat hecha con React, GraphQL y NestJS para la materia Diseño de
 
 ## Configuración de ambiente de desarrollo
 
-Primero, iniciar el servidor de desarrollo:
+Primero, crear un archivo `.env.local` con la configuración de la aplicación.
+
+```ini
+NEXT_PUBLIC_API_URL=obli-diu.herokuapp.com/api/graphql
+```
+
+El ejemplo sirve para conectarse al backend de testing deployado.
+
+Luego, iniciar el servidor de desarrollo:
 
 ```bash
 yarn dev
