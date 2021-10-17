@@ -52,7 +52,7 @@ const useUsers = () => {
   }, [chatrooms, data, user]);
 
   const createChatroom = useCallback(
-    (userId) => async () => {
+    async (userId) => {
       await mutateFn({
         variables: {
           input: {
