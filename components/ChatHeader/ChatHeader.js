@@ -8,11 +8,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import { IconButton } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 import Link from 'next/link';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import useUserStatus from '../../hooks/useUserStatus';
 
 const ChatHeader = ({ chatroom, user }) => {
+  const classes = useStyles();
+
   const otherUser = useMemo(
     () => chatroom?.users.find((u) => u.id !== user?.id),
     [chatroom, user],
@@ -25,16 +28,14 @@ const ChatHeader = ({ chatroom, user }) => {
     [otherUser],
   );
 
-  const classes = useStyles();
-
   return (
-    <>
+    <ListSubheader className={classes.listSubheader}>
       <ListItem className={classes.chatHeader}>
         <ListItemIcon>
           <Link href="/home" passHref>
             <IconButton
               aria-label="back"
-              color="primary"
+              color="default"
               className={classes.routerBack}>
               <ArrowBack />
             </IconButton>
@@ -53,7 +54,7 @@ const ChatHeader = ({ chatroom, user }) => {
           className={classes.userName}></ListItemText>
       </ListItem>
       <Divider />
-    </>
+    </ListSubheader>
   );
 };
 
@@ -76,6 +77,10 @@ ChatHeader.propTypes = {
 };
 
 const useStyles = makeStyles((theme) => ({
+  listSubheader: {
+    backgroundColor: theme.palette.background.default,
+    padding: 0,
+  },
   borderRight500: {
     borderRight: '0px solid #e0e0e0',
   },

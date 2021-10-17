@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import md5 from 'md5';
 import Avatar from '@material-ui/core/Avatar';
@@ -8,18 +8,23 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import IconButton from '@material-ui/core/IconButton';
 import blue from '@material-ui/core/colors/blue';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
 import PersonIcon from '@material-ui/icons/Person';
-import CheckCircle from '@material-ui/icons/CheckCircle';
 import useUsers from '../../hooks/useUsers';
 
 const UserListPopup = ({ open, handleClose }) => {
   const classes = useStyles();
   const { data: users, createChatroom } = useUsers();
+
+  const onListItemClick = useCallback(
+    (userId) => async () => {
+      handleClose();
+      await createChatroom(userId);
+    },
+    [createChatroom, handleClose],
+  );
 
   return (
     <Dialog
@@ -34,7 +39,7 @@ const UserListPopup = ({ open, handleClose }) => {
           </ListItem>
         ) : null}
         {users?.map((user) => (
-          <ListItem button key={user.id} onClick={createChatroom(user.id)}>
+          <ListItem button key={user.id} onClick={onListItemClick(user.id)}>
             <ListItemAvatar>
               <Avatar
                 className={classes.avatar}

@@ -9,15 +9,15 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
 import MoreVert from '@material-ui/icons/MoreVert';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import md5 from 'md5';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Popover from '@material-ui/core/Popover';
+import Router from 'next/router';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import useAuth from '../../hooks/useAuth';
 import useChatrooms from '../../hooks/useChatrooms';
 import usePopup from '../../hooks/usePopup';
@@ -46,6 +46,13 @@ const Sidebar = ({ className }) => {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    if (typeof window !== 'undefined') {
+      Router.push('/');
+    }
+  };
+
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
@@ -53,62 +60,65 @@ const Sidebar = ({ className }) => {
     <>
       <UserListPopup
         open={userListPopupVisible}
-        onPress={closeUserListPopup}
         handleClose={closeUserListPopup}
       />
       <Grid xs={12} md={3} item className={`${classes.sidebar} ${className}`}>
         <List className={classes.mainList}>
-          <ListItem key={user?.email}>
-            <ListItemIcon>
-              <Avatar
-                className={classes.avatar}
-                alt={userName}
-                src={`https://www.gravatar.com/avatar/${md5(
-                  user?.email ?? '',
-                )}`}
-              />
-            </ListItemIcon>
-            <ListItemText primary={userName}></ListItemText>
-            <ListItemIcon>
-              <IconButton onClick={showUserListPopup}>
-                <PersonAdd />
-              </IconButton>
-              <IconButton
-                size="large"
-                aria-label="display more actions"
-                edge="end"
-                color="inherit"
-                onClick={handleClick}>
-                <MoreVert />
-              </IconButton>
-            </ListItemIcon>
-          </ListItem>
-        </List>
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}>
-          <List>
-            <ListItem disablePadding>
-              <Button component="a" startIcon={<ExitToApp />}>
-                Logout
-              </Button>
+          <ListSubheader className={classes.listSubheader}>
+            <ListItem key={user?.email}>
+              <ListItemIcon>
+                <Avatar
+                  className={classes.avatar}
+                  alt={userName}
+                  src={`https://www.gravatar.com/avatar/${md5(
+                    user?.email ?? '',
+                  )}`}
+                />
+              </ListItemIcon>
+              <ListItemText primary={userName}></ListItemText>
+              <ListItemIcon>
+                <IconButton onClick={showUserListPopup}>
+                  <PersonAdd />
+                </IconButton>
+                <IconButton
+                  size="large"
+                  aria-label="display more actions"
+                  edge="end"
+                  color="inherit"
+                  onClick={handleClick}>
+                  <MoreVert />
+                </IconButton>
+              </ListItemIcon>
             </ListItem>
-            <ListItem disablePadding>
-              <FormControlLabel
-                control={<Switch size="small" />}
-                label="Dark Mode"
-              />
-            </ListItem>
-          </List>
-        </Popover>
-        <Divider />
-        <List>
+          </ListSubheader>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}>
+            <List>
+              <ListItem button>
+                <ExitToApp />
+                <ListItemText
+                  className={classes.listItem}
+                  onClick={handleLogout}
+                  primary="Log out"
+                />
+              </ListItem>
+              <ListItem button>
+                <FormControlLabel
+                  className={classes.formControl}
+                  control={<Switch size="small" />}
+                  label="Dark Mode"
+                />
+              </ListItem>
+            </List>
+          </Popover>
+          <Divider />
           {chatrooms.map((chatroom) => (
             <ChatroomListItem
               key={chatroom.id}
@@ -123,12 +133,28 @@ const Sidebar = ({ className }) => {
 };
 
 const useStyles = makeStyles((theme) => ({
+  listSubheader: {
+    backgroundColor: theme.palette.background.default,
+    padding: 0,
+  },
+  listItem: {
+    marginLeft: 4,
+  },
+  formControl: {
+    paddingTop: 6,
+    paddingBottom: 6,
+  },
   sidebar: {
     borderRight: '0px solid #e0e0e0',
     overflow: 'hidden',
+    maxHeight: '100%',
   },
   mainList: {
     padding: 0,
+    flex: 1,
+    width: '100%',
+    overflowY: 'scroll',
+    height: '100%',
   },
   avatar: {
     width: 48,

@@ -13,7 +13,7 @@ const MessageBubble = ({ message, user }) => {
     <ListItem>
       <Grid
         sm={11}
-        md={6}
+        md={8}
         container
         className={
           user?.id === message.sender

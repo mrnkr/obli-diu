@@ -7,6 +7,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const ChatroomListItem = ({ chatroom, user }) => {
@@ -40,21 +41,24 @@ const ChatroomListItem = ({ chatroom, user }) => {
 
   return (
     <Link href={`/chatrooms/${chatroom.id}`} passHref>
-      <ListItem button key={chatroom.id}>
-        <ListItemIcon>
-          <Avatar
-            alt={userName}
-            src={`https://www.gravatar.com/avatar/${md5(
-              otherUser?.email ?? '',
-            )}`}
+      <div>
+        <ListItem button key={chatroom.id}>
+          <ListItemIcon>
+            <Avatar
+              alt={userName}
+              src={`https://www.gravatar.com/avatar/${md5(
+                otherUser?.email ?? '',
+              )}`}
+            />
+          </ListItemIcon>
+          <ListItemText
+            primary={userName}
+            secondary={lastMessage}
+            className={classes.listItemText}
           />
-        </ListItemIcon>
-        <ListItemText
-          primary={userName}
-          secondary={lastMessage}
-          className={classes.listItemText}
-        />
-      </ListItem>
+        </ListItem>
+        <Divider variant="inset" component="li" />
+      </div>
     </Link>
   );
 };
