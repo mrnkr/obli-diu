@@ -13,12 +13,19 @@ const FETCH_ONCE = gql`
         createdAt
         updatedAt
       }
+      lastMessage {
+        id
+        body
+        sender
+        createdAt
+        updatedAt
+      }
       users {
         id
         displayName
         email
       }
-      status
+      lastActivity
       createdAt
       updatedAt
     }
@@ -26,10 +33,17 @@ const FETCH_ONCE = gql`
 `;
 
 const CHATROOM_SUBSCRIPTION = gql`
-  subscription ChatroomUpdates {
-    chatroomUpdated {
+  subscription ChatroomUpdates($chatroomId: String) {
+    chatroomUpdated(id: $chatroomId) {
       id
-      status
+      lastMessage {
+        id
+        body
+        sender
+        createdAt
+        updatedAt
+      }
+      lastActivity
       createdAt
       updatedAt
     }
@@ -48,11 +62,11 @@ const MSG_SUBSCRIPTION = gql`
   }
 `;
 
-const STATUS_UPDATE_MUTATION = gql`
-  mutation UpdateStatus($input: SetStatusForUserDto!) {
-    setStatusForUser(input: $input) {
+const LOG_LAST_ACTIVITY_MUTATION = gql`
+  mutation LogLastActivity($input: LogLastActivityForUserDto!) {
+    logLastActivityForUser(input: $input) {
       id
-      status
+      lastActivity
     }
   }
 `;
@@ -73,6 +87,8 @@ const defaultChatroom = {
   id: 'dummy',
   users: [],
   messages: [],
+  lastMessage: null,
+  lastActivity: {},
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
@@ -90,7 +106,7 @@ const useChatroom = (chatroomId) => {
   });
   const [error, clearError] = useGqlError(gqlError);
 
-  const [statusUpdateMutation] = useMutation(STATUS_UPDATE_MUTATION);
+  const [logLastActivityMutation] = useMutation(LOG_LAST_ACTIVITY_MUTATION);
   const [sendMsgMutation] = useMutation(SEND_MSG_MUTATION);
 
   useEffect(() => {
@@ -140,26 +156,14 @@ const useChatroom = (chatroomId) => {
   }, [chatroomId, subscribeToMore]);
 
   const notifyStartWriting = useCallback(async () => {
-    await statusUpdateMutation({
+    await logLastActivityMutation({
       variables: {
         input: {
           chatroomId,
-          status: 'Writing',
         },
       },
     });
-  }, [chatroomId, statusUpdateMutation]);
-
-  const notifyStopWriting = useCallback(async () => {
-    await statusUpdateMutation({
-      variables: {
-        input: {
-          chatroomId,
-          status: 'Idle',
-        },
-      },
-    });
-  }, [chatroomId, statusUpdateMutation]);
+  }, [chatroomId, logLastActivityMutation]);
 
   const sendMessage = useCallback(
     async (messageBody) => {
@@ -182,7 +186,6 @@ const useChatroom = (chatroomId) => {
     clearError,
     sendMessage,
     notifyStartWriting,
-    notifyStopWriting,
   };
 };
 

@@ -6,6 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import useUserStatus from '../../hooks/useUserStatus';
 
 const ChatHeader = ({ chatroom, user }) => {
   const otherUser = useMemo(
@@ -13,14 +14,11 @@ const ChatHeader = ({ chatroom, user }) => {
     [chatroom, user],
   );
 
+  const { data: status } = useUserStatus(chatroom, otherUser?.id);
+
   const userName = useMemo(
     () => otherUser?.displayName ?? otherUser?.email,
     [otherUser],
-  );
-
-  const status = useMemo(
-    () => (chatroom?.status?.[otherUser?.id] === 'Writing' ? 'typing...' : ''),
-    [chatroom, otherUser],
   );
 
   return (
@@ -50,7 +48,7 @@ ChatHeader.propTypes = {
         email: PropTypes.string,
       }),
     ),
-    status: PropTypes.any,
+    lastActivity: PropTypes.any,
   }),
   user: PropTypes.shape({
     id: PropTypes.string,

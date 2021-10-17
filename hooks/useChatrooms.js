@@ -18,7 +18,7 @@ const FETCH_ONCE = gql`
         createdAt
         updatedAt
       }
-      status
+      lastActivity
       createdAt
       updatedAt
     }
@@ -41,7 +41,7 @@ const SUBSCRIPTION = gql`
         createdAt
         updatedAt
       }
-      status
+      lastActivity
       createdAt
       updatedAt
     }
