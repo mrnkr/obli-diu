@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import formatDistance from 'date-fns/formatDistance';
 import md5 from 'md5';
 import Link from 'next/link';
-import isEmpty from 'lodash/isEmpty';
 import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -20,16 +19,9 @@ const ChatroomListItem = ({ chatroom, user }) => {
     [otherUser],
   );
 
-  const status = useMemo(
-    () => (chatroom?.status?.[otherUser?.id] === 'Writing' ? 'typing...' : ''),
-    [chatroom, otherUser],
-  );
-
   const lastMessage = useMemo(
     () =>
-      !isEmpty(status)
-        ? status
-        : chatroom.lastMessage?.createdAt
+      chatroom.lastMessage?.createdAt
         ? `${chatroom.lastMessage.sender === user?.id ? '' : '> '}${
             chatroom.lastMessage.body
           } - ${formatDistance(
@@ -40,7 +32,7 @@ const ChatroomListItem = ({ chatroom, user }) => {
             },
           )}`
         : '',
-    [chatroom, status, user],
+    [chatroom, user],
   );
 
   return (

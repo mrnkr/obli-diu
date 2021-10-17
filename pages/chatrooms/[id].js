@@ -21,7 +21,6 @@ const Chat = ({ params }) => {
     data: chatroom,
     sendMessage,
     notifyStartWriting,
-    notifyStopWriting,
   } = useChatroom(params.id);
 
   return (
@@ -29,8 +28,10 @@ const Chat = ({ params }) => {
       <Sidebar />
       <Grid item xs={9}>
         <List className={classes.messageArea}>
-          <ChatHeader chatroom={chatroom} user={user} />
-          {chatroom?.messages.map((message) => (
+          {chatroom.id !== 'dummy' && user && (
+            <ChatHeader chatroom={chatroom} user={user} />
+          )}
+          {chatroom.messages.map((message) => (
             <MessageBubble key={message.id} message={message} user={user} />
           ))}
         </List>
@@ -38,7 +39,6 @@ const Chat = ({ params }) => {
         <Composer
           onClickSend={sendMessage}
           onStartWriting={notifyStartWriting}
-          onStopWriting={notifyStopWriting}
         />
       </Grid>
     </Grid>
