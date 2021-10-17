@@ -107,7 +107,7 @@ const useUserStatus = (chatroom, userId) => {
     [isWriting, onlineStatus],
   );
 
-  return { data: status };
+  return status;
 };
 
 export default useUserStatus;

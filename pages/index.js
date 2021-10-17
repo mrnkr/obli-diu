@@ -11,11 +11,22 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import LockIcon from '@material-ui/icons/Lock';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import useAuth from '../hooks/useAuth';
 import useSignin from '../hooks/useSignin';
+import useMountEffect from '../hooks/useMountEffect';
 
 const Signin = () => {
   const classes = useStyles();
+  const router = useRouter();
   const signin = useSignin();
+  const user = useAuth();
+
+  useMountEffect(() => {
+    if (user) {
+      router.replace('/home');
+    }
+  });
 
   const formik = useFormik({
     initialValues: {
