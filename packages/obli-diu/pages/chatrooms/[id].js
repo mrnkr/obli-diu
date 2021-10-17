@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -33,6 +33,22 @@ const Chat = ({ params }) => {
     notifyStartWriting,
   } = useChatroom(params.id);
 
+  const [firstRender, setFirstRender] = useState(true);
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (!chatroom.messages.length) {
+      return;
+    }
+
+    if (firstRender) {
+      messagesEndRef.current.scrollIntoView();
+      setFirstRender(false);
+    } else {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [firstRender, chatroom]);
+
   return (
     <Grid container component={Paper} className={classes.self}>
       <Sidebar className={classes.sidebar} />
@@ -44,6 +60,7 @@ const Chat = ({ params }) => {
           {chatroom.messages.map((message) => (
             <MessageBubble key={message.id} message={message} user={user} />
           ))}
+          <div ref={messagesEndRef} />
           <div className={classes.filler} />
         </List>
         <Divider />
