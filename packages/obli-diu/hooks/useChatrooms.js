@@ -84,7 +84,7 @@ const useChatrooms = () => {
     return unsubscribe;
   });
 
-  return { data: data?.chatrooms ?? [] };
+  return data?.chatrooms ?? [];
 };
 
 export default useChatrooms;

@@ -21,15 +21,16 @@ const rawHttpLink = new HttpLink({
 const httpLink = httpAuthLink.concat(rawHttpLink);
 
 const wsLink = () => {
-  const token = localStorage.getItem('token');
   return process.browser
     ? new WebSocketLink({
         uri: `wss://${process.env.NEXT_PUBLIC_API_URL}`,
         options: {
-          reconnect: true,
-          connectionParams: {
-            Authorization: token ? `Bearer ${token}` : '',
+          connectionParams: () => {
+            const token = localStorage.getItem('token');
+            return { Authorization: token ? `Bearer ${token}` : '' };
           },
+          lazy: true,
+          inactivityTimeout: 1000,
         },
       })
     : null;

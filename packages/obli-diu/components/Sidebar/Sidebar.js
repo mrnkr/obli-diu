@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Grid from '@material-ui/core/Grid';
@@ -16,7 +16,7 @@ import md5 from 'md5';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Popover from '@material-ui/core/Popover';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import useAuth from '../../hooks/useAuth';
 import useChatrooms from '../../hooks/useChatrooms';
@@ -29,9 +29,10 @@ import UserListPopup from './UserListPopup';
 const Sidebar = ({ className }) => {
   useHeartbeat();
 
-  const user = useAuth();
   const classes = useStyles();
-  const { data: chatrooms } = useChatrooms();
+  const router = useRouter();
+  const user = useAuth();
+  const chatrooms = useChatrooms();
   const [userListPopupVisible, showUserListPopup, closeUserListPopup] =
     usePopup();
 
@@ -41,23 +42,21 @@ const Sidebar = ({ className }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (event) => {
+  const handleClick = useCallback((event) => {
     setAnchorEl(event.currentTarget);
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     localStorage.removeItem('token');
-    if (typeof window !== 'undefined') {
-      Router.push('/');
-    }
-  };
+    router.push('/');
+  }, [router]);
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const open = useMemo(() => !!anchorEl, [anchorEl]);
+  const id = useMemo(() => (open ? 'simple-popover' : undefined), [open]);
 
   return (
     <>

@@ -32,7 +32,7 @@ const MUTATION = gql`
 
 const useUsers = () => {
   const user = useAuth();
-  const { data: chatrooms } = useChatrooms();
+  const chatrooms = useChatrooms();
 
   const { loading, data, error } = useQuery(FETCH_ONCE);
   useLoadingNotifier(loading);

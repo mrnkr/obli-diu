@@ -23,7 +23,7 @@ const useSignin = () => {
       localStorage.setItem('token', data.login);
       document.dispatchEvent(new Event('login'));
 
-      router.push('/home');
+      await router.push('/home');
     },
     [mutateFn, router],
   );

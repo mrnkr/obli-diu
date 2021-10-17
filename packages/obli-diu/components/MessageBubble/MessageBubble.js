@@ -5,7 +5,7 @@ import formatDistance from 'date-fns/formatDistance';
 import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
 import ListItemText from '@material-ui/core/ListItemText';
-import { LinkPreview } from '@dhaiwat10/react-link-preview/';
+import { LinkPreview } from '@dhaiwat10/react-link-preview';
 
 const URL_REGEX =
   /(((http|https):\/\/)?(www\.)?[-a-zA-Z0-9@:%.\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%\+.~#?&//=]*))/g;

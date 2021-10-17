@@ -21,7 +21,7 @@ const ChatHeader = ({ chatroom, user }) => {
     [chatroom, user],
   );
 
-  const { data: status } = useUserStatus(chatroom, otherUser?.id);
+  const status = useUserStatus(chatroom, otherUser?.id);
 
   const userName = useMemo(
     () => otherUser?.displayName ?? otherUser?.email,
