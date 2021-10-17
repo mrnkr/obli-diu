@@ -84,7 +84,7 @@ const Sidebar = ({ className }) => {
                   <PersonAdd />
                 </IconButton>
                 <IconButton
-                  size="large"
+                  size="medium"
                   aria-label="display more actions"
                   edge="end"
                   color="inherit"
