@@ -26,7 +26,7 @@ Puedes empezar a editar el sitio modificando `pages/index.js`. La página se act
 
 * Framework de diseño: [Material-UI](https://v4.mui.com/)
 * Patrón de diseño: [Master-Detail](https://blogs.windows.com/windowsdeveloper/2017/05/01/master-master-detail-pattern/)
-* Delegación de la foto de perfil a un servicio externo
+* Delegación de la foto de perfil Gravatar (servicio externo)
 
 ### Implementación de Master-Detail
 
