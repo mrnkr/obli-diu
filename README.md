@@ -26,6 +26,7 @@ Puedes empezar a editar el sitio modificando `pages/index.js`. La página se act
 
 * Framework de diseño: [Material-UI](https://v4.mui.com/)
 * Patrón de diseño: [Master-Detail](https://blogs.windows.com/windowsdeveloper/2017/05/01/master-master-detail-pattern/)
+* Delegación de la foto de perfil a un servicio externo
 
 ### Implementación de Master-Detail
 
@@ -58,6 +59,10 @@ const useStyles = makeStyles((theme) => ({
 ```
 
 El ejemplo anterior sirve para ilustrar cómo ocultamos por defecto el sidebar (lista de chatrooms) y en pantallas `md` hacia arriba se muestra. Esto es, a su vez, un ejemplo del concepto mobile-first.
+
+### Foto de perfil
+
+Para cumplir con el requerimiento de la foto de perfil, tomamos la decisión de usar un servicio externo a la aplicación. Para contar con una foto de perfil es necesario registrarse en https://en.gravatar.com/ y asociar una foto de perfil al email con el que se hizo el registro en la aplicación. Una vez realizado esto, se comenzará a ver la foto de perfil en el chat.
 
 ### Heurísticas de Nielsen
 
