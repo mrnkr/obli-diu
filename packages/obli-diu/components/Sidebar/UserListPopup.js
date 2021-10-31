@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import md5 from 'md5';
 import Avatar from '@material-ui/core/Avatar';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -12,7 +11,8 @@ import blue from '@material-ui/core/colors/blue';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
 import PersonIcon from '@material-ui/icons/Person';
-import useUsers from '../../hooks/useUsers';
+import useUsers from 'shared/hooks/useUsers';
+import gravatar from 'shared/helpers/gravatar';
 
 const UserListPopup = ({ open, handleClose }) => {
   const classes = useStyles();
@@ -44,9 +44,7 @@ const UserListPopup = ({ open, handleClose }) => {
               <Avatar
                 className={classes.avatar}
                 alt={user.displayName ?? user.email}
-                src={`https://www.gravatar.com/avatar/${md5(
-                  user.email ?? '',
-                )}`}>
+                src={gravatar(user)}>
                 <PersonIcon />
               </Avatar>
             </ListItemAvatar>

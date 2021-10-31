@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
-import ErrorContext from '../../contexts/ErrorContext';
+import ErrorContext from 'shared/contexts/ErrorContext';
 
 const ErrorSnackbar = () => {
   const [error, setError] = useContext(ErrorContext);

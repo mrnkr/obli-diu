@@ -4,14 +4,15 @@ import Head from 'next/head';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import { ApolloProvider } from '@apollo/client';
+import useMountEffect from 'shared/hooks/useMountEffect';
+import ColorModeContext from 'shared/contexts/ColorModeContext';
+import { LoadingContextProvider } from 'shared/contexts/LoadingContext';
+import { ErrorContextProvider } from 'shared/contexts/ErrorContext';
+import { AuthContextProvider } from 'shared/contexts/AuthContext';
 import '../styles/globals.css';
 import createTheme from '../theme';
-import useMountEffect from '../hooks/useMountEffect';
 import client from '../apollo/config';
-import ColorModeContext from '../contexts/ColorModeContext';
-import { LoadingContextProvider } from '../contexts/LoadingContext';
 import LoadingIndicator from '../components/LoadingIndicator';
-import { ErrorContextProvider } from '../contexts/ErrorContext';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 
 const MyApp = ({ Component, pageProps }) => {
@@ -27,6 +28,19 @@ const MyApp = ({ Component, pageProps }) => {
   );
 
   const theme = useMemo(() => createTheme(mode), [mode]);
+
+  const tokenProvider = useMemo(
+    () => ({
+      getToken: () => (process.browser ? localStorage.getItem('token') : ''),
+      subscribe: (next) => {
+        document.addEventListener('login', next);
+        return {
+          unsubscribe: () => document.removeEventListener('login', next),
+        };
+      },
+    }),
+    [],
+  );
 
   useMountEffect(() => {
     // Remove the server-side injected CSS.
@@ -46,10 +60,12 @@ const MyApp = ({ Component, pageProps }) => {
           <ThemeProvider theme={theme}>
             <LoadingContextProvider>
               <ErrorContextProvider>
-                <CssBaseline />
-                <LoadingIndicator />
-                <Component {...pageProps} />
-                <ErrorSnackbar />
+                <AuthContextProvider tokenProvider={tokenProvider}>
+                  <CssBaseline />
+                  <LoadingIndicator />
+                  <Component {...pageProps} />
+                  <ErrorSnackbar />
+                </AuthContextProvider>
               </ErrorContextProvider>
             </LoadingContextProvider>
           </ThemeProvider>

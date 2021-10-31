@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import LoadingContext from '../../contexts/LoadingContext';
+import LoadingContext from 'shared/contexts/LoadingContext';
 
 const LoadingIndicator = () => {
   const classes = useStyles();

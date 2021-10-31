@@ -1,6 +1,11 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "extends": [
-    "next/core-web-vitals",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:import/recommended",
@@ -29,5 +34,9 @@
     ],
     "prefer-const": "error",
     "no-undef": "error"
+  },
+  "globals": {
+    "setInterval": "readonly",
+    "clearInterval": "readonly"
   }
 }

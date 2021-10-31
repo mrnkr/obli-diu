@@ -1,0 +1,33 @@
+{
+  "name": "shared",
+  "version": "0.2.0",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "formik": "^2.2.9",
+    "jwt-decode": "^3.1.2",
+    "md5": "^2.3.0",
+    "yup": "^0.32.9"
+  },
+  "devDependencies": {
+    "@apollo/client": "^3.4.12",
+    "date-fns": "^2.25.0",
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-prefer-arrow-functions": "^3.0.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "graphql": "^15.5.3",
+    "react": "17.0.2"
+  },
+  "peerDependencies": {
+    "@apollo/client": "*",
+    "date-fns": "*",
+    "graphql": "*",
+    "react": "17.0.2"
+  }
+}

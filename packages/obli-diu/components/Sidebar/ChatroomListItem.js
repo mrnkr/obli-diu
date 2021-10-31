@@ -2,13 +2,13 @@ import React, { useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import formatDistance from 'date-fns/formatDistance';
 import { useRouter } from 'next/router';
-import md5 from 'md5';
 import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import gravatar from 'shared/helpers/gravatar';
 
 const ChatroomListItem = ({ chatroom, user }) => {
   const classes = useStyles();
@@ -52,10 +52,7 @@ const ChatroomListItem = ({ chatroom, user }) => {
   return (
     <ListItem button key={chatroom.id} onClick={goToChatroom}>
       <ListItemIcon>
-        <Avatar
-          alt={userName}
-          src={`https://www.gravatar.com/avatar/${md5(otherUser?.email ?? '')}`}
-        />
+        <Avatar alt={userName} src={gravatar(otherUser)} />
       </ListItemIcon>
       <ListItemText
         primary={userName}

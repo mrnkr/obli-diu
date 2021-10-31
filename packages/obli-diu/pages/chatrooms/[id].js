@@ -7,14 +7,14 @@ import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 
+import useAuth from 'shared/hooks/useAuth';
+import useChatroom from 'shared/hooks/useChatroom';
+import useMountEffect from 'shared/hooks/useMountEffect';
 import Sidebar from '../../components/Sidebar';
-import useAuth from '../../hooks/useAuth';
-import useChatroom from '../../hooks/useChatroom';
 import MessageBubble from '../../components/MessageBubble';
 import Composer from '../../components/Composer';
 import ChatHeader from '../../components/ChatHeader';
-import withRouterParams from '../../components/withRouterParams/withRouterParams';
-import useMountEffect from '../../hooks/useMountEffect';
+import withRouterParams from '../../components/withRouterParams';
 
 const Chat = ({ params }) => {
   const classes = useStyles();

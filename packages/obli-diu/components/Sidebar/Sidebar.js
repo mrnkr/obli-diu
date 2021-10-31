@@ -12,17 +12,17 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import md5 from 'md5';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Popover from '@material-ui/core/Popover';
 import { useRouter } from 'next/router';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import useAuth from '../../hooks/useAuth';
-import useChatrooms from '../../hooks/useChatrooms';
-import usePopup from '../../hooks/usePopup';
-import useHeartbeat from '../../hooks/useHeartbeat';
-import ColorModeContext from '../../contexts/ColorModeContext';
+import useAuth from 'shared/hooks/useAuth';
+import useChatrooms from 'shared/hooks/useChatrooms';
+import usePopup from 'shared/hooks/usePopup';
+import useHeartbeat from 'shared/hooks/useHeartbeat';
+import ColorModeContext from 'shared/contexts/ColorModeContext';
+import gravatar from 'shared/helpers/gravatar';
 import ChatroomListItem from './ChatroomListItem';
 import UserListPopup from './UserListPopup';
 import NoChatsPlaceholder from './NoChatsPlaceholder';
@@ -74,9 +74,7 @@ const Sidebar = ({ className }) => {
                 <Avatar
                   className={classes.avatar}
                   alt={userName}
-                  src={`https://www.gravatar.com/avatar/${md5(
-                    user?.email ?? '',
-                  )}`}
+                  src={gravatar(user)}
                 />
               </ListItemIcon>
               <ListItemText primary={userName}></ListItemText>

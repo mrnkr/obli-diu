@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import PropTypes from 'prop-types';
-import md5 from 'md5';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
@@ -11,7 +10,8 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import IconButton from '@material-ui/core/IconButton';
 import Link from 'next/link';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import useUserStatus from '../../hooks/useUserStatus';
+import useUserStatus from 'shared/hooks/useUserStatus';
+import gravatar from 'shared/helpers/gravatar';
 
 const ChatHeader = ({ chatroom, user }) => {
   const classes = useStyles();
@@ -43,9 +43,7 @@ const ChatHeader = ({ chatroom, user }) => {
           <Avatar
             className={classes.avatar}
             alt={userName}
-            src={`https://www.gravatar.com/avatar/${md5(
-              otherUser?.email ?? '',
-            )}`}
+            src={gravatar(otherUser)}
           />
         </ListItemIcon>
         <ListItemText

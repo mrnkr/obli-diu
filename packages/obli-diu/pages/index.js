@@ -1,6 +1,4 @@
 import React from 'react';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -12,15 +10,23 @@ import TextField from '@material-ui/core/TextField';
 import LockIcon from '@material-ui/icons/Lock';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import useAuth from '../hooks/useAuth';
-import useSignin from '../hooks/useSignin';
-import useMountEffect from '../hooks/useMountEffect';
+import useAuth from 'shared/hooks/useAuth';
+import useSigninForm from 'shared/hooks/useSigninForm';
+import useMountEffect from 'shared/hooks/useMountEffect';
 
 const Signin = () => {
   const classes = useStyles();
   const router = useRouter();
-  const signin = useSignin();
   const user = useAuth();
+
+  const form = useSigninForm({
+    afterSubmit: async (data) => {
+      localStorage.setItem('token', data.login);
+      document.dispatchEvent(new Event('login'));
+
+      await router.push('/home');
+    },
+  });
 
   useMountEffect(() => {
     if (user) {
@@ -28,25 +34,10 @@ const Signin = () => {
     }
   });
 
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    validationSchema: yup.object().shape({
-      email: yup.string().email().required(),
-      password: yup.string().required(),
-    }),
-    validateOnChange: false,
-    validateOnBlur: true,
-    validateOnMount: false,
-    onSubmit: signin.signin,
-  });
-
   return (
     <div className={classes.self}>
       <Card>
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={form.handleSubmit}>
           <CardContent>
             <Avatar className={classes.decoration}>
               <LockIcon />
@@ -55,22 +46,22 @@ const Signin = () => {
               className={classes.input}
               name="email"
               type="text"
-              value={formik.values.email}
-              onChange={formik.handleChange}
+              value={form.values.email}
+              onChange={form.handleChange}
               label="Email"
-              error={!!formik.errors.email}
-              helperText={formik.errors.email}
+              error={!!form.errors.email}
+              helperText={form.errors.email}
               autoFocus
               fullWidth
             />
             <TextField
               name="password"
               type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
+              value={form.values.password}
+              onChange={form.handleChange}
               label="Password"
-              error={!!formik.errors.password}
-              helperText={formik.errors.password}
+              error={!!form.errors.password}
+              helperText={form.errors.password}
               fullWidth
             />
           </CardContent>
@@ -80,9 +71,9 @@ const Signin = () => {
             <Link href="/signup" passHref>
               <Button size="small">SIGN UP</Button>
             </Link>
-            <Button size="small" type="submit" disabled={signin.loading}>
-              {signin.loading ? (
-                <CircularProgress size={16} color="default" />
+            <Button size="small" type="submit" disabled={form.isSubmitting}>
+              {form.isSubmitting ? (
+                <CircularProgress size={16} color="inherit" />
               ) : (
                 'SIGN IN'
               )}

@@ -1,6 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/node,windows,macos
-# Edit at https://www.toptal.com/developers/gitignore?templates=node,windows,macos
+# Created by https://www.toptal.com/developers/gitignore/api/windows,macos,node
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,node
 
 ### macOS ###
 # General
@@ -181,4 +181,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/node,windows,macos
+# End of https://www.toptal.com/developers/gitignore/api/windows,macos,node
