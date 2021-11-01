@@ -32,17 +32,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       alias: {
-        map: [
-          ['@env', 'react-native-dotenv'],
-          ['_app', './src/app'],
-          ['_assets', './src/assets'],
-          ['_components', './src/components'],
-          ['_features', './src/features'],
-          ['_hooks', './src/hooks'],
-          ['_localization', './src/localization'],
-          ['_navigation', './src/navigation'],
-          ['_theme', './src/theme'],
-        ],
+        map: [['@env', 'react-native-dotenv']],
         extensions: ['.android.js', '.ios.js', '.js', '.jsx', '.json'],
       },
     },

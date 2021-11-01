@@ -1,11 +1,13 @@
 {
   "name": "mobile",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "__generated__/AppEntry.js",
+  "version": "0.2.0",
   "scripts": {
     "dev": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postinstall": "expo-yarn-workspaces postinstall"
   },
   "dependencies": {
     "@apollo/client": "^3.4.12",
@@ -28,7 +30,7 @@
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
-    "react-native-vector-icons": "^9.0.0",
+    "react-native-simple-events": "^1.0.1",
     "shared": "^0.2.0",
     "subscriptions-transport-ws": "^0.9.19"
   },
@@ -42,6 +44,7 @@
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prefer-arrow-functions": "^3.0.1",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "expo-yarn-workspaces": "^1.6.0",
     "react": "17.0.2"
   },
   "peerDependencies": {
