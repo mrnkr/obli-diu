@@ -5,10 +5,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import PropTypes from 'prop-types';
 import makeStyles from '../hooks/makeStyles';
 
-const Signin = ({ navigation }) => {
+const Signup = ({ navigation }) => {
   const styles = useStyles();
   return (
     <View style={styles.self}>
+      <Input
+        label="User Name"
+        placeholder="johndoe"
+        leftIcon={<Icon name="user" size={24} color="black" />}
+      />
+
       <Input
         label="Email"
         placeholder="johndoe@mailinator.com"
@@ -22,12 +28,19 @@ const Signin = ({ navigation }) => {
         leftIcon={<Icon name="unlock-alt" size={24} color="black" />}
       />
 
-      <Button title="SIGN IN" type="outline" containerStyle={styles.button} />
+      <Input
+        label="Repeat Password"
+        placeholder="************"
+        secureTextEntry={true}
+        leftIcon={<Icon name="unlock-alt" size={24} color="black" />}
+      />
+
+      <Button title="SIGN UP" type="outline" containerStyle={styles.button} />
       <Button
-        title="Don't have account? Sign up here"
+        title="Already user? Sign in here"
         type="clear"
         containerStyle={styles.button}
-        onPress={() => navigation.navigate('Signup')}
+        onPress={() => navigation.navigate('Signin')}
       />
     </View>
   );
@@ -56,9 +69,9 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
   }),
 );
 
-export default Signin;
+export default Signup;
 
-Signin.propTypes = {
+Signup.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,

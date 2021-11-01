@@ -10,6 +10,7 @@ import {
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import Signup from './pages/Signup';
 import Signin from './pages/Signin';
 
 const theme = {
@@ -31,8 +32,9 @@ const App = () => {
       <NavigationContainer
         theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack.Navigator
-          initialRouteName="Signin"
+          initialRouteName="Signup"
           screenOptions={{ headerMode: false }}>
+          <Stack.Screen name="Signup" component={Signup} />
           <Stack.Screen name="Signin" component={Signin} />
         </Stack.Navigator>
       </NavigationContainer>
