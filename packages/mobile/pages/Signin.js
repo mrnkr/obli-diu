@@ -1,15 +1,45 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Input, Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import makeStyles from '../hooks/makeStyles';
 
 const Signin = () => {
   const styles = useStyles();
   return (
     <View style={styles.self}>
-      <Text style={styles.text} h1>
-        Signin screen coming soon
-      </Text>
+      <Input
+        label="User Name"
+        placeholder="johndoe"
+        leftIcon={<Icon name="user" size={24} color="black" />}
+      />
+
+      <Input
+        label="Email"
+        placeholder="johndoe@mailinator.com"
+        leftIcon={<Icon name="envelope" size={24} color="black" />}
+      />
+
+      <Input
+        label="Password"
+        placeholder="************"
+        secureTextEntry={true}
+        leftIcon={<Icon name="unlock-alt" size={24} color="black" />}
+      />
+
+      <Input
+        label="Repeat Password"
+        placeholder="************"
+        secureTextEntry={true}
+        leftIcon={<Icon name="unlock-alt" size={24} color="black" />}
+      />
+
+      <Button title="SIGN UP" type="outline" containerStyle={styles.button} />
+      <Button
+        title="Already user? Sign in here"
+        type="clear"
+        containerStyle={styles.button}
+      />
     </View>
   );
 };
@@ -20,9 +50,15 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
       backgroundColor: theme.colors.background,
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'flex-end',
+      justifyContent: 'center',
       alignItems: 'center',
       flex: 1,
+      marginBottom: safeAreaInsets.bottom,
+      marginTop: safeAreaInsets.bottom,
+    },
+    button: {
+      marginBottom: 8,
+      width: '90%',
     },
     text: {
       textAlign: 'center',
