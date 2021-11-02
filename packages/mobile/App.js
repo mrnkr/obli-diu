@@ -19,6 +19,7 @@ import { LoadingContextProvider } from 'shared/contexts/LoadingContext';
 import client from './apollo/config';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
+import Signup from './pages/Signup';
 
 const theme = {
   colors: {
