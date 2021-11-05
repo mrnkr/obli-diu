@@ -46,7 +46,6 @@ const ChatroomListItem = ({ chatroom, user }) => {
     }
 
     await router.push(`/chatrooms/${chatroom.id}`);
-    router.reload();
   }, [chatroom, router]);
 
   return (
