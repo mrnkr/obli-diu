@@ -39,7 +39,7 @@ const App = () => {
 
   const tokenProvider = useMemo(
     () => ({
-      getToken: () => (process.browser ? AsyncStorage.getItem('token') : ''),
+      getToken: () => AsyncStorage.getItem('token'),
       subscribe: (next) => {
         Events.on('login', 'some-id', next);
         return {
