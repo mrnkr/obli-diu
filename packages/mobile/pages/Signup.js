@@ -4,8 +4,10 @@ import { Input, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import useSignupForm from 'shared/hooks/useSignupForm';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import * as Events from 'react-native-simple-events';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import useSignupForm from 'shared/hooks/useSignupForm';
 import makeStyles from '../hooks/makeStyles';
 
 const Signup = ({ navigation }) => {
@@ -14,9 +16,9 @@ const Signup = ({ navigation }) => {
 
   const form = useSignupForm({
     afterSubmit: async (data) => {
-      // localStorage.setItem('token', data.createUser);
-      // document.dispatchEvent(new Event('login'));
-      // await router.push('/home');
+      await AsyncStorage.setItem('token', data.createUser);
+      Events.trigger('login');
+
       Alert.alert('Aguante Boca', 'Chabón', [
         { text: 'Sabelo', style: 'cancel' },
       ]);
@@ -37,9 +39,9 @@ const Signup = ({ navigation }) => {
         label="User Name"
         placeholder="johndoe"
         value={form.values.displayName}
-        autoCapitalize="none"
         onChangeText={form.handleChange('displayName')}
-        errorMessage={!!form.errors.displayName}
+        renderErrorMessage={!!form.errors.displayName}
+        errorMessage={form.errors.displayName}
         leftIcon={
           <Icon
             name="user"
@@ -58,7 +60,8 @@ const Signup = ({ navigation }) => {
         keyboardType="email-address"
         value={form.values.email}
         onChangeText={form.handleChange('email')}
-        errorMessage={!!form.errors.email}
+        renderErrorMessage={!!form.errors.email}
+        errorMessage={form.errors.email}
         leftIcon={
           <Icon
             name="envelope"
@@ -74,9 +77,9 @@ const Signup = ({ navigation }) => {
         label="Password"
         placeholder="************"
         value={form.values.password}
-        autoCapitalize="none"
         onChangeText={form.handleChange('password')}
-        errorMessage={!!form.errors.password}
+        renderErrorMessage={!!form.errors.password}
+        errorMessage={form.errors.password}
         leftIcon={
           <Icon
             name="unlock-alt"
@@ -95,7 +98,8 @@ const Signup = ({ navigation }) => {
         value={form.values.confirmPassword}
         autoCapitalize="none"
         onChangeText={form.handleChange('confirmPassword')}
-        errorMessage={!!form.errors.confirmPassword}
+        renderErrorMessage={!!form.errors.confirmPassword}
+        errorMessage={form.errors.confirmPassword}
         leftIcon={
           <Icon
             name="unlock-alt"
@@ -112,9 +116,11 @@ const Signup = ({ navigation }) => {
         type="outline"
         containerStyle={styles.button}
         onPress={form.submitForm}
+        loading={form.isSubmitting}
+        disabled={form.isSubmitting}
       />
       <Button
-        title="Already user? Sign in here"
+        title="Already a user? Sign in here"
         type="clear"
         containerStyle={styles.button}
         onPress={goToSignin}

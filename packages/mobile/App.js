@@ -16,6 +16,7 @@ import { AuthContextProvider } from 'shared/contexts/AuthContext';
 import { ErrorContextProvider } from 'shared/contexts/ErrorContext';
 import { LoadingContextProvider } from 'shared/contexts/LoadingContext';
 
+import ErrorSnackbar from './components/ErrorSnackbar';
 import client from './apollo/config';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
@@ -64,6 +65,7 @@ const App = () => {
                   <Stack.Screen name="Signup" component={Signup} />
                   <Stack.Screen name="Chat" component={Chat} />
                 </Stack.Navigator>
+                <ErrorSnackbar />
               </AuthContextProvider>
             </ErrorContextProvider>
           </LoadingContextProvider>

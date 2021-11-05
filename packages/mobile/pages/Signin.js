@@ -80,6 +80,8 @@ const Signin = ({ navigation }) => {
         type="outline"
         containerStyle={styles.button}
         onPress={form.submitForm}
+        loading={form.isSubmitting}
+        disabled={form.isSubmitting}
       />
       <Button
         title="Don't have account? Sign up here"
