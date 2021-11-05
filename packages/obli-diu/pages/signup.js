@@ -22,7 +22,7 @@ const SignUp = () => {
   const form = useSignupForm({
     afterSubmit: async (data) => {
       localStorage.setItem('token', data.createUser);
-      document.dispatchEvent(new Event('login'));
+      dispatchEvent(new Event('login'));
 
       await router.push('/home');
     },

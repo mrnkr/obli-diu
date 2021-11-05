@@ -57,7 +57,7 @@ const Sidebar = ({ className }) => {
     await apolloClient.clearStore();
 
     // dispatch login event to clear context
-    window.dispatchEvent(new Event('login'));
+    dispatchEvent(new Event('login'));
 
     await router.replace('/');
   }, [apolloClient, router]);

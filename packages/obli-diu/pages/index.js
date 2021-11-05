@@ -22,7 +22,7 @@ const Signin = () => {
   const form = useSigninForm({
     afterSubmit: async (data) => {
       localStorage.setItem('token', data.login);
-      document.dispatchEvent(new Event('login'));
+      dispatchEvent(new Event('login'));
 
       await router.push('/home');
     },
