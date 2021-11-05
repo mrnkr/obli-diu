@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useApolloClient } from '@apollo/client';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -15,8 +16,8 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Popover from '@material-ui/core/Popover';
-import { useRouter } from 'next/router';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import { useRouter } from 'next/router';
 import useAuth from 'shared/hooks/useAuth';
 import useChatrooms from 'shared/hooks/useChatrooms';
 import usePopup from 'shared/hooks/usePopup';
@@ -30,13 +31,13 @@ import NoChatsPlaceholder from './NoChatsPlaceholder';
 const Sidebar = ({ className }) => {
   useHeartbeat();
 
+  const apolloClient = useApolloClient();
   const classes = useStyles();
   const router = useRouter();
   const user = useAuth();
   const chatrooms = useChatrooms();
   const [userListPopupVisible, showUserListPopup, closeUserListPopup] =
     usePopup();
-
   const colorMode = useContext(ColorModeContext);
 
   const userName = useMemo(() => user?.displayName ?? user?.email, [user]);
@@ -53,9 +54,13 @@ const Sidebar = ({ className }) => {
 
   const handleLogout = useCallback(async () => {
     localStorage.removeItem('token');
+    await apolloClient.clearStore();
+
+    // dispatch login event to clear context
+    window.dispatchEvent(new Event('login'));
+
     await router.replace('/');
-    router.reload();
-  }, [router]);
+  }, [apolloClient, router]);
 
   const open = useMemo(() => !!anchorEl, [anchorEl]);
   const id = useMemo(() => (open ? 'simple-popover' : undefined), [open]);
@@ -103,23 +108,15 @@ const Sidebar = ({ className }) => {
               horizontal: 'left',
             }}>
             <List>
-              <ListItem button>
+              <ListItem button onClick={handleLogout}>
                 <ExitToApp />
-                <ListItemText
-                  className={classes.listItem}
-                  onClick={handleLogout}
-                  primary="Log out"
-                />
+                <ListItemText className={classes.listItem} primary="Log out" />
               </ListItem>
-              <ListItem button>
+              <ListItem button onClick={colorMode.toggleColorMode}>
                 <FormControlLabel
                   className={classes.formControl}
                   control={
-                    <Switch
-                      size="small"
-                      checked={colorMode.mode === 'dark'}
-                      onClick={colorMode.toggleColorMode}
-                    />
+                    <Switch size="small" checked={colorMode.mode === 'dark'} />
                   }
                   label="Dark Mode"
                 />

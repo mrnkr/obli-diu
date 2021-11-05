@@ -95,17 +95,26 @@ const defaultChatroom = {
 };
 
 const useChatroom = (chatroomId) => {
-  const { loading, data, error, subscribeToMore } = useQuery(FETCH_ONCE, {
-    variables: {
-      chatroomId,
+  const { loading, data, error, subscribeToMore, refetch } = useQuery(
+    FETCH_ONCE,
+    {
+      variables: {
+        chatroomId,
+      },
     },
-  });
+  );
 
   useLoadingNotifier(loading);
   useErrorNotifier(error);
 
   const [logLastActivityMutation] = useMutation(LOG_LAST_ACTIVITY_MUTATION);
   const [sendMsgMutation] = useMutation(SEND_MSG_MUTATION);
+
+  useEffect(() => {
+    if (chatroomId) {
+      refetch();
+    }
+  }, [chatroomId, refetch]);
 
   useEffect(() => {
     const unsubscribe = subscribeToMore({

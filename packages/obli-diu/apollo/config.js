@@ -30,6 +30,7 @@ const wsLink = () => {
             return { Authorization: token ? `Bearer ${token}` : '' };
           },
           lazy: true,
+          inactivityTimeout: 1000,
         },
       })
     : null;
