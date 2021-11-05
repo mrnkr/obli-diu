@@ -20,7 +20,6 @@ import ErrorSnackbar from './components/ErrorSnackbar';
 import client from './apollo/config';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
-import Signup from './pages/Signup';
 import Chat from './pages/Chat';
 
 const theme = {

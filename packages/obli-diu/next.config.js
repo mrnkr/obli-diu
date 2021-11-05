@@ -11,7 +11,8 @@ module.exports = withTM({
 
     config.resolve.alias['react'] = path.resolve(
       __dirname,
-      '.',
+      '..',
+      '..',
       'node_modules',
       'react',
     );
