@@ -20,6 +20,7 @@ import client from './apollo/config';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
+import Chat from './pages/Chat';
 
 const theme = {
   colors: {
@@ -61,6 +62,7 @@ const App = () => {
                   screenOptions={{ headerMode: false }}>
                   <Stack.Screen name="Signin" component={Signin} />
                   <Stack.Screen name="Signup" component={Signup} />
+                  <Stack.Screen name="Chat" component={Chat} />
                 </Stack.Navigator>
               </AuthContextProvider>
             </ErrorContextProvider>

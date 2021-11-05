@@ -1,76 +1,125 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useCallback } from 'react';
+import { StyleSheet, Alert } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import useSignupForm from 'shared/hooks/useSignupForm';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import makeStyles from '../hooks/makeStyles';
 
 const Signup = ({ navigation }) => {
   const styles = useStyles();
+  const theme = useTheme();
 
   const form = useSignupForm({
     afterSubmit: async (data) => {
-      localStorage.setItem('token', data.createUser);
-      document.dispatchEvent(new Event('login'));
-      await router.push('/home');
+      // localStorage.setItem('token', data.createUser);
+      // document.dispatchEvent(new Event('login'));
+      // await router.push('/home');
+      Alert.alert('Aguante Boca', 'Chabón', [
+        { text: 'Sabelo', style: 'cancel' },
+      ]);
     },
   });
 
+  const goToSignin = useCallback(() => {
+    navigation.navigate('Signin');
+  }, [navigation]);
+
   return (
-    <View style={styles.self}>
+    <KeyboardAwareScrollView
+      contentContainerStyle={styles.self}
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="always">
       <Input
+        containerStyle={styles.textInput}
         label="User Name"
         placeholder="johndoe"
         value={form.values.displayName}
-        onChange={form.handleChange('displayName')}
+        autoCapitalize="none"
+        onChangeText={form.handleChange('displayName')}
         errorMessage={!!form.errors.displayName}
-        leftIcon={<Icon name="user" size={24} color="black" />}
+        leftIcon={
+          <Icon
+            name="user"
+            style={styles.leftIcon}
+            size={24}
+            color={theme.colors.text}
+          />
+        }
       />
 
       <Input
+        containerStyle={styles.textInput}
         label="Email"
         placeholder="johndoe@mailinator.com"
+        autoCapitalize="none"
+        keyboardType="email-address"
         value={form.values.email}
-        onChange={form.handleChange('email')}
+        onChangeText={form.handleChange('email')}
         errorMessage={!!form.errors.email}
-        leftIcon={<Icon name="envelope" size={24} color="black" />}
+        leftIcon={
+          <Icon
+            name="envelope"
+            style={styles.leftIcon}
+            size={24}
+            color={theme.colors.text}
+          />
+        }
       />
 
       <Input
+        containerStyle={styles.textInput}
         label="Password"
         placeholder="************"
         value={form.values.password}
-        onChange={form.handleChange('password')}
+        autoCapitalize="none"
+        onChangeText={form.handleChange('password')}
         errorMessage={!!form.errors.password}
-        secureTextEntry={true}
-        leftIcon={<Icon name="unlock-alt" size={24} color="black" />}
+        leftIcon={
+          <Icon
+            name="unlock-alt"
+            style={styles.leftIcon}
+            size={24}
+            color={theme.colors.text}
+          />
+        }
+        secureTextEntry
       />
 
       <Input
+        containerStyle={styles.textInput}
         label="Confirm Password"
         placeholder="************"
         value={form.values.confirmPassword}
-        onChange={form.handleChange('confirmPassword')}
+        autoCapitalize="none"
+        onChangeText={form.handleChange('confirmPassword')}
         errorMessage={!!form.errors.confirmPassword}
-        secureTextEntry={true}
-        leftIcon={<Icon name="unlock-alt" size={24} color="black" />}
+        leftIcon={
+          <Icon
+            name="unlock-alt"
+            style={styles.leftIcon}
+            size={24}
+            color={theme.colors.text}
+          />
+        }
+        secureTextEntry
       />
 
       <Button
         title="SIGN UP"
         type="outline"
         containerStyle={styles.button}
-        onPress={form.handleSubmit}
-        loading={form.isSubmitting}
+        onPress={form.submitForm}
       />
       <Button
         title="Already user? Sign in here"
         type="clear"
         containerStyle={styles.button}
-        onPress={() => navigation.navigate('Signin')}
+        onPress={goToSignin}
       />
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -84,15 +133,20 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
       alignItems: 'center',
       flex: 1,
       marginBottom: safeAreaInsets.bottom,
-      marginTop: safeAreaInsets.bottom,
+      marginTop: safeAreaInsets.top,
+      paddingHorizontal: 16,
+    },
+    textInput: {
+      marginVertical: 16,
+    },
+    leftIcon: {
+      marginRight: 8,
+      textAlign: 'center',
+      width: 24,
     },
     button: {
+      alignSelf: 'stretch',
       marginBottom: 8,
-      width: '90%',
-    },
-    text: {
-      textAlign: 'center',
-      marginBottom: safeAreaInsets.bottom,
     },
   }),
 );
