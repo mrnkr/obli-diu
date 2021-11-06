@@ -1,34 +1,32 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, Alert } from 'react-native';
-import PropTypes from 'prop-types';
 import { Input, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTheme } from '@react-navigation/native';
+import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as Events from 'react-native-simple-events';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import useSigninForm from 'shared/hooks/useSigninForm';
+import useSignupForm from 'shared/hooks/useSignupForm';
 import makeStyles from '../hooks/makeStyles';
 
-const Signin = ({ navigation }) => {
+const Signup = ({ navigation }) => {
   const styles = useStyles();
   const theme = useTheme();
-  const form = useSigninForm({
+
+  const form = useSignupForm({
     afterSubmit: async (data) => {
-      await AsyncStorage.setItem('token', data.login);
+      await AsyncStorage.setItem('token', data.createUser);
       Events.trigger('login');
 
-      Alert.alert(
-        'Aguante Boca',
-        `Te logueé con el token: ${data.login} chabón`,
-        [{ text: 'Sabelo', style: 'cancel' }],
-      );
-      // navigation.navigate();
+      Alert.alert('Aguante Boca', 'Chabón', [
+        { text: 'Sabelo', style: 'cancel' },
+      ]);
     },
   });
 
-  const goToSignup = useCallback(() => {
-    navigation.navigate('Signup');
+  const goToSignin = useCallback(() => {
+    navigation.navigate('Signin');
   }, [navigation]);
 
   return (
@@ -36,6 +34,24 @@ const Signin = ({ navigation }) => {
       contentContainerStyle={styles.self}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="always">
+      <Input
+        containerStyle={styles.textInput}
+        label="User Name"
+        placeholder="johndoe"
+        value={form.values.displayName}
+        onChangeText={form.handleChange('displayName')}
+        renderErrorMessage={!!form.errors.displayName}
+        errorMessage={form.errors.displayName}
+        leftIcon={
+          <Icon
+            name="user"
+            style={styles.leftIcon}
+            size={24}
+            color={theme.colors.text}
+          />
+        }
+      />
+
       <Input
         containerStyle={styles.textInput}
         label="Email"
@@ -48,8 +64,8 @@ const Signin = ({ navigation }) => {
         errorMessage={form.errors.email}
         leftIcon={
           <Icon
-            style={styles.leftIcon}
             name="envelope"
+            style={styles.leftIcon}
             size={24}
             color={theme.colors.text}
           />
@@ -66,8 +82,28 @@ const Signin = ({ navigation }) => {
         errorMessage={form.errors.password}
         leftIcon={
           <Icon
-            style={styles.leftIcon}
             name="unlock-alt"
+            style={styles.leftIcon}
+            size={24}
+            color={theme.colors.text}
+          />
+        }
+        secureTextEntry
+      />
+
+      <Input
+        containerStyle={styles.textInput}
+        label="Confirm Password"
+        placeholder="************"
+        value={form.values.confirmPassword}
+        autoCapitalize="none"
+        onChangeText={form.handleChange('confirmPassword')}
+        renderErrorMessage={!!form.errors.confirmPassword}
+        errorMessage={form.errors.confirmPassword}
+        leftIcon={
+          <Icon
+            name="unlock-alt"
+            style={styles.leftIcon}
             size={24}
             color={theme.colors.text}
           />
@@ -76,7 +112,7 @@ const Signin = ({ navigation }) => {
       />
 
       <Button
-        title="SIGN IN"
+        title="SIGN UP"
         type="outline"
         containerStyle={styles.button}
         onPress={form.submitForm}
@@ -84,19 +120,13 @@ const Signin = ({ navigation }) => {
         disabled={form.isSubmitting}
       />
       <Button
-        title="Don't have account? Sign up here"
+        title="Already a user? Sign in here"
         type="clear"
         containerStyle={styles.button}
-        onPress={goToSignup}
+        onPress={goToSignin}
       />
     </KeyboardAwareScrollView>
   );
-};
-
-Signin.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
 };
 
 const useStyles = makeStyles((theme, safeAreaInsets) =>
@@ -127,4 +157,10 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
   }),
 );
 
-export default Signin;
+export default Signup;
+
+Signup.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
