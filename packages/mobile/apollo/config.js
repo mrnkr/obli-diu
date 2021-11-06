@@ -5,8 +5,6 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { setContext } from 'apollo-link-context';
 
-console.log(API_URL);
-
 const httpAuthLink = setContext((_, { headers }) => {
   const token = AsyncStorage.getItem('token');
   return {
