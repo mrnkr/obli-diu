@@ -12,7 +12,7 @@ import GroupAdd from '@material-ui/icons/GroupAdd';
 import Link from 'next/link';
 import usersOutsideChatroom from 'shared/helpers/usersOutsideChatroom';
 import usePopup from 'shared/hooks/usePopup';
-import UserListPopup from '../UserListPopup/UserListPopup';
+import UserListPopup from '../UserListPopup';
 import GroupChatHeader from './GroupChatHeader';
 import SingleUserChatHeader from './SingleUserChatHeader';
 

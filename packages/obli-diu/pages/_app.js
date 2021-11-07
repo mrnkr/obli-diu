@@ -15,12 +15,18 @@ import client from '../apollo/config';
 import LoadingIndicator from '../components/LoadingIndicator';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 
+const initialColorMode = process.browser
+  ? localStorage.getItem('colorMode') ?? 'dark'
+  : 'dark';
+
 const MyApp = ({ Component, pageProps }) => {
-  const [mode, setMode] = useState('dark');
+  const [mode, setMode] = useState(initialColorMode);
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+        const nextMode = mode === 'light' ? 'dark' : 'light';
+        setMode(nextMode);
+        localStorage.setItem('colorMode', nextMode);
       },
       mode,
     }),
