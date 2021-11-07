@@ -31,6 +31,7 @@ const Chat = ({ params }) => {
     data: chatroom,
     sendMessage,
     notifyStartWriting,
+    addPersonToChatroom,
   } = useChatroom(params.id);
 
   const [firstRender, setFirstRender] = useState(true);
@@ -55,10 +56,19 @@ const Chat = ({ params }) => {
       <Grid item sm={12} md={9} className={classes.messageGrid}>
         <List className={classes.messageArea}>
           {chatroom.id !== 'dummy' && user && (
-            <ChatHeader chatroom={chatroom} user={user} />
+            <ChatHeader
+              chatroom={chatroom}
+              user={user}
+              onUserAddedToChatroom={addPersonToChatroom}
+            />
           )}
           {chatroom.messages.map((message) => (
-            <MessageBubble key={message.id} message={message} user={user} />
+            <MessageBubble
+              key={message.id}
+              chatroom={chatroom}
+              message={message}
+              user={user}
+            />
           ))}
           <div ref={messagesEndRef} />
           <div className={classes.filler} />

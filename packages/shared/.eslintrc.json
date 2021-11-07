@@ -39,6 +39,7 @@
     "setInterval": "readonly",
     "clearInterval": "readonly",
     "Promise": "readonly",
-    "setTimeout": "readonly"
+    "setTimeout": "readonly",
+    "Map": "readonly"
   }
 }
