@@ -18,8 +18,7 @@ const Chatlist = () => {
   const renderItem = ({ item }) => <ChatItem item={item} />;
 
   return (
-    <SafeAreaView>
-      <Text contentContainerStyle={styles.self}>ChatApp</Text>
+    <SafeAreaView style={styles.self}>
       <Tab value={index} onChange={setIndex}>
         <Tab.Item title="chats" />
         <Tab.Item title="users" />

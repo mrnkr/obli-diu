@@ -8,7 +8,7 @@ const ChatlistEmptyPlaceholder = () => {
 
   return (
     <View style={styles.self}>
-      <Text style={styles.self}>No chats yet!</Text>
+      <Text style={styles.title}>No chats yet!</Text>
     </View>
   );
 };
@@ -25,6 +25,10 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
       marginBottom: safeAreaInsets.bottom,
       marginTop: safeAreaInsets.top,
       paddingHorizontal: 16,
+    },
+    title: {
+      fontSize: 36,
+      marginBottom: 16,
     },
   }),
 );
