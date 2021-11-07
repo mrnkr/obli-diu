@@ -23,7 +23,7 @@ const Signin = ({ navigation }) => {
         `Te logueé con el token: ${data.login} chabón`,
         [{ text: 'Sabelo', style: 'cancel' }],
       );
-      // navigation.navigate();
+      navigation.navigate('Chatlist');
     },
   });
 

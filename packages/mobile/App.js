@@ -20,7 +20,7 @@ import ErrorSnackbar from './components/ErrorSnackbar';
 import client from './apollo/config';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
-import Chat from './pages/Chat';
+import Chatlist from './pages/Chatlist';
 
 const theme = {
   colors: {
@@ -58,11 +58,11 @@ const App = () => {
             <ErrorContextProvider>
               <AuthContextProvider tokenProvider={tokenProvider}>
                 <Stack.Navigator
-                  initialRouteName="Signin"
+                  initialRouteName="Chatlist"
                   screenOptions={{ headerMode: false }}>
                   <Stack.Screen name="Signin" component={Signin} />
                   <Stack.Screen name="Signup" component={Signup} />
-                  <Stack.Screen name="Chat" component={Chat} />
+                  <Stack.Screen name="Chatlist" component={Chatlist} />
                 </Stack.Navigator>
                 <ErrorSnackbar />
               </AuthContextProvider>
