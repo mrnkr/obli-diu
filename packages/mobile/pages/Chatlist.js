@@ -1,97 +1,43 @@
-import React, { useCallback, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { ListItem, Avatar, Tab, TabView, Text } from 'react-native-elements';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, SafeAreaView } from 'react-native';
+import { Tab, TabView, Text } from 'react-native-elements';
+import useChatrooms from 'shared/hooks/useChatrooms';
 import makeStyles from '../hooks/makeStyles';
+import ChatItem from './ChatItem';
+import ChatlistEmptyPlaceholder from './ChatlistEmptyPlaceholder';
 
 const Chatlist = () => {
   const styles = useStyles();
-  const [people, setPeople] = useState([
-    { name: 'Amy Farha', subtitle: 'Vice President' },
-    {
-      name: 'Chris Jackson',
-      // eslint-disable-next-line camelcase
-      avatar_url:
-        'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      subtitle: 'Vice Chairman',
-    },
-    {
-      name: 'Chris Jackson',
-      // eslint-disable-next-line camelcase
-      avatar_url:
-        'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      subtitle: 'Vice Chairman',
-    },
-    {
-      name: 'Chris Jackson',
-      // eslint-disable-next-line camelcase
-      avatar_url:
-        'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      subtitle: 'Vice Chairman',
-    },
-    {
-      name: 'Chris Jackson',
-      // eslint-disable-next-line camelcase
-      avatar_url:
-        'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      subtitle: 'Vice Chairman',
-    },
-    {
-      name: 'Chris Jackson',
-      // eslint-disable-next-line camelcase
-      avatar_url:
-        'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      subtitle: 'Vice Chairman',
-    },
-    {
-      name: 'Chris Jackson',
-      // eslint-disable-next-line camelcase
-      avatar_url:
-        'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      subtitle: 'Vice Chairman',
-    },
-  ]);
-  const [index, setIndex] = useState(1);
+  const chatrooms = useChatrooms();
+
+  const [people, setPeople] = useState([]);
+
+  const [index, setIndex] = useState(0);
 
   const keyExtractor = (item, index) => index.toString();
-  const renderItem = ({ item }) => (
-    <ListItem bottomDivider>
-      <Avatar
-        title={item.name[0]}
-        source={item.avatar_url && { uri: item.avatar_url }}
-      />
-      <ListItem.Content>
-        <ListItem.Title>{item.name}</ListItem.Title>
-        <ListItem.Subtitle>{item.subtitle}</ListItem.Subtitle>
-      </ListItem.Content>
-      <ListItem.Chevron />
-    </ListItem>
-  );
+  const renderItem = ({ item }) => <ChatItem item={item} />;
 
   return (
-    <View contentContainerStyle={styles.self}>
+    <SafeAreaView>
+      <Text contentContainerStyle={styles.self}>ChatApp</Text>
       <Tab value={index} onChange={setIndex}>
         <Tab.Item title="chats" />
         <Tab.Item title="users" />
         <Tab.Item title="usage" />
       </Tab>
       <TabView value={index} onChange={setIndex}>
-        <TabView.Item style={{ backgroundColor: 'red', width: '100%' }}>
-          <Text h1>Recent</Text>
-        </TabView.Item>
-        <TabView.Item style={{ backgroundColor: 'blue', width: '100%' }}>
-          <Text h1>Favorite</Text>
-        </TabView.Item>
-        <TabView.Item style={{ backgroundColor: 'green', width: '100%' }}>
-          <Text h1>Cart</Text>
-        </TabView.Item>
+        <TabView.Item />
+        <TabView.Item />
+        <TabView.Item />
       </TabView>
+
       <FlatList
-        contentContainerStyle={styles.self}
         keyExtractor={keyExtractor}
-        data={people}
+        data={chatrooms}
         renderItem={renderItem}
+        ListEmptyComponent={<ChatlistEmptyPlaceholder />}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

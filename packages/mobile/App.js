@@ -58,7 +58,7 @@ const App = () => {
             <ErrorContextProvider>
               <AuthContextProvider tokenProvider={tokenProvider}>
                 <Stack.Navigator
-                  initialRouteName="Chatlist"
+                  initialRouteName="Signin"
                   screenOptions={{ headerMode: false }}>
                   <Stack.Screen name="Signin" component={Signin} />
                   <Stack.Screen name="Signup" component={Signup} />
