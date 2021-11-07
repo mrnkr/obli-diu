@@ -26,6 +26,7 @@ const FETCH_ONCE = gql`
         displayName
         email
       }
+      isGroup
       lastActivity
       createdAt
       updatedAt
@@ -44,6 +45,12 @@ const CHATROOM_SUBSCRIPTION = gql`
         createdAt
         updatedAt
       }
+      users {
+        id
+        displayName
+        email
+      }
+      isGroup
       lastActivity
       createdAt
       updatedAt
@@ -84,11 +91,20 @@ const SEND_MSG_MUTATION = gql`
   }
 `;
 
+const ADD_PERSON_TO_GROUP = gql`
+  mutation AddPersonToGroup($input: AddToChatroomDto!) {
+    addUserToChatroom(input: $input) {
+      id
+    }
+  }
+`;
+
 const defaultChatroom = {
   id: 'dummy',
   users: [],
   messages: [],
   lastMessage: null,
+  isGroup: false,
   lastActivity: {},
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
@@ -109,6 +125,7 @@ const useChatroom = (chatroomId) => {
 
   const [logLastActivityMutation] = useMutation(LOG_LAST_ACTIVITY_MUTATION);
   const [sendMsgMutation] = useMutation(SEND_MSG_MUTATION);
+  const [addToChatroomMutation] = useMutation(ADD_PERSON_TO_GROUP);
 
   useEffect(() => {
     if (chatroomId) {
@@ -186,10 +203,25 @@ const useChatroom = (chatroomId) => {
     [chatroomId, sendMsgMutation],
   );
 
+  const addPersonToChatroom = useCallback(
+    async (userId) => {
+      await addToChatroomMutation({
+        variables: {
+          input: {
+            userId,
+            chatroomId,
+          },
+        },
+      });
+    },
+    [addToChatroomMutation, chatroomId],
+  );
+
   return {
     data: data?.chatroom ?? defaultChatroom,
     sendMessage,
     notifyStartWriting,
+    addPersonToChatroom,
   };
 };
 
