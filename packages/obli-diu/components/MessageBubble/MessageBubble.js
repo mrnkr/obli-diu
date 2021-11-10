@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import formatDistance from 'date-fns/formatDistance';
@@ -10,8 +10,14 @@ import { LinkPreview } from '@dhaiwat10/react-link-preview';
 const URL_REGEX =
   /(((http|https):\/\/)?(www\.)?[-a-zA-Z0-9@:%.\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%\+.~#?&//=]*))/g;
 
-const MessageBubble = ({ message, user }) => {
+const MessageBubble = ({ chatroom, message, user }) => {
   const classes = useStyles();
+
+  const currentUserSentMessage = useMemo(
+    () => user?.id === message.sender,
+    [message, user],
+  );
+
   const body = useMemo(() => {
     const urls = message.body.match(URL_REGEX);
     return (
@@ -19,10 +25,16 @@ const MessageBubble = ({ message, user }) => {
         {urls?.map((url, idx) => (
           <LinkPreview className={classes.linkPreview} url={url} key={idx} />
         ))}
+        {!currentUserSentMessage && chatroom.isGroup && (
+          <b>
+            {chatroom.users.find((u) => u.id === message.sender).displayName}
+            <br />
+          </b>
+        )}
         {message.body}
       </>
     );
-  }, [classes, message]);
+  }, [chatroom, classes, currentUserSentMessage, message]);
 
   return (
     <ListItem>
@@ -31,14 +43,14 @@ const MessageBubble = ({ message, user }) => {
         md={8}
         container
         className={
-          user?.id === message.sender
+          currentUserSentMessage
             ? classes.bubbleAreaLeft
             : classes.bubbleAreaRight
         }>
         <Grid item xs={12}>
           <ListItemText
             className={classes.listItemText}
-            align={user?.id === message.sender ? 'left' : 'right'}
+            align={currentUserSentMessage ? 'left' : 'right'}
             primary={body}
             secondary={formatDistance(new Date(message.createdAt), new Date(), {
               addSuffix: true,
@@ -84,6 +96,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 MessageBubble.propTypes = {
+  chatroom: PropTypes.shape({
+    id: PropTypes.string,
+    users: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+        displayName: PropTypes.string,
+      }),
+    ),
+    isGroup: PropTypes.bool.isRequired,
+  }).isRequired,
   message: PropTypes.shape({
     id: PropTypes.string,
     body: PropTypes.string,
@@ -96,4 +118,4 @@ MessageBubble.propTypes = {
   }),
 };
 
-export default MessageBubble;
+export default memo(MessageBubble);

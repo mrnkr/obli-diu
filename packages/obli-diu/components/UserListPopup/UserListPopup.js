@@ -14,16 +14,21 @@ import PersonIcon from '@material-ui/icons/Person';
 import useUsers from 'shared/hooks/useUsers';
 import gravatar from 'shared/helpers/gravatar';
 
-const UserListPopup = ({ open, handleClose }) => {
+const UserListPopup = ({
+  open,
+  handleClose,
+  onSelectUser,
+  filterPredicate,
+}) => {
   const classes = useStyles();
-  const { data: users, createChatroom } = useUsers();
+  const users = useUsers(filterPredicate);
 
   const onListItemClick = useCallback(
     (userId) => async () => {
       handleClose();
-      await createChatroom(userId);
+      await onSelectUser(userId);
     },
-    [createChatroom, handleClose],
+    [handleClose, onSelectUser],
   );
 
   return (
@@ -72,6 +77,8 @@ const useStyles = makeStyles({
 UserListPopup.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  onSelectUser: PropTypes.func.isRequired,
+  filterPredicate: PropTypes.func.isRequired,
 };
 
 export default UserListPopup;

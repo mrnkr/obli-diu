@@ -19,6 +19,7 @@ const FETCH_ONCE = gql`
         createdAt
         updatedAt
       }
+      isGroup
       lastActivity
       createdAt
       updatedAt
@@ -42,6 +43,7 @@ const SUBSCRIPTION = gql`
         createdAt
         updatedAt
       }
+      isGroup
       lastActivity
       createdAt
       updatedAt

@@ -18,14 +18,16 @@ import Switch from '@material-ui/core/Switch';
 import Popover from '@material-ui/core/Popover';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { useRouter } from 'next/router';
+import usersImNotChattingWith from 'shared/helpers/usersImNotChattingWith';
 import useAuth from 'shared/hooks/useAuth';
 import useChatrooms from 'shared/hooks/useChatrooms';
+import useCreateChatroom from 'shared/hooks/useCreateChatroom';
 import usePopup from 'shared/hooks/usePopup';
 import useHeartbeat from 'shared/hooks/useHeartbeat';
 import ColorModeContext from 'shared/contexts/ColorModeContext';
 import gravatar from 'shared/helpers/gravatar';
+import UserListPopup from '../UserListPopup/UserListPopup';
 import ChatroomListItem from './ChatroomListItem';
-import UserListPopup from './UserListPopup';
 import NoChatsPlaceholder from './NoChatsPlaceholder';
 
 const Sidebar = ({ className }) => {
@@ -36,6 +38,7 @@ const Sidebar = ({ className }) => {
   const router = useRouter();
   const user = useAuth();
   const chatrooms = useChatrooms();
+  const createChatroom = useCreateChatroom();
   const [userListPopupVisible, showUserListPopup, closeUserListPopup] =
     usePopup();
   const colorMode = useContext(ColorModeContext);
@@ -70,6 +73,8 @@ const Sidebar = ({ className }) => {
       <UserListPopup
         open={userListPopupVisible}
         handleClose={closeUserListPopup}
+        onSelectUser={createChatroom}
+        filterPredicate={usersImNotChattingWith(user, chatrooms)}
       />
       <Grid xs={12} md={3} item className={`${classes.sidebar} ${className}`}>
         <List className={classes.mainList}>
@@ -126,11 +131,7 @@ const Sidebar = ({ className }) => {
           <Divider />
           {chatrooms.length ? (
             chatrooms.map((chatroom) => (
-              <ChatroomListItem
-                key={chatroom.id}
-                chatroom={chatroom}
-                user={user}
-              />
+              <ChatroomListItem key={chatroom.id} chatroom={chatroom} />
             ))
           ) : (
             <NoChatsPlaceholder />
