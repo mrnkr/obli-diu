@@ -26,7 +26,7 @@ import usePopup from 'shared/hooks/usePopup';
 import useHeartbeat from 'shared/hooks/useHeartbeat';
 import ColorModeContext from 'shared/contexts/ColorModeContext';
 import gravatar from 'shared/helpers/gravatar';
-import UserListPopup from '../UserListPopup/UserListPopup';
+import UserListPopup from '../UserListPopup';
 import ChatroomListItem from './ChatroomListItem';
 import NoChatsPlaceholder from './NoChatsPlaceholder';
 
