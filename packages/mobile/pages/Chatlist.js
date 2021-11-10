@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, SafeAreaView } from 'react-native';
-import { Tab, TabView, Text, Header } from 'react-native-elements';
+import {
+  Tab,
+  TabView,
+  Text,
+  Header,
+  Icon,
+  Button,
+} from 'react-native-elements';
 import useChatrooms from 'shared/hooks/useChatrooms';
+import { useTheme } from '@react-navigation/native';
 import makeStyles from '../hooks/makeStyles';
 import ChatItem from './ChatItem';
 import ChatlistEmptyPlaceholder from './ChatlistEmptyPlaceholder';
 
 const Chatlist = () => {
   const styles = useStyles();
+  const theme = useTheme();
   const chatrooms = useChatrooms();
 
   const [people, setPeople] = useState([
@@ -92,9 +101,18 @@ const Chatlist = () => {
   return (
     <SafeAreaView style={styles.self}>
       <Header
-        placement="center"
-        centerComponent={{ text: 'CHAT APP', style: { color: '#fff' } }}
-        rightComponent={{ icon: 'logout', color: '#fff' }}
+        placement="left"
+        centerComponent={{
+          text: 'Chat App',
+          style: styles.centerComponent,
+        }}
+        rightComponent={
+          <Button
+            type="clear"
+            icon={<Icon name="logout" color={theme.colors.text} />}
+          />
+        }
+        containerStyle={styles.header}
       />
       <Tab value={index} onChange={setIndex}>
         <Tab.Item title="chats" />
@@ -125,6 +143,13 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
       backgroundColor: theme.colors.background,
       marginBottom: safeAreaInsets.bottom,
       marginTop: safeAreaInsets.top,
+    },
+    header: {
+      backgroundColor: theme.colors.background,
+    },
+    centerComponent: {
+      color: theme.colors.text,
+      fontSize: 24,
     },
   }),
 );
