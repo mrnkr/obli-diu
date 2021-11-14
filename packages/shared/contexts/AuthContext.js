@@ -12,7 +12,7 @@ const decodeToken = (token) => {
       ...payload,
     };
   } catch {
-    return undefined;
+    return { loading: false };
   }
 };
 

@@ -6,10 +6,10 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
-
 import useAuth from 'shared/hooks/useAuth';
 import useChatroom from 'shared/hooks/useChatroom';
-import useMountEffect from 'shared/hooks/useMountEffect';
+import useGuard from 'shared/hooks/useGuard';
+
 import Sidebar from '../../components/Sidebar';
 import MessageBubble from '../../components/MessageBubble';
 import Composer from '../../components/Composer';
@@ -21,8 +21,8 @@ const Chat = ({ params }) => {
   const router = useRouter();
   const user = useAuth();
 
-  useMountEffect(() => {
-    if (!user) {
+  useGuard((userInfo) => {
+    if (!userInfo.id) {
       router.replace('/');
     }
   });

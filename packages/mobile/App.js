@@ -40,6 +40,7 @@ const App = () => {
     () => ({
       getToken: () => AsyncStorage.getItem('token'),
       subscribe: (next) => {
+        next();
         Events.on('login', 'some-id', next);
         return {
           unsubscribe: () => Events.rm('login', 'some-id'),

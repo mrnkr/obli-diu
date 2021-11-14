@@ -10,14 +10,12 @@ import TextField from '@material-ui/core/TextField';
 import LockIcon from '@material-ui/icons/Lock';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import useAuth from 'shared/hooks/useAuth';
 import useSigninForm from 'shared/hooks/useSigninForm';
-import useMountEffect from 'shared/hooks/useMountEffect';
+import useGuard from 'shared/hooks/useGuard';
 
 const Signin = () => {
   const classes = useStyles();
   const router = useRouter();
-  const user = useAuth();
 
   const form = useSigninForm({
     afterSubmit: async (data) => {
@@ -28,8 +26,8 @@ const Signin = () => {
     },
   });
 
-  useMountEffect(() => {
-    if (user) {
+  useGuard((userInfo) => {
+    if (userInfo.id) {
       router.replace('/home');
     }
   });
