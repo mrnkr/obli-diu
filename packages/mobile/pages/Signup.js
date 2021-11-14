@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTheme } from '@react-navigation/native';
@@ -18,10 +18,7 @@ const Signup = ({ navigation }) => {
     afterSubmit: async (data) => {
       await AsyncStorage.setItem('token', data.createUser);
       Events.trigger('login');
-
-      Alert.alert('Aguante Boca', 'Chabón', [
-        { text: 'Sabelo', style: 'cancel' },
-      ]);
+      navigation.navigate('Chatlist');
     },
   });
 

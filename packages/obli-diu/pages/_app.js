@@ -39,6 +39,7 @@ const MyApp = ({ Component, pageProps }) => {
     () => ({
       getToken: () => (process.browser ? localStorage.getItem('token') : ''),
       subscribe: (next) => {
+        next();
         addEventListener('login', next);
         return {
           unsubscribe: () => removeEventListener('login', next),

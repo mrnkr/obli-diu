@@ -3,18 +3,16 @@ import { useRouter } from 'next/router';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import useAuth from 'shared/hooks/useAuth';
-import useMountEffect from 'shared/hooks/useMountEffect';
+import useGuard from 'shared/hooks/useGuard';
 
 import Sidebar from '../components/Sidebar';
 
 const Home = () => {
   const classes = useStyles();
   const router = useRouter();
-  const user = useAuth();
 
-  useMountEffect(() => {
-    if (!user) {
+  useGuard((userInfo) => {
+    if (!userInfo.id) {
       router.replace('/');
     }
   });

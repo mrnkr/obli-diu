@@ -1,16 +1,28 @@
 import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { FlatList, StyleSheet } from 'react-native';
 import { Header, Icon, Button } from 'react-native-elements';
-import useChatrooms from 'shared/hooks/useChatrooms';
 import { useTheme } from '@react-navigation/native';
+import useChatrooms from 'shared/hooks/useChatrooms';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Events from 'react-native-simple-events';
+import { useApolloClient } from '@apollo/client';
 import makeStyles from '../../hooks/makeStyles';
 import ChatlistEmptyPlaceholder from './ChatlistEmptyPlaceholder';
 import ChatroomListItem from './ChatroomListItem';
 
-const Chatlist = () => {
+const Chatlist = ({ navigation }) => {
   const styles = useStyles();
   const theme = useTheme();
   const chatrooms = useChatrooms();
+  const apolloClient = useApolloClient();
+
+  const logout = useCallback(async () => {
+    await AsyncStorage.removeItem('token');
+    await apolloClient.clearStore();
+    Events.trigger('login');
+    navigation.navigate('Signin');
+  }, [apolloClient, navigation]);
 
   const keyExtractor = useCallback((item) => item.id, []);
   const renderItem = useCallback(
@@ -30,6 +42,7 @@ const Chatlist = () => {
           <Button
             type="clear"
             icon={<Icon name="logout" color={theme.colors.text} />}
+            onPress={logout}
           />
         }
         containerStyle={styles.header}
@@ -44,6 +57,12 @@ const Chatlist = () => {
       />
     </>
   );
+};
+
+Chatlist.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const useStyles = makeStyles((theme, safeAreaInsets) =>

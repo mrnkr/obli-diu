@@ -11,13 +11,11 @@ import PersonAdd from '@material-ui/icons/Person';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useSignupForm from 'shared/hooks/useSignupForm';
-import useAuth from 'shared/hooks/useAuth';
-import useMountEffect from 'shared/hooks/useMountEffect';
+import useGuard from 'shared/hooks/useGuard';
 
 const SignUp = () => {
   const classes = useStyles();
   const router = useRouter();
-  const user = useAuth();
 
   const form = useSignupForm({
     afterSubmit: async (data) => {
@@ -28,8 +26,8 @@ const SignUp = () => {
     },
   });
 
-  useMountEffect(() => {
-    if (user) {
+  useGuard((userInfo) => {
+    if (userInfo.id) {
       router.replace('/home');
     }
   });

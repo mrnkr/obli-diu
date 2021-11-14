@@ -8,11 +8,19 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import * as Events from 'react-native-simple-events';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useSigninForm from 'shared/hooks/useSigninForm';
+import useGuard from 'shared/hooks/useGuard';
 import makeStyles from '../hooks/makeStyles';
 
 const Signin = ({ navigation }) => {
   const styles = useStyles();
   const theme = useTheme();
+
+  useGuard((userInfo) => {
+    if (userInfo.id) {
+      navigation.navigate('Chatlist');
+    }
+  });
+
   const form = useSigninForm({
     afterSubmit: async (data) => {
       await AsyncStorage.setItem('token', data.login);
