@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 import { ListItem, Avatar } from 'react-native-elements';
 import useGroupChatroomDisplay from 'shared/hooks/useGroupChatroomDisplay';
 import makeStyles from '../../../hooks/makeStyles';
 
 const GroupChatroomListItem = ({ chatroom }) => {
+  const theme = useTheme();
   const styles = useStyles();
   const { groupName, lastMessage } = useGroupChatroomDisplay(chatroom);
 
   return (
     <>
-      <Avatar icon={{ name: 'group' }} rounded />
+      <Avatar icon={{ name: 'group', color: theme.colors.text }} rounded />
       <ListItem.Content style={styles.content}>
         <ListItem.Title>{groupName}</ListItem.Title>
         <ListItem.Subtitle>{lastMessage}</ListItem.Subtitle>
