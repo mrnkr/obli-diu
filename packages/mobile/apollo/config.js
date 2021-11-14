@@ -5,8 +5,8 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { setContext } from 'apollo-link-context';
 
-const httpAuthLink = setContext((_, { headers }) => {
-  const token = AsyncStorage.getItem('token');
+const httpAuthLink = setContext(async (_, { headers }) => {
+  const token = await AsyncStorage.getItem('token');
   return {
     headers: {
       ...headers,
@@ -25,8 +25,8 @@ const httpLink = httpAuthLink.concat(rawHttpLink);
 const wsLink = new WebSocketLink({
   uri: `wss://${API_URL}`,
   options: {
-    connectionParams: () => {
-      const token = AsyncStorage.getItem('token');
+    connectionParams: async () => {
+      const token = await AsyncStorage.getItem('token');
       return { Authorization: token ? `Bearer ${token}` : '' };
     },
     lazy: true,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-elements';
-import makeStyles from '../hooks/makeStyles';
+import makeStyles from '../../hooks/makeStyles';
 
 const ChatlistEmptyPlaceholder = () => {
   const styles = useStyles();

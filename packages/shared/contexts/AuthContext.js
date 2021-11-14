@@ -7,6 +7,7 @@ const decodeToken = (token) => {
   try {
     const { sub, ...payload } = jwtDecode(token);
     return {
+      loading: false,
       id: sub,
       ...payload,
     };
@@ -18,13 +19,11 @@ const decodeToken = (token) => {
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children, tokenProvider }) => {
-  const [userInfo, setUserInfo] = useState(
-    decodeToken(tokenProvider.getToken()),
-  );
+  const [userInfo, setUserInfo] = useState({ loading: true });
 
   useMountEffect(() => {
-    const subscription = tokenProvider.subscribe(() => {
-      setUserInfo(decodeToken(tokenProvider.getToken()));
+    const subscription = tokenProvider.subscribe(async () => {
+      setUserInfo(decodeToken(await tokenProvider.getToken()));
     });
 
     return () => subscription.unsubscribe();
