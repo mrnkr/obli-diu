@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { Input, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -17,13 +17,7 @@ const Signin = ({ navigation }) => {
     afterSubmit: async (data) => {
       await AsyncStorage.setItem('token', data.login);
       Events.trigger('login');
-
-      Alert.alert(
-        'Aguante Boca',
-        `Te logueé con el token: ${data.login} chabón`,
-        [{ text: 'Sabelo', style: 'cancel' }],
-      );
-      // navigation.navigate();
+      navigation.navigate('Chatlist');
     },
   });
 

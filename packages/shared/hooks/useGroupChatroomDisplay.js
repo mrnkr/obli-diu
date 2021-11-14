@@ -6,7 +6,7 @@ const useGroupChatroomDisplay = (chatroom) => {
   const user = useAuth();
 
   const otherUsers = useMemo(
-    () => chatroom.users.filter((u) => u.id !== user.id),
+    () => chatroom.users?.filter((u) => u.id !== user.id),
     [chatroom, user],
   );
 
