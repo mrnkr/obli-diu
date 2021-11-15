@@ -17,7 +17,7 @@ const Signin = ({ navigation }) => {
 
   useGuard((userInfo) => {
     if (userInfo.id) {
-      navigation.navigate('Chatlist');
+      navigation.navigate('Home');
     }
   });
 
@@ -25,7 +25,7 @@ const Signin = ({ navigation }) => {
     afterSubmit: async (data) => {
       await AsyncStorage.setItem('token', data.login);
       Events.trigger('login');
-      navigation.navigate('Chatlist');
+      navigation.navigate('Home');
     },
   });
 

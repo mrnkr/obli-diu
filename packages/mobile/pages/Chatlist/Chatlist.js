@@ -32,7 +32,7 @@ const Chatlist = ({ navigation }) => {
 
   return (
     <>
-      <Header
+      {/* <Header
         placement="left"
         centerComponent={{
           text: 'Chat App',
@@ -46,7 +46,7 @@ const Chatlist = ({ navigation }) => {
           />
         }
         containerStyle={styles.header}
-      />
+      /> */}
 
       <FlatList
         style={styles.listContentContainer}
