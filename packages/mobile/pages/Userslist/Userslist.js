@@ -2,30 +2,19 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import useChatrooms from 'shared/hooks/useChatrooms';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Events from 'react-native-simple-events';
-import { useApolloClient } from '@apollo/client';
+import useUsers from 'shared/hooks/useUsers';
 import makeStyles from '../../hooks/makeStyles';
-import ChatlistEmptyPlaceholder from './ChatlistEmptyPlaceholder';
-import ChatroomListItem from './ChatroomListItem';
+import UserslistItem from './UserslistItem';
+import UserslistEmptyPlaceholder from './UserslistEmptyPlaceholder';
 
-const Chatlist = ({ navigation }) => {
+const Userslist = ({ navigation }) => {
   const styles = useStyles();
   const theme = useTheme();
-  const chatrooms = useChatrooms();
-  const apolloClient = useApolloClient();
-
-  const logout = useCallback(async () => {
-    await AsyncStorage.removeItem('token');
-    await apolloClient.clearStore();
-    Events.trigger('login');
-    navigation.navigate('Signin');
-  }, [apolloClient, navigation]);
+  const users = [];//useUsers();
 
   const keyExtractor = useCallback((item) => item.id, []);
   const renderItem = useCallback(
-    ({ item }) => <ChatroomListItem chatroom={item} />,
+    ({ item }) => <UserslistItem chatroom={item} />,
     [],
   );
 
@@ -34,15 +23,15 @@ const Chatlist = ({ navigation }) => {
       <FlatList
         style={styles.listContentContainer}
         keyExtractor={keyExtractor}
-        data={chatrooms}
+        data={users}
         renderItem={renderItem}
-        ListEmptyComponent={<ChatlistEmptyPlaceholder />}
+        ListEmptyComponent={<UserslistEmptyPlaceholder />}
       />
     </>
   );
 };
 
-Chatlist.propTypes = {
+Userslist.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
@@ -63,4 +52,4 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
   }),
 );
 
-export default Chatlist;
+export default Userslist;

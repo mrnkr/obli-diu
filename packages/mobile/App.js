@@ -21,7 +21,10 @@ import client from './apollo/config';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
 import Chatlist from './pages/Chatlist';
+import Userslist from './pages/Userslist/Userslist';
 import Home from './pages/Home';
+import Settings from './pages/Settings';
+import Usage from './pages/Usage';
 
 const theme = {
   colors: {
@@ -66,6 +69,9 @@ const App = () => {
                   <Stack.Screen name="Signup" component={Signup} />
                   <Stack.Screen name="Home" component={Home} />
                   <Stack.Screen name="Chatlist" component={Chatlist} />
+                  <Stack.Screen name="Userslist" component={Userslist} />
+                  <Stack.Screen name="Usage" component={Usage} />
+                  <Stack.Screen name="Settings" component={Settings} />
                 </Stack.Navigator>
                 <ErrorSnackbar />
               </AuthContextProvider>

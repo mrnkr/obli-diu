@@ -5,6 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import makeStyles from '../hooks/makeStyles';
 import Chatlist from './Chatlist/Chatlist.js';
+import Userslist from './Userslist/Userslist';
+import Usage from './Usage';
+import Settings from './Settings';
 
 const Home = () => {
   const Tab = createBottomTabNavigator();
@@ -24,7 +27,7 @@ const Home = () => {
       />
       <Tab.Screen
         name="Contacts"
-        component={Chatlist}
+        component={Userslist}
         options={{
           tabBarLabel: 'Contacts',
           tabBarIcon: ({ color, size }) => (
@@ -34,7 +37,7 @@ const Home = () => {
       />
       <Tab.Screen
         name="Usage"
-        component={Chatlist}
+        component={Usage}
         options={{
           tabBarLabel: 'Usage',
           tabBarIcon: ({ color, size }) => (
@@ -44,7 +47,7 @@ const Home = () => {
       />
       <Tab.Screen
         name="Settings"
-        component={Chatlist}
+        component={Settings}
         options={{
           tabBarLabel: 'Settings',
           tabBarIcon: ({ color, size }) => (
@@ -60,6 +63,7 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
   StyleSheet.create({
     self: {
       padding: safeAreaInsets.top,
+      marginTop: safeAreaInsets.top,
     },
   }),
 );
