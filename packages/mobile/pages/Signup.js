@@ -18,7 +18,7 @@ const Signup = ({ navigation }) => {
     afterSubmit: async (data) => {
       await AsyncStorage.setItem('token', data.createUser);
       Events.trigger('login');
-      navigation.navigate('Chatlist');
+      navigation.navigate('Chat');
     },
   });
 

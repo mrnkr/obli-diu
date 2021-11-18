@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTheme } from '@react-navigation/native';
-import { Text, Switch, ListItem, Button, Divider } from 'react-native-elements';
+import { ListItem, Button, Divider } from 'react-native-elements';
 import ToggleSwitch from 'toggle-switch-react-native';
 import makeStyles from '../hooks/makeStyles';
 
@@ -34,22 +34,14 @@ const Settings = () => {
       <Divider />
       <ListItem>
         <ListItem.Content>
-          <Text styles={styles.button}>
-            {checked ? 'Dark Theme' : 'Light Theme'}
-          </Text>
-          <Switch
-            value={checked}
-            onValueChange={(value) => setChecked(value)}
-            styles={styles.button}
-          />
           <ToggleSwitch
-            isOn={false}
-            onColor="green"
-            offColor="red"
-            label="Theme"
-            labelStyle={{ color: 'black', fontWeight: '900' }}
-            size="large"
-            onToggle={(isOn) => console.log('changed to : ', isOn)}
+            isOn={checked}
+            onColor="blue"
+            offColor="gray"
+            label={checked ? 'Light Theme' : 'Dark Theme'}
+            labelStyle={{ color: theme.colors.text, fontWeight: '900' }}
+            size="medium"
+            onToggle={(value) => setChecked(value)}
           />
         </ListItem.Content>
       </ListItem>

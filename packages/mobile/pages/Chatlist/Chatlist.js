@@ -25,8 +25,8 @@ const Chatlist = ({ navigation }) => {
 
   const keyExtractor = useCallback((item) => item.id, []);
   const renderItem = useCallback(
-    ({ item }) => <ChatroomListItem chatroom={item} />,
-    [],
+    ({ item }) => <ChatroomListItem chatroom={item} navigation={navigation} />,
+    [navigation],
   );
 
   return (

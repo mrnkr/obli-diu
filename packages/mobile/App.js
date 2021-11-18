@@ -25,6 +25,7 @@ import Userslist from './pages/Userslist/Userslist';
 import Home from './pages/Home';
 import Settings from './pages/Settings';
 import Usage from './pages/Usage';
+import Chat from './pages/Chat';
 
 const theme = {
   colors: {
@@ -72,6 +73,7 @@ const App = () => {
                   <Stack.Screen name="Userslist" component={Userslist} />
                   <Stack.Screen name="Usage" component={Usage} />
                   <Stack.Screen name="Settings" component={Settings} />
+                  <Stack.Screen name="Chat" component={Chat} />
                 </Stack.Navigator>
                 <ErrorSnackbar />
               </AuthContextProvider>
