@@ -18,10 +18,9 @@ const useUsers = (filterPredicate) => {
   useLoadingNotifier(loading);
   useErrorNotifier(error);
 
-  const users = useMemo(
-    () => filterPredicate(data?.users),
-    [data, filterPredicate],
-  );
+  const users = useMemo(() => {
+    filterPredicate(data?.users);
+  }, [data, filterPredicate]);
 
   return users;
 };

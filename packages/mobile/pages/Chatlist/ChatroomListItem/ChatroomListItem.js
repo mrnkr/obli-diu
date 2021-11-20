@@ -7,7 +7,7 @@ import SingleUserChatroomListItem from './SingleUserChatroomListItem';
 
 const ChatroomListItem = ({ navigation, chatroom }) => {
   const goToChatroom = () => {
-    navigation.navigate('Chat');
+    navigation.navigate('Chat', { chatroomId: chatroom.id });
   };
 
   return (

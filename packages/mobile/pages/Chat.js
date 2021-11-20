@@ -1,7 +1,17 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
+import PropTypes from 'prop-types';
+import useChatroom from '../../shared/hooks/useChatroom';
 
-const Chat = () => {
+const Chat = ({ route }) => {
+  const { chatroomId } = route.params;
+  const {
+    data: chatroom,
+    sendMessage,
+    notifyStartWriting,
+    addPersonToChatroom,
+  } = useChatroom(chatroomId);
+
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -35,6 +45,14 @@ const Chat = () => {
       }}
     />
   );
+};
+
+Chat.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      chatroomId: PropTypes.number,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default Chat;

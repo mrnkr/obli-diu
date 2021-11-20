@@ -1,16 +1,18 @@
 import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { FlatList, StyleSheet } from 'react-native';
-import { useTheme } from '@react-navigation/native';
 import useUsers from 'shared/hooks/useUsers';
+import usersImNotChattingWith from 'shared/helpers/usersImNotChattingWith';
+import useChatrooms from 'shared/hooks/useChatrooms';
+import useAuth from 'shared/hooks/useAuth';
 import makeStyles from '../../hooks/makeStyles';
 import UserslistItem from './UserslistItem';
 import UserslistEmptyPlaceholder from './UserslistEmptyPlaceholder';
 
-const Userslist = ({ navigation }) => {
+const Userslist = () => {
   const styles = useStyles();
-  const theme = useTheme();
-  const users = [];//useUsers();
+  const user = useAuth();
+  const chatrooms = useChatrooms();
+  const users = useUsers(() => usersImNotChattingWith(user, chatrooms));
 
   const keyExtractor = useCallback((item) => item.id, []);
   const renderItem = useCallback(
@@ -29,12 +31,6 @@ const Userslist = ({ navigation }) => {
       />
     </>
   );
-};
-
-Userslist.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
 };
 
 const useStyles = makeStyles((theme, safeAreaInsets) =>
