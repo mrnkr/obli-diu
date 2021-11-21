@@ -87,10 +87,10 @@ const useUserStatus = (chatroom, userId) => {
     }
 
     const now = new Date();
-    const lastActivityAt = new Date(chatroom.lastActivity[userId]);
+    const lastActivityAt = new Date(chatroom.lastActivity?.[userId]);
     const lastMessage = chatroom.lastMessage;
 
-    if (lastMessage.sender === userId) {
+    if (lastMessage?.sender === userId) {
       const lastMessageSentAt = new Date(lastMessage.createdAt);
       const diff = differenceInSeconds(lastMessageSentAt, lastActivityAt);
       if (diff < 5 && diff > 0) {

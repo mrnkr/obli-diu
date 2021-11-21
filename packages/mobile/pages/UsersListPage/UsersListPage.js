@@ -1,26 +1,28 @@
 import React, { useCallback } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
+import { StyleSheet } from 'react-native';
 import { Header } from 'react-native-elements';
-import useUsers from 'shared/hooks/useUsers';
 import usersImNotChattingWith from 'shared/helpers/usersImNotChattingWith';
 import useChatrooms from 'shared/hooks/useChatrooms';
 import useAuth from 'shared/hooks/useAuth';
 import { useTheme } from '@react-navigation/native';
+import useCreateChatroom from 'shared/hooks/useCreateChatroom';
 import makeStyles from '../../hooks/makeStyles';
-import UsersListItem from './UsersListItem';
-import UsersListEmptyPlaceholder from './UsersListEmptyPlaceholder';
+import UsersList from '../../components/UsersList';
 
-const UsersList = () => {
+const UsersListPage = ({ navigation }) => {
   const styles = useStyles();
   const theme = useTheme();
   const user = useAuth();
   const chatrooms = useChatrooms();
-  const users = useUsers(usersImNotChattingWith(user, chatrooms));
+  const createChatroom = useCreateChatroom();
 
-  const keyExtractor = useCallback((item) => item.id, []);
-  const renderItem = useCallback(
-    ({ item, index }) => <UsersListItem user={item} topDivider={index > 0} />,
-    [],
+  const onSelectUser = useCallback(
+    (userId) => async () => {
+      const chatroom = await createChatroom(userId);
+      navigation.navigate('Chat', { chatroomId: chatroom.id });
+    },
+    [createChatroom, navigation],
   );
 
   return (
@@ -31,12 +33,9 @@ const UsersList = () => {
         backgroundColor={theme.colors.background}
         centerComponent={{ text: 'Users', style: styles.centerComponent }}
       />
-      <FlatList
-        style={styles.listContentContainer}
-        keyExtractor={keyExtractor}
-        data={users}
-        renderItem={renderItem}
-        ListEmptyComponent={<UsersListEmptyPlaceholder />}
+      <UsersList
+        onSelectUser={onSelectUser}
+        filterPredicate={usersImNotChattingWith(user, chatrooms)}
       />
     </>
   );
@@ -54,4 +53,10 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
   }),
 );
 
-export default UsersList;
+UsersListPage.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
+
+export default UsersListPage;

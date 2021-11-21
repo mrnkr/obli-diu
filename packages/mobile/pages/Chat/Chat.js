@@ -50,7 +50,11 @@ const Chat = ({ route, navigation }) => {
   return (
     <>
       {chatroom.id !== 'dummy' ? (
-        <ChatHeader chatroom={chatroom} onGoBack={goBack} />
+        <ChatHeader
+          chatroom={chatroom}
+          onAddToChatroom={addPersonToChatroom}
+          onGoBack={goBack}
+        />
       ) : null}
       <GiftedChat
         renderUsernameOnMessage={chatroom.isGroup}

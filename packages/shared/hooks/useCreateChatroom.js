@@ -21,13 +21,15 @@ const useCreateChatroom = () => {
 
   const createChatroom = useCallback(
     async (userId) => {
-      await mutateFn({
+      const response = await mutateFn({
         variables: {
           input: {
             userId,
           },
         },
       });
+
+      return response.data.createChatroom;
     },
     [mutateFn],
   );
