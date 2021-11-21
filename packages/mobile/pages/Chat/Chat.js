@@ -20,18 +20,20 @@ const Chat = ({ route, navigation }) => {
     const users = new Map(
       chatroom?.users?.map((user) => [user.id, user]) ?? [],
     );
-    return chatroom?.messages
-      ?.map((message) => ({
-        _id: message.id,
-        text: message.body,
-        user: {
-          _id: message.sender,
-          name: users.get(message.sender).displayName,
-          avatar: gravatar(users.get(message.sender)),
-        },
-        createdAt: new Date(message.createdAt),
-      }))
-      .reverse();
+    return (
+      chatroom?.messages
+        ?.map((message) => ({
+          _id: message.id,
+          text: message.body,
+          user: {
+            _id: message.sender,
+            name: users.get(message.sender).displayName,
+            avatar: gravatar(users.get(message.sender)),
+          },
+          createdAt: new Date(message.createdAt),
+        }))
+        ?.reverse() ?? []
+    );
   }, [chatroom]);
 
   const goBack = useCallback(() => {
@@ -47,7 +49,9 @@ const Chat = ({ route, navigation }) => {
 
   return (
     <>
-      <ChatHeader chatroom={chatroom} onGoBack={goBack} />
+      {chatroom.id !== 'dummy' ? (
+        <ChatHeader chatroom={chatroom} onGoBack={goBack} />
+      ) : null}
       <GiftedChat
         renderUsernameOnMessage={chatroom.isGroup}
         messages={messages}
