@@ -1,29 +1,22 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { ListItem } from 'react-native-elements';
+import { TouchableOpacity } from 'react-native';
 import GroupChatroomListItem from './GroupChatroomListItem';
 import SingleUserChatroomListItem from './SingleUserChatroomListItem';
 
-const ChatroomListItem = ({ chatroom }) => {
-  //const router = useRouter();
-
-  //const goToChatroom = useCallback(async () => {
-  //if (router.query?.id === chatroom.id) {
-  //return;
-  //}
-
-  //await router.push(`/chatrooms/${chatroom.id}`);
-  //}, [chatroom, router]);
-
+const ChatroomListItem = ({ onPress, chatroom, topDivider }) => {
   return (
-    <ListItem bottomDivider>
-      {chatroom.isGroup ? (
-        <GroupChatroomListItem chatroom={chatroom} />
-      ) : (
-        <SingleUserChatroomListItem chatroom={chatroom} />
-      )}
-      <ListItem.Chevron />
-    </ListItem>
+    <TouchableOpacity onPress={onPress}>
+      <ListItem topDivider={topDivider}>
+        {chatroom.isGroup ? (
+          <GroupChatroomListItem chatroom={chatroom} />
+        ) : (
+          <SingleUserChatroomListItem chatroom={chatroom} />
+        )}
+        <ListItem.Chevron />
+      </ListItem>
+    </TouchableOpacity>
   );
 };
 
@@ -46,6 +39,8 @@ ChatroomListItem.propTypes = {
     }),
     isGroup: PropTypes.bool.isRequired,
   }).isRequired,
+  onPress: PropTypes.func.isRequired,
+  topDivider: PropTypes.bool,
 };
 
 export default memo(ChatroomListItem);

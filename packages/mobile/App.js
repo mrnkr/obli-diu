@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useMemo } from 'react';
-import { Platform } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { colors, ThemeProvider } from 'react-native-elements';
 import { useColorScheme } from 'react-native-appearance';
 import {
@@ -20,7 +19,8 @@ import ErrorSnackbar from './components/ErrorSnackbar';
 import client from './apollo/config';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
-import Chatlist from './pages/Chatlist';
+import Home from './pages/Home';
+import Chat from './pages/Chat';
 
 const theme = {
   colors: {
@@ -60,17 +60,20 @@ const App = () => {
               <AuthContextProvider tokenProvider={tokenProvider}>
                 <Stack.Navigator
                   initialRouteName="Signin"
-                  screenOptions={{ headerMode: false }}>
+                  screenOptions={{ headerShown: false }}>
                   <Stack.Screen name="Signin" component={Signin} />
                   <Stack.Screen name="Signup" component={Signup} />
-                  <Stack.Screen name="Chatlist" component={Chatlist} />
+                  <Stack.Screen name="Home" component={Home} />
+                  <Stack.Screen name="Chat" component={Chat} />
                 </Stack.Navigator>
                 <ErrorSnackbar />
               </AuthContextProvider>
             </ErrorContextProvider>
           </LoadingContextProvider>
         </NavigationContainer>
-        <StatusBar style="auto" />
+        <StatusBar
+          barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'}
+        />
       </ThemeProvider>
     </ApolloProvider>
   );
