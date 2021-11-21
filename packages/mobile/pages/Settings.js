@@ -24,8 +24,7 @@ const Settings = ({ navigation }) => {
   }, [apolloClient, navigation]);
 
   return (
-    <>
-      <Divider />
+    <View style={styles.self}>
       <ListItem>
         <Avatar
           size="large"
@@ -55,7 +54,7 @@ const Settings = ({ navigation }) => {
           </ListItem.Content>
         </ListItem>
       </TouchableOpacity>
-    </>
+    </View>
   );
 };
 
@@ -63,14 +62,8 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
   StyleSheet.create({
     self: {
       backgroundColor: theme.colors.background,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flex: 1,
       marginBottom: safeAreaInsets.bottom,
       marginTop: safeAreaInsets.top,
-      paddingHorizontal: 16,
     },
     title: {
       fontSize: 36,

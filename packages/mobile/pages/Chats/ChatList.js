@@ -36,7 +36,6 @@ const ChatList = ({ navigation }) => {
     <>
       <Header
         placement="left"
-        barStyle="light-content"
         backgroundColor={theme.colors.background}
         centerComponent={{ text: 'Chats', style: styles.centerComponent }}
       />

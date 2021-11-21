@@ -14,7 +14,6 @@ const ChatHeader = ({ chatroom, onGoBack, onAddToChatroom }) => {
   return (
     <Header
       placement="left"
-      barStyle="light-content"
       backgroundColor={theme.colors.background}
       leftComponent={{
         icon: 'chevron-left',

@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useMemo } from 'react';
-import { Platform } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { colors, ThemeProvider } from 'react-native-elements';
 import { useColorScheme } from 'react-native-appearance';
 import {
@@ -72,7 +71,9 @@ const App = () => {
             </ErrorContextProvider>
           </LoadingContextProvider>
         </NavigationContainer>
-        <StatusBar style="auto" />
+        <StatusBar
+          barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'}
+        />
       </ThemeProvider>
     </ApolloProvider>
   );
