@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
-import { Input, Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Input, Button, Icon } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -41,7 +40,7 @@ const Signup = ({ navigation }) => {
         errorMessage={form.errors.displayName}
         leftIcon={
           <Icon
-            name="user"
+            name="person"
             style={styles.leftIcon}
             size={24}
             color={theme.colors.text}
@@ -61,7 +60,7 @@ const Signup = ({ navigation }) => {
         errorMessage={form.errors.email}
         leftIcon={
           <Icon
-            name="envelope"
+            name="email"
             style={styles.leftIcon}
             size={24}
             color={theme.colors.text}
@@ -79,7 +78,7 @@ const Signup = ({ navigation }) => {
         errorMessage={form.errors.password}
         leftIcon={
           <Icon
-            name="unlock-alt"
+            name="lock"
             style={styles.leftIcon}
             size={24}
             color={theme.colors.text}
@@ -99,7 +98,7 @@ const Signup = ({ navigation }) => {
         errorMessage={form.errors.confirmPassword}
         leftIcon={
           <Icon
-            name="unlock-alt"
+            name="lock"
             style={styles.leftIcon}
             size={24}
             color={theme.colors.text}

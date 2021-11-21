@@ -1,9 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTheme } from '@react-navigation/native';
-import { ListItem, Button, Divider, Avatar, Text } from 'react-native-elements';
-import ToggleSwitch from 'toggle-switch-react-native';
+import { ListItem, Divider, Avatar, Text, Icon } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useApolloClient } from '@apollo/client';
 import * as Events from 'react-native-simple-events';
@@ -16,7 +14,6 @@ const Settings = ({ navigation }) => {
   const styles = useStyles();
   const theme = useTheme();
   const currentUser = useAuth();
-  const [checked, setChecked] = useState(false);
   const apolloClient = useApolloClient();
 
   const logout = useCallback(async () => {
@@ -48,7 +45,7 @@ const Settings = ({ navigation }) => {
           <ListItem.Content>
             <View style={styles.actionView}>
               <Icon
-                name="sign-out"
+                name="logout"
                 style={styles.leftIcon}
                 size={24}
                 color={theme.colors.text}
@@ -58,22 +55,6 @@ const Settings = ({ navigation }) => {
           </ListItem.Content>
         </ListItem>
       </TouchableOpacity>
-      <Divider />
-      <ListItem>
-        <ListItem.Content>
-          <View style={styles.actionView}>
-            <ToggleSwitch
-              isOn={checked}
-              onColor="blue"
-              offColor="gray"
-              label={checked ? 'Light Theme' : 'Dark Theme'}
-              labelStyle={{ color: theme.colors.text, fontWeight: '900' }}
-              size="medium"
-              onToggle={(value) => setChecked(value)}
-            />
-          </View>
-        </ListItem.Content>
-      </ListItem>
     </>
   );
 };

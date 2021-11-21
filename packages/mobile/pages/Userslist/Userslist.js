@@ -1,33 +1,42 @@
 import React, { useCallback } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
+import { Header } from 'react-native-elements';
 import useUsers from 'shared/hooks/useUsers';
 import usersImNotChattingWith from 'shared/helpers/usersImNotChattingWith';
 import useChatrooms from 'shared/hooks/useChatrooms';
 import useAuth from 'shared/hooks/useAuth';
+import { useTheme } from '@react-navigation/native';
 import makeStyles from '../../hooks/makeStyles';
-import UserslistItem from './UserslistItem';
-import UserslistEmptyPlaceholder from './UserslistEmptyPlaceholder';
+import UsersListItem from './UsersListItem';
+import UsersListEmptyPlaceholder from './UsersListEmptyPlaceholder';
 
-const Userslist = () => {
+const UsersList = () => {
   const styles = useStyles();
+  const theme = useTheme();
   const user = useAuth();
   const chatrooms = useChatrooms();
-  const users = useUsers(() => usersImNotChattingWith(user, chatrooms));
+  const users = useUsers(usersImNotChattingWith(user, chatrooms));
 
   const keyExtractor = useCallback((item) => item.id, []);
   const renderItem = useCallback(
-    ({ item }) => <UserslistItem chatroom={item} />,
+    ({ item, index }) => <UsersListItem user={item} topDivider={index > 0} />,
     [],
   );
 
   return (
     <>
+      <Header
+        placement="left"
+        barStyle="light-content"
+        backgroundColor={theme.colors.background}
+        centerComponent={{ text: 'Users', style: styles.centerComponent }}
+      />
       <FlatList
         style={styles.listContentContainer}
         keyExtractor={keyExtractor}
         data={users}
         renderItem={renderItem}
-        ListEmptyComponent={<UserslistEmptyPlaceholder />}
+        ListEmptyComponent={<UsersListEmptyPlaceholder />}
       />
     </>
   );
@@ -35,9 +44,6 @@ const Userslist = () => {
 
 const useStyles = makeStyles((theme, safeAreaInsets) =>
   StyleSheet.create({
-    header: {
-      backgroundColor: theme.colors.background,
-    },
     centerComponent: {
       color: theme.colors.text,
       fontSize: 24,
@@ -48,4 +54,4 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
   }),
 );
 
-export default Userslist;
+export default UsersList;

@@ -1,11 +1,10 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Icon } from 'react-native-elements';
 import makeStyles from '../hooks/makeStyles';
-import Chatlist from './Chatlist/Chatlist.js';
-import Userslist from './Userslist/Userslist';
+import Chats from './Chats';
+import UsersList from './UsersList';
 import Usage from './Usage';
 import Settings from './Settings';
 
@@ -17,21 +16,21 @@ const Home = () => {
     <Tab.Navigator styles={styles.self}>
       <Tab.Screen
         name="Chats"
-        component={Chatlist}
+        component={Chats}
         options={{
           tabBarLabel: 'Chats',
           tabBarIcon: ({ color, size }) => (
-            <Icon name="comments" size={size} color={color} />
+            <Icon name="chat" size={size} color={color} />
           ),
         }}
       />
       <Tab.Screen
         name="Contacts"
-        component={Userslist}
+        component={UsersList}
         options={{
           tabBarLabel: 'Contacts',
           tabBarIcon: ({ color, size }) => (
-            <Icon name="address-book" size={size} color={color} />
+            <Icon name="people" size={size} color={color} />
           ),
         }}
       />
@@ -41,7 +40,7 @@ const Home = () => {
         options={{
           tabBarLabel: 'Usage',
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="show-chart" size={size} color={color} />
+            <Icon name="show-chart" size={size} color={color} />
           ),
         }}
       />
@@ -51,7 +50,7 @@ const Home = () => {
         options={{
           tabBarLabel: 'Settings',
           tabBarIcon: ({ color, size }) => (
-            <Icon name="cog" size={size} color={color} />
+            <Icon name="settings" size={size} color={color} />
           ),
         }}
       />

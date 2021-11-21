@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-elements';
 import makeStyles from '../../hooks/makeStyles';
 
-const UserslistEmptyPlaceholder = () => {
+const UsersListEmptyPlaceholder = () => {
   const styles = useStyles();
 
   return (
@@ -33,4 +33,4 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
   }),
 );
 
-export default UserslistEmptyPlaceholder;
+export default UsersListEmptyPlaceholder;

@@ -5,14 +5,10 @@ import { TouchableOpacity } from 'react-native';
 import GroupChatroomListItem from './GroupChatroomListItem';
 import SingleUserChatroomListItem from './SingleUserChatroomListItem';
 
-const ChatroomListItem = ({ navigation, chatroom }) => {
-  const goToChatroom = () => {
-    navigation.navigate('Chat', { chatroomId: chatroom.id });
-  };
-
+const ChatroomListItem = ({ onPress, chatroom, topDivider }) => {
   return (
-    <TouchableOpacity onPress={goToChatroom}>
-      <ListItem topDivider>
+    <TouchableOpacity onPress={onPress}>
+      <ListItem topDivider={topDivider}>
         {chatroom.isGroup ? (
           <GroupChatroomListItem chatroom={chatroom} />
         ) : (
@@ -43,9 +39,8 @@ ChatroomListItem.propTypes = {
     }),
     isGroup: PropTypes.bool.isRequired,
   }).isRequired,
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
+  onPress: PropTypes.func.isRequired,
+  topDivider: PropTypes.bool,
 };
 
 export default memo(ChatroomListItem);

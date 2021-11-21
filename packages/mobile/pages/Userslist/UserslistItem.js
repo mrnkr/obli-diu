@@ -1,3 +1,45 @@
-const UsersListItem = () => {};
+import React, { memo } from 'react';
+import PropTypes from 'prop-types';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import { ListItem, Avatar } from 'react-native-elements';
+import gravatar from 'shared/helpers/gravatar';
+import makeStyles from '../../hooks/makeStyles';
 
-export default UsersListItem;
+const UsersListItem = ({ user, topDivider }) => {
+  const styles = useStyles();
+
+  return (
+    <TouchableOpacity>
+      <ListItem topDivider={topDivider}>
+        <Avatar
+          title={user.displayName}
+          source={{ uri: gravatar(user) }}
+          rounded
+        />
+        <ListItem.Content style={styles.content}>
+          <ListItem.Title>{user.displayName ?? user.email}</ListItem.Title>
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
+    </TouchableOpacity>
+  );
+};
+
+const useStyles = makeStyles((theme) =>
+  StyleSheet.create({
+    content: {
+      marginLeft: 8,
+    },
+  }),
+);
+
+UsersListItem.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.string,
+    displayName: PropTypes.string,
+    email: PropTypes.string,
+  }).isRequired,
+  topDivider: PropTypes.bool,
+};
+
+export default memo(UsersListItem);

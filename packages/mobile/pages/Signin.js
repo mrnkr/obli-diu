@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { Input, Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Input, Button, Icon } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as Events from 'react-native-simple-events';
@@ -51,7 +50,7 @@ const Signin = ({ navigation }) => {
         leftIcon={
           <Icon
             style={styles.leftIcon}
-            name="envelope"
+            name="email"
             size={24}
             color={theme.colors.text}
           />
@@ -69,7 +68,7 @@ const Signin = ({ navigation }) => {
         leftIcon={
           <Icon
             style={styles.leftIcon}
-            name="unlock-alt"
+            name="lock"
             size={24}
             color={theme.colors.text}
           />

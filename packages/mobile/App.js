@@ -20,11 +20,7 @@ import ErrorSnackbar from './components/ErrorSnackbar';
 import client from './apollo/config';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
-import Chatlist from './pages/Chatlist';
-import Userslist from './pages/Userslist/Userslist';
 import Home from './pages/Home';
-import Settings from './pages/Settings';
-import Usage from './pages/Usage';
 import Chat from './pages/Chat';
 
 const theme = {
@@ -69,10 +65,6 @@ const App = () => {
                   <Stack.Screen name="Signin" component={Signin} />
                   <Stack.Screen name="Signup" component={Signup} />
                   <Stack.Screen name="Home" component={Home} />
-                  <Stack.Screen name="Chatlist" component={Chatlist} />
-                  <Stack.Screen name="Userslist" component={Userslist} />
-                  <Stack.Screen name="Usage" component={Usage} />
-                  <Stack.Screen name="Settings" component={Settings} />
                   <Stack.Screen name="Chat" component={Chat} />
                 </Stack.Navigator>
                 <ErrorSnackbar />
