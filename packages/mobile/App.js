@@ -61,7 +61,7 @@ const App = () => {
               <AuthContextProvider tokenProvider={tokenProvider}>
                 <Stack.Navigator
                   initialRouteName="Signin"
-                  screenOptions={{ headerMode: false }}>
+                  screenOptions={{ headerShown: false }}>
                   <Stack.Screen name="Signin" component={Signin} />
                   <Stack.Screen name="Signup" component={Signup} />
                   <Stack.Screen name="Home" component={Home} />

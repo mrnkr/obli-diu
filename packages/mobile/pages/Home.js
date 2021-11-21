@@ -13,7 +13,7 @@ const Home = () => {
   const styles = useStyles();
 
   return (
-    <Tab.Navigator styles={styles.self}>
+    <Tab.Navigator styles={styles.self} screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="Chats"
         component={Chats}
