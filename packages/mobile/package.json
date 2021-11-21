@@ -34,10 +34,8 @@
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
     "react-native-simple-events": "^1.0.1",
-    "react-native-vector-icons": "^9.0.0",
     "shared": "^0.2.0",
-    "subscriptions-transport-ws": "^0.9.19",
-    "toggle-switch-react-native": "^3.3.0"
+    "subscriptions-transport-ws": "^0.9.19"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
