@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-elements';
 import makeStyles from '../hooks/makeStyles';
 import Chats from './Chats';
-import UsersList from './UsersList';
+import UsersListPage from './UsersListPage';
 import Usage from './Usage';
 import Settings from './Settings';
 
@@ -26,7 +26,7 @@ const Home = () => {
       />
       <Tab.Screen
         name="Contacts"
-        component={UsersList}
+        component={UsersListPage}
         options={{
           tabBarLabel: 'Contacts',
           tabBarIcon: ({ color, size }) => (

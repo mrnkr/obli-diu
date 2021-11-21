@@ -5,11 +5,11 @@ import { ListItem, Avatar } from 'react-native-elements';
 import gravatar from 'shared/helpers/gravatar';
 import makeStyles from '../../hooks/makeStyles';
 
-const UsersListItem = ({ user, topDivider }) => {
+const UsersListItem = ({ user, onPress, topDivider }) => {
   const styles = useStyles();
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <ListItem topDivider={topDivider}>
         <Avatar
           title={user.displayName}
@@ -39,6 +39,7 @@ UsersListItem.propTypes = {
     displayName: PropTypes.string,
     email: PropTypes.string,
   }).isRequired,
+  onPress: PropTypes.func,
   topDivider: PropTypes.bool,
 };
 
