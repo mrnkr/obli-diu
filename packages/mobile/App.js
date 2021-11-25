@@ -22,6 +22,7 @@ import Signin from './pages/Signin';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import CameraEffects from './pages/Camera/CameraEffects';
+import ImagePreview from './pages/Camera/ImagePreview';
 
 const theme = {
   colors: {
@@ -70,6 +71,7 @@ const App = () => {
                     name="CameraEffects"
                     component={CameraEffects}
                   />
+                  <Stack.Screen name="ImagePreview" component={ImagePreview} />
                 </Stack.Navigator>
                 <ErrorSnackbar />
               </AuthContextProvider>
