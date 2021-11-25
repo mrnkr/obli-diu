@@ -7,6 +7,7 @@ import Chats from './Chats';
 import UsersListPage from './UsersListPage';
 import Usage from './Usage';
 import Settings from './Settings';
+import CameraEffects from './Camera/CameraEffects';
 
 const Home = () => {
   const Tab = createBottomTabNavigator();
@@ -51,6 +52,16 @@ const Home = () => {
           tabBarLabel: 'Settings',
           tabBarIcon: ({ color, size }) => (
             <Icon name="settings" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Camera"
+        component={CameraEffects}
+        options={{
+          tabBarLabel: 'Camera',
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="camera" size={size} color={color} />
           ),
         }}
       />

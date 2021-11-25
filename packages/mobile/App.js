@@ -21,6 +21,7 @@ import Signup from './pages/Signup';
 import Signin from './pages/Signin';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
+import CameraEffects from './pages/Camera/CameraEffects';
 
 const theme = {
   colors: {
@@ -65,6 +66,10 @@ const App = () => {
                   <Stack.Screen name="Signup" component={Signup} />
                   <Stack.Screen name="Home" component={Home} />
                   <Stack.Screen name="Chat" component={Chat} />
+                  <Stack.Screen
+                    name="CameraEffects"
+                    component={CameraEffects}
+                  />
                 </Stack.Navigator>
                 <ErrorSnackbar />
               </AuthContextProvider>
