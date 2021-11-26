@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, StyleSheet, View, Slider } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
+import { Slider } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
 const Filter = ({ name, minimum, maximum, onChange }) => {

@@ -19,7 +19,7 @@ const CameraEffects = ({ navigation }) => {
   const takePicture = async () => {
     if (camera) {
       const data = await camera.takePictureAsync(null);
-      navigation.navigate('ImagePreview', { image: data.uri });
+      navigation.navigate('FiltersPreview', { image: data.uri });
     }
   };
 
