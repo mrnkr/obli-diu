@@ -104,7 +104,12 @@ const FiltersPreview = ({ route, navigation }) => {
       <Button rounded={false} style={styles.button} block onPress={saveImage}>
         <Text>Save</Text>
       </Button>
-      <Button rounded={false} danger style={styles.button} block>
+      <Button
+        rounded={false}
+        danger
+        style={styles.button}
+        block
+        onPress={() => setFilters(null)}>
         <Text>Reset</Text>
       </Button>
     </ScrollView>
