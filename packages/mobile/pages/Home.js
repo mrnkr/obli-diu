@@ -8,6 +8,7 @@ import UsersListPage from './UsersListPage';
 import Usage from './Usage';
 import Settings from './Settings';
 import CameraEffects from './Camera/CameraEffects';
+import FiltersPreview from './Camera/FiltersPreview';
 
 const Home = () => {
   const Tab = createBottomTabNavigator();
@@ -57,7 +58,7 @@ const Home = () => {
       />
       <Tab.Screen
         name="Camera"
-        component={CameraEffects}
+        component={FiltersPreview}
         options={{
           tabBarLabel: 'Camera',
           tabBarIcon: ({ color, size }) => (

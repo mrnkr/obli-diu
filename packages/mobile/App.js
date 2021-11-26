@@ -23,6 +23,7 @@ import Home from './pages/Home';
 import Chat from './pages/Chat';
 import CameraEffects from './pages/Camera/CameraEffects';
 import ImagePreview from './pages/Camera/ImagePreview';
+import FiltersPreview from './pages/Camera/FiltersPreview';
 
 const theme = {
   colors: {
@@ -72,6 +73,10 @@ const App = () => {
                     component={CameraEffects}
                   />
                   <Stack.Screen name="ImagePreview" component={ImagePreview} />
+                  <Stack.Screen
+                    name="FiltersPreview"
+                    component={FiltersPreview}
+                  />
                 </Stack.Navigator>
                 <ErrorSnackbar />
               </AuthContextProvider>
