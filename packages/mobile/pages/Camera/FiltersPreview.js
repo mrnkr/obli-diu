@@ -1,118 +1,47 @@
-import React, { useState, useCallback } from 'react';
-import { Dimensions, ScrollView, StyleSheet } from 'react-native';
+import React, { useCallback } from 'react';
+import {
+  ImageBackground,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import PropTypes from 'prop-types';
-import { Surface } from 'gl-react-expo';
-import ImageFilters from 'react-native-gl-image-filters';
-import { Button, Text } from 'react-native-elements';
-import Filter from './Filter';
+import { Icon } from 'react-native-elements';
+import { useTheme } from '@react-navigation/native';
+import makeStyles from '../../hooks/makeStyles';
+import useImageEffects from '../../hooks/useImageEffects';
 
 const FiltersPreview = ({ route, navigation }) => {
   const { image } = route.params;
+  const theme = useTheme();
+  const styles = useStyles();
+  const [imgWithEffect, { loading, nextEffect }] = useImageEffects(image);
 
-  const width = Dimensions.get('window').width - 40;
-
-  const [filters, setFilters] = useState({});
-
-  const [imageWithFilter, setImageWithFilter] = useState(null);
-
-  const saveImage = useCallback(async () => {
-    if (!imageWithFilter) {
-      return;
-    }
-
-    const result = await imageWithFilter.capture();
-    console.warn(result);
-  }, [imageWithFilter]);
-
-  const settings = [
-    // {
-    //   name: 'hue',
-    //   minValue: 0,
-    //   maxValue: 6.3,
-    // },
-    // {
-    //   name: 'blur',
-    //   minValue: 0,
-    //   maxValue: 30,
-    // },
-    {
-      name: 'sepia',
-      minValue: -5,
-      maxValue: 5,
-    },
-    // {
-    //   name: 'sharpen',
-    //   minValue: 0,
-    //   maxValue: 15,
-    // },
-    {
-      name: 'negative',
-      minValue: -2.0,
-      maxValue: 2.0,
-    },
-    {
-      name: 'contrast',
-      minValue: -10.0,
-      maxValue: 10.0,
-    },
-    // {
-    //   name: 'saturation',
-    //   minValue: 0.0,
-    //   maxValue: 2,
-    // },
-    {
-      name: 'brightness',
-      minValue: 0,
-      maxValue: 5,
-    },
-    // {
-    //   name: 'temperature',
-    //   minValue: 0.0,
-    //   maxValue: 40000.0,
-    // },
-    // {
-    //   name: 'exposure',
-    //   step: 0.05,
-    //   minValue: -1.0,
-    //   maxValue: 1.0,
-    // },
-  ];
+  const goBack = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
 
   return (
-    <ScrollView style={styles.self}>
-      <Surface
-        style={{ width, height: width }}
-        ref={(ref) => setImageWithFilter(ref)}>
-        <ImageFilters {...filters} width={width} height={width}>
-          {{ uri: image }}
-        </ImageFilters>
-      </Surface>
-      {settings.map((filter) => (
-        <Filter
-          key={filter.name}
-          name={filter.name}
-          minimum={filter.minValue}
-          maximum={filter.maxValue}
-          onChange={(value) => {
-            setFilters((prevFilters) => ({
-              ...prevFilters,
-              [filter.name]: value,
-            }));
-          }}
-        />
-      ))}
-      <Button rounded={false} style={styles.button} block onPress={saveImage}>
-        <Text>Save</Text>
-      </Button>
-      <Button
-        rounded={false}
-        danger
-        style={styles.button}
-        block
-        onPress={() => setFilters(null)}>
-        <Text>Reset</Text>
-      </Button>
-    </ScrollView>
+    <TouchableOpacity
+      style={styles.self}
+      onPress={nextEffect}
+      disabled={loading}>
+      <ImageBackground source={{ uri: imgWithEffect }} style={styles.image}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button}>
+            <Icon
+              name="clear"
+              onPress={goBack}
+              size={60}
+              color={theme.colors.text}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Icon name="arrow-forward" size={60} color={theme.colors.text} />
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
+    </TouchableOpacity>
   );
 };
 
@@ -124,21 +53,29 @@ FiltersPreview.propTypes = {
   }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default FiltersPreview;
+const useStyles = makeStyles(() =>
+  StyleSheet.create({
+    self: {
+      flex: 1,
+    },
+    image: {
+      flex: 1,
+    },
+    button: {
+      padding: 8,
+    },
+    buttonContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'flex-end',
+      paddingBottom: 16,
+    },
+  }),
+);
 
-const styles = StyleSheet.create({
-  self: {
-    flex: 1,
-  },
-  image: {
-    flex: 1,
-  },
-  button: {
-    flex: 0.5,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-  },
-});
+export default FiltersPreview;

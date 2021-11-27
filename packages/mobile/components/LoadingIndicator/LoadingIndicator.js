@@ -1,10 +1,10 @@
+import { useTheme } from '@react-navigation/native';
 import React, { useContext, useMemo } from 'react';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import LoadingContext from 'shared/contexts/LoadingContext';
 
 const LoadingIndicator = () => {
-  const classes = useStyles();
+  const theme = useTheme();
   const [loadingCounter] = useContext(LoadingContext);
 
   const isLoading = useMemo(() => loadingCounter > 0, [loadingCounter]);
@@ -12,28 +12,29 @@ const LoadingIndicator = () => {
   return (
     <>
       {isLoading && (
-        <div className={classes.self}>
-          <CircularProgress />
-        </div>
+        <View
+          style={[styles.self, { backgroundColor: theme.colors.background }]}>
+          <ActivityIndicator size="large" />
+        </View>
       )}
     </>
   );
 };
 
-const useStyles = makeStyles((theme) => ({
+const styles = StyleSheet.create({
   self: {
-    position: 'fixed',
+    position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
-    backgroundColor: theme.palette.background.default,
     opacity: 0.6,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 100,
   },
-}));
+});
 
 export default LoadingIndicator;

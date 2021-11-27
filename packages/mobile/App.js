@@ -16,13 +16,13 @@ import { ErrorContextProvider } from 'shared/contexts/ErrorContext';
 import { LoadingContextProvider } from 'shared/contexts/LoadingContext';
 
 import ErrorSnackbar from './components/ErrorSnackbar';
+import LoadingIndicator from './components/LoadingIndicator';
 import client from './apollo/config';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import CameraEffects from './pages/Camera/CameraEffects';
-import ImagePreview from './pages/Camera/ImagePreview';
 import FiltersPreview from './pages/Camera/FiltersPreview';
 
 const theme = {
@@ -61,6 +61,8 @@ const App = () => {
           <LoadingContextProvider>
             <ErrorContextProvider>
               <AuthContextProvider tokenProvider={tokenProvider}>
+                <LoadingIndicator />
+                <ErrorSnackbar />
                 <Stack.Navigator
                   initialRouteName="Signin"
                   screenOptions={{ headerShown: false }}>
@@ -72,13 +74,11 @@ const App = () => {
                     name="CameraEffects"
                     component={CameraEffects}
                   />
-                  <Stack.Screen name="ImagePreview" component={ImagePreview} />
                   <Stack.Screen
                     name="FiltersPreview"
                     component={FiltersPreview}
                   />
                 </Stack.Navigator>
-                <ErrorSnackbar />
               </AuthContextProvider>
             </ErrorContextProvider>
           </LoadingContextProvider>
