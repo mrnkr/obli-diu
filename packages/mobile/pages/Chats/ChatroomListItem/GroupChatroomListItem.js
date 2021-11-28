@@ -16,13 +16,15 @@ const GroupChatroomListItem = ({ chatroom }) => {
       <Avatar icon={{ name: 'group', color: theme.colors.text }} rounded />
       <ListItem.Content style={styles.content}>
         <ListItem.Title>{groupName}</ListItem.Title>
-        <ListItem.Subtitle>{lastMessage}</ListItem.Subtitle>
+        <ListItem.Subtitle numberOfLines={2} ellipsizeMode="tail">
+          {lastMessage}
+        </ListItem.Subtitle>
       </ListItem.Content>
     </>
   );
 };
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
   StyleSheet.create({
     content: {
       marginLeft: 8,

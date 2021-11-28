@@ -16,7 +16,9 @@ const SingleUserChatroomListItem = ({ chatroom }) => {
       <Avatar title={userName} source={{ uri: gravatar(otherUser) }} rounded />
       <ListItem.Content style={styles.content}>
         <ListItem.Title>{userName}</ListItem.Title>
-        <ListItem.Subtitle>{lastMessage}</ListItem.Subtitle>
+        <ListItem.Subtitle numberOfLines={2} ellipsizeMode="tail">
+          {lastMessage}
+        </ListItem.Subtitle>
       </ListItem.Content>
     </>
   );
