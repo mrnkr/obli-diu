@@ -37,6 +37,7 @@
     "react-native-screens": "~3.8.0",
     "react-native-simple-events": "^1.0.1",
     "react-native-unimodules": "^0.14.10",
+    "react-native-url-preview": "^1.1.9",
     "shared": "^0.2.0",
     "subscriptions-transport-ws": "^0.9.19"
   },
