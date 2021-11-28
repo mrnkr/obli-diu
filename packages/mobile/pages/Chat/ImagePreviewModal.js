@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Icon, Text } from 'react-native-elements';
-import { useTheme } from '@react-navigation/native';
 import makeStyles from '../../hooks/makeStyles';
 import useImageEffects from '../../hooks/useImageEffects';
 
@@ -18,7 +17,6 @@ const ImagePreviewModal = ({
   onSendPicture,
   onRequestClose,
 }) => {
-  const theme = useTheme();
   const styles = useStyles();
   const [imgWithEffect, { nextEffect }] = useImageEffects(image);
 
@@ -43,11 +41,11 @@ const ImagePreviewModal = ({
                   name="clear"
                   onPress={onRequestClose}
                   size={60}
-                  color={theme.colors.text}
+                  color="#FFF"
                 />
               </TouchableOpacity>
               <TouchableOpacity style={styles.button} onPress={onPressSend}>
-                <Icon name="send" size={60} color={theme.colors.text} />
+                <Icon name="send" size={60} color="#FFF" />
               </TouchableOpacity>
             </View>
           </View>

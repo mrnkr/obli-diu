@@ -11,7 +11,6 @@ import {
 import { Camera } from 'expo-camera';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements';
-import { useTheme } from '@react-navigation/native';
 import makeStyles from '../../hooks/makeStyles';
 
 const CameraViewModal = ({
@@ -21,7 +20,6 @@ const CameraViewModal = ({
   onRequestClose,
 }) => {
   const styles = useStyles();
-  const theme = useTheme();
   const cameraRef = useRef();
   const [hasPermission, setHasPermission] = useState(null);
   const [currentCamera, setCurrentCamera] = useState(
@@ -73,13 +71,13 @@ const CameraViewModal = ({
               style={styles.button}
               onPress={onRequestClose}
               disabled={uploading}>
-              <Icon name="close" size={60} color={theme.colors.text} />
+              <Icon name="close" size={60} color="#FFF" />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
               onPress={toggleCamera}
               disabled={uploading}>
-              <Icon name="cached" size={60} color={theme.colors.text} />
+              <Icon name="cached" size={60} color="#FFF" />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
@@ -88,7 +86,7 @@ const CameraViewModal = ({
               {uploading ? (
                 <ActivityIndicator size="large" />
               ) : (
-                <Icon name="camera" size={60} color={theme.colors.text} />
+                <Icon name="camera" size={60} color="#FFF" />
               )}
             </TouchableOpacity>
           </View>
