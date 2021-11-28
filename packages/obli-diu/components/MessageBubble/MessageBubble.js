@@ -1,5 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import Image from 'next/image';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import formatDistance from 'date-fns/formatDistance';
 import ListItem from '@material-ui/core/ListItem';
@@ -30,6 +31,16 @@ const MessageBubble = ({ chatroom, message, user }) => {
             {chatroom.users.find((u) => u.id === message.sender).displayName}
             <br />
           </b>
+        )}
+        {message.pictureUrl && (
+          <Image
+            className={classes.imgPreview}
+            layout="responsive"
+            height={50}
+            width={100}
+            src={message.pictureUrl}
+            alt={message.body}
+          />
         )}
         {message.body}
       </>
@@ -93,6 +104,11 @@ const useStyles = makeStyles((theme) => ({
       textAlign: 'right',
     },
   },
+  imgPreview: {
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    objectFit: 'cover',
+  },
 }));
 
 MessageBubble.propTypes = {
@@ -109,6 +125,7 @@ MessageBubble.propTypes = {
   message: PropTypes.shape({
     id: PropTypes.string,
     body: PropTypes.string,
+    pictureUrl: PropTypes.string,
     sender: PropTypes.string,
     createdAt: PropTypes.string,
     updatedAt: PropTypes.string,

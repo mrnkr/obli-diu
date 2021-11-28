@@ -16,6 +16,7 @@ import { ErrorContextProvider } from 'shared/contexts/ErrorContext';
 import { LoadingContextProvider } from 'shared/contexts/LoadingContext';
 
 import ErrorSnackbar from './components/ErrorSnackbar';
+import LoadingIndicator from './components/LoadingIndicator';
 import client from './apollo/config';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
@@ -58,6 +59,8 @@ const App = () => {
           <LoadingContextProvider>
             <ErrorContextProvider>
               <AuthContextProvider tokenProvider={tokenProvider}>
+                <LoadingIndicator />
+                <ErrorSnackbar />
                 <Stack.Navigator
                   initialRouteName="Signin"
                   screenOptions={{ headerShown: false }}>
@@ -66,7 +69,6 @@ const App = () => {
                   <Stack.Screen name="Home" component={Home} />
                   <Stack.Screen name="Chat" component={Chat} />
                 </Stack.Navigator>
-                <ErrorSnackbar />
               </AuthContextProvider>
             </ErrorContextProvider>
           </LoadingContextProvider>

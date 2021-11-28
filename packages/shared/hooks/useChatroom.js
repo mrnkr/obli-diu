@@ -10,6 +10,7 @@ const FETCH_ONCE = gql`
       messages {
         id
         body
+        pictureUrl
         sender
         createdAt
         updatedAt
@@ -63,6 +64,7 @@ const MSG_SUBSCRIPTION = gql`
     messageReceived(id: $chatroomId) {
       id
       body
+      pictureUrl
       sender
       createdAt
       updatedAt
@@ -84,6 +86,7 @@ const SEND_MSG_MUTATION = gql`
     sendMessage(input: $input) {
       id
       body
+      pictureUrl
       sender
       createdAt
       updatedAt
@@ -203,6 +206,21 @@ const useChatroom = (chatroomId) => {
     [chatroomId, sendMsgMutation],
   );
 
+  const sendPicture = useCallback(
+    async (pictureUrl) => {
+      await sendMsgMutation({
+        variables: {
+          input: {
+            chatroomId,
+            pictureUrl,
+            messageBody: 'Picture 📷',
+          },
+        },
+      });
+    },
+    [chatroomId, sendMsgMutation],
+  );
+
   const addPersonToChatroom = useCallback(
     async (userId) => {
       await addToChatroomMutation({
@@ -220,6 +238,7 @@ const useChatroom = (chatroomId) => {
   return {
     data: data?.chatroom ?? defaultChatroom,
     sendMessage,
+    sendPicture,
     notifyStartWriting,
     addPersonToChatroom,
   };

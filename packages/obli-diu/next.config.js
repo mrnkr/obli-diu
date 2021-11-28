@@ -4,6 +4,9 @@ const withTM = require('next-transpile-modules')(['shared']);
 /** @type {import('next').NextConfig} */
 module.exports = withTM({
   reactStrictMode: true,
+  images: {
+    domains: ['res.cloudinary.com'],
+  },
   webpack: (config, options) => {
     if (options.isServer) {
       config.externals = ['react', ...config.externals];
