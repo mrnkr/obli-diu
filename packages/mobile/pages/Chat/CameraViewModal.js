@@ -6,15 +6,20 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
-import makeStyles from '../hooks/makeStyles';
-import useImageUpload from '../hooks/useImageUpload';
+import makeStyles from '../../hooks/makeStyles';
 
-const CameraView = ({ navigation }) => {
+const CameraViewModal = ({
+  visible,
+  uploading,
+  onPictureTaken,
+  onRequestClose,
+}) => {
   const styles = useStyles();
   const theme = useTheme();
   const cameraRef = useRef();
@@ -23,20 +28,12 @@ const CameraView = ({ navigation }) => {
     Camera.Constants.Type.back,
   );
 
-  const [uploadImage, { uploading, publicId }] = useImageUpload();
-
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
     })();
   }, []);
-
-  useEffect(() => {
-    if (publicId) {
-      navigation.replace('ImagePreview', { image: publicId });
-    }
-  }, [navigation, publicId]);
 
   const toggleCamera = useCallback(() => {
     setCurrentCamera(
@@ -50,16 +47,11 @@ const CameraView = ({ navigation }) => {
     if (cameraRef.current) {
       const data = await cameraRef.current.takePictureAsync(null);
       cameraRef.current.pausePreview();
-      await uploadImage(data.uri);
-      cameraRef.current.resumePreview();
+      await onPictureTaken(data.uri);
     } else {
       Alert.alert('Error', "We don't have permission to access your camera");
     }
-  }, [cameraRef, uploadImage]);
-
-  const cancel = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+  }, [onPictureTaken]);
 
   if (hasPermission === null) {
     return <View />;
@@ -70,42 +62,47 @@ const CameraView = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.self}>
-      <Camera style={styles.camera} type={currentCamera} ref={cameraRef}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={cancel}
-            disabled={uploading}>
-            <Icon name="close" size={60} color={theme.colors.text} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={toggleCamera}
-            disabled={uploading}>
-            <Icon name="cached" size={60} color={theme.colors.text} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={takePicture}
-            disabled={uploading}>
-            {uploading ? (
-              <ActivityIndicator size="large" />
-            ) : (
-              <Icon name="camera" size={60} color={theme.colors.text} />
-            )}
-          </TouchableOpacity>
-        </View>
-      </Camera>
-    </View>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      onRequestClose={onRequestClose}>
+      <View style={styles.self}>
+        <Camera style={styles.camera} type={currentCamera} ref={cameraRef}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={onRequestClose}
+              disabled={uploading}>
+              <Icon name="close" size={60} color={theme.colors.text} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={toggleCamera}
+              disabled={uploading}>
+              <Icon name="cached" size={60} color={theme.colors.text} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={takePicture}
+              disabled={uploading}>
+              {uploading ? (
+                <ActivityIndicator size="large" />
+              ) : (
+                <Icon name="camera" size={60} color={theme.colors.text} />
+              )}
+            </TouchableOpacity>
+          </View>
+        </Camera>
+      </View>
+    </Modal>
   );
 };
 
-CameraView.propTypes = {
-  navigation: PropTypes.shape({
-    replace: PropTypes.func.isRequired,
-    goBack: PropTypes.func.isRequired,
-  }).isRequired,
+CameraViewModal.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  uploading: PropTypes.bool.isRequired,
+  onPictureTaken: PropTypes.func.isRequired,
+  onRequestClose: PropTypes.func.isRequired,
 };
 
 const useStyles = makeStyles((theme, safeAreaInsets) =>
@@ -137,4 +134,4 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
   }),
 );
 
-export default CameraView;
+export default CameraViewModal;
