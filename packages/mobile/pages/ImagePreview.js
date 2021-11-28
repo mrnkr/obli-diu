@@ -8,24 +8,25 @@ import {
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
-import makeStyles from '../../hooks/makeStyles';
-import useImageEffects from '../../hooks/useImageEffects';
+import makeStyles from '../hooks/makeStyles';
+import useImageEffects from '../hooks/useImageEffects';
 
-const FiltersPreview = ({ route, navigation }) => {
+const ImagePreview = ({ route, navigation }) => {
   const { image } = route.params;
   const theme = useTheme();
   const styles = useStyles();
-  const [imgWithEffect, { loading, nextEffect }] = useImageEffects(image);
+  const [imgWithEffect, { nextEffect }] = useImageEffects(image);
 
   const goBack = useCallback(() => {
+    navigation.replace('CameraView');
+  }, [navigation]);
+
+  const sendPicture = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
 
   return (
-    <TouchableOpacity
-      style={styles.self}
-      onPress={nextEffect}
-      disabled={loading}>
+    <TouchableOpacity style={styles.self} onPress={nextEffect}>
       <ImageBackground source={{ uri: imgWithEffect }} style={styles.image}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button}>
@@ -36,8 +37,8 @@ const FiltersPreview = ({ route, navigation }) => {
               color={theme.colors.text}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Icon name="arrow-forward" size={60} color={theme.colors.text} />
+          <TouchableOpacity style={styles.button} onPress={sendPicture}>
+            <Icon name="send" size={60} color={theme.colors.text} />
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -45,7 +46,7 @@ const FiltersPreview = ({ route, navigation }) => {
   );
 };
 
-FiltersPreview.propTypes = {
+ImagePreview.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
       image: PropTypes.string,
@@ -54,28 +55,37 @@ FiltersPreview.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme, safeAreaInsets) =>
   StyleSheet.create({
     self: {
       flex: 1,
     },
     image: {
       flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-end',
+      alignItems: 'stretch',
     },
     button: {
       padding: 8,
     },
+    // eslint-disable-next-line react-native/no-color-literals
     buttonContainer: {
-      flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-around',
-      alignItems: 'flex-end',
-      paddingBottom: 16,
+      alignItems: 'center',
+      paddingTop: 16,
+      paddingBottom: safeAreaInsets.bottom,
+      backgroundColor: 'rgba(0,0,0,0.6)',
+      borderTopLeftRadius: 16,
+      borderTopRightRadius: 16,
     },
   }),
 );
 
-export default FiltersPreview;
+export default ImagePreview;

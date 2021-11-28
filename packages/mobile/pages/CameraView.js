@@ -10,11 +10,11 @@ import {
 import { Camera } from 'expo-camera';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements';
-import { useTheme, useFocusEffect } from '@react-navigation/native';
-import makeStyles from '../../hooks/makeStyles';
-import useImageUpload from '../../hooks/useImageUpload';
+import { useTheme } from '@react-navigation/native';
+import makeStyles from '../hooks/makeStyles';
+import useImageUpload from '../hooks/useImageUpload';
 
-const CameraEffects = ({ navigation }) => {
+const CameraView = ({ navigation }) => {
   const styles = useStyles();
   const theme = useTheme();
   const cameraRef = useRef();
@@ -34,15 +34,9 @@ const CameraEffects = ({ navigation }) => {
 
   useEffect(() => {
     if (publicId) {
-      navigation.navigate('FiltersPreview', { image: publicId });
+      navigation.replace('ImagePreview', { image: publicId });
     }
   }, [navigation, publicId]);
-
-  useFocusEffect(() => {
-    if (cameraRef.current) {
-      cameraRef.current.resumePreview();
-    }
-  });
 
   const toggleCamera = useCallback(() => {
     setCurrentCamera(
@@ -57,10 +51,15 @@ const CameraEffects = ({ navigation }) => {
       const data = await cameraRef.current.takePictureAsync(null);
       cameraRef.current.pausePreview();
       await uploadImage(data.uri);
+      cameraRef.current.resumePreview();
     } else {
       Alert.alert('Error', "We don't have permission to access your camera");
     }
   }, [cameraRef, uploadImage]);
+
+  const cancel = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
 
   if (hasPermission === null) {
     return <View />;
@@ -74,6 +73,12 @@ const CameraEffects = ({ navigation }) => {
     <View style={styles.self}>
       <Camera style={styles.camera} type={currentCamera} ref={cameraRef}>
         <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={cancel}
+            disabled={uploading}>
+            <Icon name="close" size={60} color={theme.colors.text} />
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={toggleCamera}
@@ -96,31 +101,40 @@ const CameraEffects = ({ navigation }) => {
   );
 };
 
-CameraEffects.propTypes = {
+CameraView.propTypes = {
   navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((theme, safeAreaInsets) =>
   StyleSheet.create({
     self: {
       flex: 1,
     },
     camera: {
       flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-end',
+      alignItems: 'stretch',
     },
     button: {
       padding: 8,
     },
+    // eslint-disable-next-line react-native/no-color-literals
     buttonContainer: {
-      flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-around',
-      alignItems: 'flex-end',
-      paddingBottom: 16,
+      alignItems: 'center',
+      paddingTop: 16,
+      paddingBottom: safeAreaInsets.bottom,
+      backgroundColor: 'rgba(0,0,0,0.6)',
+      borderTopLeftRadius: 16,
+      borderTopRightRadius: 16,
     },
   }),
 );
 
-export default CameraEffects;
+export default CameraView;

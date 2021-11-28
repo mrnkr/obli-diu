@@ -16,7 +16,7 @@ const Signin = ({ navigation }) => {
 
   useGuard((userInfo) => {
     if (userInfo.id) {
-      navigation.navigate('Home');
+      navigation.replace('Home');
     }
   });
 
@@ -24,7 +24,7 @@ const Signin = ({ navigation }) => {
     afterSubmit: async (data) => {
       await AsyncStorage.setItem('token', data.login);
       Events.trigger('login');
-      navigation.navigate('Home');
+      navigation.replace('Home');
     },
   });
 
@@ -97,6 +97,7 @@ const Signin = ({ navigation }) => {
 Signin.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
   }).isRequired,
 };
 

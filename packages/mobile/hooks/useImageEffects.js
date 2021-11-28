@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'react-native';
 import useLoadingNotifier from 'shared/hooks/useLoadingNotifier';
 import useCloudinary, { blackwhite, cartoonify, sepia } from './useCloudinary';
@@ -13,33 +13,37 @@ const filters = [
 const useImageEffects = (image) => {
   const cloudinary = useCloudinary();
   const [currentFilter, setCurrentFilter] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [imgWithEffect, setImgWithEffect] = useState(image);
 
-  useLoadingNotifier(loading);
+  const appliedFilters = useMemo(
+    () =>
+      filters.map(({ effect }) => {
+        const img = cloudinary.image(image).format('auto').quality('auto');
 
-  const nextEffect = useCallback(async () => {
-    const nextEffect = (currentFilter + 1) % filters.length;
-    setCurrentFilter(nextEffect);
+        if (effect) {
+          img.effect(effect());
+        }
 
-    if (nextEffect === 0) {
-      setImgWithEffect(image);
-    }
+        return img.toURL();
+      }),
+    [cloudinary, image],
+  );
 
-    setLoading(true);
-    const img = cloudinary.image(image);
+  const imgWithEffect = useMemo(
+    () => appliedFilters[currentFilter],
+    [appliedFilters, currentFilter],
+  );
 
-    if (filters[nextEffect].effect) {
-      img.effect(filters[nextEffect].effect());
-    }
+  useEffect(() => {
+    (async () => {
+      await Promise.all(appliedFilters.map(Image.prefetch));
+    })();
+  }, [appliedFilters]);
 
-    const url = img.toURL();
-    await Image.prefetch(url);
-    setImgWithEffect(url);
-    setLoading(false);
-  }, [cloudinary, currentFilter, image]);
+  const nextEffect = useCallback(() => {
+    setCurrentFilter((value) => (value + 1) % filters.length);
+  }, []);
 
-  return [imgWithEffect, { loading, nextEffect }];
+  return [imgWithEffect, { nextEffect }];
 };
 
 export default useImageEffects;

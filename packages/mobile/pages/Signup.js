@@ -17,12 +17,12 @@ const Signup = ({ navigation }) => {
     afterSubmit: async (data) => {
       await AsyncStorage.setItem('token', data.createUser);
       Events.trigger('login');
-      navigation.navigate('Chat');
+      navigation.replace('Chat');
     },
   });
 
   const goToSignin = useCallback(() => {
-    navigation.navigate('Signin');
+    navigation.goBack();
   }, [navigation]);
 
   return (
@@ -158,5 +158,7 @@ export default Signup;
 Signup.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
 };

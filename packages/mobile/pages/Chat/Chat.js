@@ -5,6 +5,7 @@ import useChatroom from 'shared/hooks/useChatroom';
 import useAuth from 'shared/hooks/useAuth';
 import gravatar from 'shared/helpers/gravatar';
 import ChatHeader from './ChatHeader';
+import ComposerActions from './ComposerActions';
 
 const Chat = ({ route, navigation }) => {
   const { chatroomId } = route.params;
@@ -47,6 +48,12 @@ const Chat = ({ route, navigation }) => {
     [sendMessage],
   );
 
+  const renderActions = useCallback(() => {
+    return (
+      <ComposerActions onPress={() => navigation.navigate('CameraView')} />
+    );
+  }, [navigation]);
+
   return (
     <>
       {chatroom.id !== 'dummy' ? (
@@ -61,6 +68,7 @@ const Chat = ({ route, navigation }) => {
         messages={messages}
         onInputTextChanged={notifyStartWriting}
         onSend={onSend}
+        renderActions={renderActions}
         user={{
           _id: currentUser.id,
         }}
@@ -76,6 +84,7 @@ Chat.propTypes = {
     }).isRequired,
   }).isRequired,
   navigation: PropTypes.shape({
+    navigate: PropTypes.func,
     goBack: PropTypes.func,
   }).isRequired,
 };
