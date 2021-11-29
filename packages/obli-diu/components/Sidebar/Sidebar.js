@@ -13,6 +13,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import ExitToApp from '@material-ui/icons/ExitToApp';
+import AssessmentOutlined from '@material-ui/icons/AssessmentOutlined';
+import StarHalfOutlined from '@material-ui/icons/StarHalfOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Popover from '@material-ui/core/Popover';
@@ -27,6 +29,8 @@ import useHeartbeat from 'shared/hooks/useHeartbeat';
 import ColorModeContext from 'shared/contexts/ColorModeContext';
 import gravatar from 'shared/helpers/gravatar';
 import UserListPopup from '../UserListPopup';
+import UsagePopup from '../UsagePopup';
+import RankingPopup from '../RankingPopup';
 import ChatroomListItem from './ChatroomListItem';
 import NoChatsPlaceholder from './NoChatsPlaceholder';
 
@@ -41,6 +45,9 @@ const Sidebar = ({ className }) => {
   const createChatroom = useCreateChatroom();
   const [userListPopupVisible, showUserListPopup, closeUserListPopup] =
     usePopup();
+  const [usagePopupVisible, showUsagePopup, closeUsagePopup] = usePopup();
+  const [rankingPopupVisible, showRankingPopup, closeRankingPopup] = usePopup();
+
   const colorMode = useContext(ColorModeContext);
 
   const userName = useMemo(() => user?.displayName ?? user?.email, [user]);
@@ -75,6 +82,11 @@ const Sidebar = ({ className }) => {
         handleClose={closeUserListPopup}
         onSelectUser={createChatroom}
         filterPredicate={usersImNotChattingWith(user, chatrooms)}
+      />
+      <UsagePopup open={usagePopupVisible} handleClose={closeUsagePopup} />
+      <RankingPopup
+        open={rankingPopupVisible}
+        handleClose={closeRankingPopup}
       />
       <Grid xs={12} md={3} item className={`${classes.sidebar} ${className}`}>
         <List className={classes.mainList}>
@@ -116,6 +128,14 @@ const Sidebar = ({ className }) => {
               <ListItem button onClick={handleLogout}>
                 <ExitToApp />
                 <ListItemText className={classes.listItem} primary="Log out" />
+              </ListItem>
+              <ListItem button onClick={showRankingPopup}>
+                <StarHalfOutlined />
+                <ListItemText className={classes.listItem} primary="Ranking" />
+              </ListItem>
+              <ListItem button onClick={showUsagePopup}>
+                <AssessmentOutlined />
+                <ListItemText className={classes.listItem} primary="Usage" />
               </ListItem>
               <ListItem button onClick={colorMode.toggleColorMode}>
                 <FormControlLabel
