@@ -5,7 +5,7 @@ import { Icon } from 'react-native-elements';
 import makeStyles from '../hooks/makeStyles';
 import Chats from './Chats';
 import UsersListPage from './UsersListPage';
-import Ranking from './Ranking';
+import Ranking from './RankingListPage';
 import Settings from './Settings';
 
 const Home = () => {
