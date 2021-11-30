@@ -11,7 +11,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
-//import Rating from '@material-ui/core/Rating';
+import Rating from '@material-ui/lab/Rating';
 import PersonIcon from '@material-ui/icons/Person';
 import gravatar from 'shared/helpers/gravatar';
 
@@ -45,7 +45,7 @@ const RankingListPopup = ({ open, handleClose, filterPredicate }) => {
               className={classes.name}
               primary={user.displayName ?? user.email}
             />
-            {/* <Rating name="read-only" value={2} readOnly /> */}
+            <Rating name="read-only" value={4} readOnly />
           </ListItem>
         ))}
       </List>
