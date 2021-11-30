@@ -30,7 +30,7 @@ import ColorModeContext from 'shared/contexts/ColorModeContext';
 import gravatar from 'shared/helpers/gravatar';
 import UserListPopup from '../UserListPopup';
 import UsagePopup from '../UsagePopup';
-import RankingPopup from '../RankingPopup';
+import RankingListPopup from '../RankingListPopup';
 import ChatroomListItem from './ChatroomListItem';
 import NoChatsPlaceholder from './NoChatsPlaceholder';
 
@@ -46,7 +46,8 @@ const Sidebar = ({ className }) => {
   const [userListPopupVisible, showUserListPopup, closeUserListPopup] =
     usePopup();
   const [usagePopupVisible, showUsagePopup, closeUsagePopup] = usePopup();
-  const [rankingPopupVisible, showRankingPopup, closeRankingPopup] = usePopup();
+  const [rankingPopupListVisible, showRankingListPopup, closeRankingListPopup] =
+    usePopup();
 
   const colorMode = useContext(ColorModeContext);
 
@@ -84,9 +85,10 @@ const Sidebar = ({ className }) => {
         filterPredicate={usersImNotChattingWith(user, chatrooms)}
       />
       <UsagePopup open={usagePopupVisible} handleClose={closeUsagePopup} />
-      <RankingPopup
-        open={rankingPopupVisible}
-        handleClose={closeRankingPopup}
+      <RankingListPopup
+        open={rankingPopupListVisible}
+        handleClose={closeRankingListPopup}
+        filterPredicate={usersImNotChattingWith(user, chatrooms)}
       />
       <Grid xs={12} md={3} item className={`${classes.sidebar} ${className}`}>
         <List className={classes.mainList}>
@@ -129,7 +131,7 @@ const Sidebar = ({ className }) => {
                 <ExitToApp />
                 <ListItemText className={classes.listItem} primary="Log out" />
               </ListItem>
-              <ListItem button onClick={showRankingPopup}>
+              <ListItem button onClick={showRankingListPopup}>
                 <StarHalfOutlined />
                 <ListItemText className={classes.listItem} primary="Ranking" />
               </ListItem>
