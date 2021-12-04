@@ -32,7 +32,9 @@ const GroupChatroomListItem = ({ chatroom }) => {
 const useStyles = makeStyles({
   listItemText: {
     '& > p': {
-      textOverflow: 'ellipsis',
+      display: '-webkit-box',
+      lineClamp: 2,
+      boxOrient: 'vertical',
       overflow: 'hidden',
     },
   },

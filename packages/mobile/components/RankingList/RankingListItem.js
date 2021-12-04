@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
-import { ListItem, Avatar, Rating } from 'react-native-elements';
+import { ListItem, Avatar, AirbnbRating } from 'react-native-elements';
 import gravatar from 'shared/helpers/gravatar';
 import makeStyles from '../../hooks/makeStyles';
 
-const RankingListItem = ({ user, topDivider }) => {
+const RankingListItem = ({ user, topDivider, rating }) => {
   const styles = useStyles();
 
   return (
@@ -18,7 +18,7 @@ const RankingListItem = ({ user, topDivider }) => {
       <ListItem.Content style={styles.content}>
         <ListItem.Title>{user.displayName ?? user.email}</ListItem.Title>
         <ListItem.Subtitle>
-          <Rating fractions="{1}" startingValue="{3.3}" readonly />
+          <AirbnbRating showRating={false} defaultRating={5 - rating} />
         </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
@@ -41,6 +41,7 @@ RankingListItem.propTypes = {
   }).isRequired,
   onPress: PropTypes.func,
   topDivider: PropTypes.bool,
+  rating: PropTypes.number,
 };
 
 export default memo(RankingListItem);

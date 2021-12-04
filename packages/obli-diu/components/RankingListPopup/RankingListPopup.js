@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -19,6 +19,8 @@ const RankingListPopup = ({ open, handleClose, filterPredicate }) => {
   const classes = useStyles();
   const users = useUsers(filterPredicate);
 
+  const data = useMemo(() => users.slice(0, 5), [users]);
+
   return (
     <Dialog
       onClose={handleClose}
@@ -31,7 +33,7 @@ const RankingListPopup = ({ open, handleClose, filterPredicate }) => {
             <Typography>No users</Typography>
           </ListItem>
         ) : null}
-        {users?.slice(0, 10).map((user) => (
+        {data.map((user, index) => (
           <ListItem key={user.id}>
             <ListItemAvatar>
               <Avatar
@@ -45,7 +47,7 @@ const RankingListPopup = ({ open, handleClose, filterPredicate }) => {
               className={classes.name}
               primary={user.displayName ?? user.email}
             />
-            <Rating name="read-only" value={4} readOnly />
+            <Rating name="read-only" value={5 - index} readOnly />
           </ListItem>
         ))}
       </List>
