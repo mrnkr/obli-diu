@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-elements';
-import makeStyles from '../hooks/makeStyles';
+import makeStyles from '../../hooks/makeStyles';
 
-const Usage = () => {
+const RankingEmptyPlaceholder = () => {
   const styles = useStyles();
 
   return (
     <View style={styles.self}>
-      <Text style={styles.title}>We are working on this feature!</Text>
+      <Text style={styles.title}>Public user ranking will apear here!</Text>
     </View>
   );
 };
@@ -33,4 +33,4 @@ const useStyles = makeStyles((theme, safeAreaInsets) =>
   }),
 );
 
-export default Usage;
+export default RankingEmptyPlaceholder;

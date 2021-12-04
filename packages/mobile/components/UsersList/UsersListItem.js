@@ -18,6 +18,7 @@ const UsersListItem = ({ user, onPress, topDivider }) => {
         />
         <ListItem.Content style={styles.content}>
           <ListItem.Title>{user.displayName ?? user.email}</ListItem.Title>
+          <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
         </ListItem.Content>
         <ListItem.Chevron />
       </ListItem>

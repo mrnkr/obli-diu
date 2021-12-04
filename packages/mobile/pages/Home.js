@@ -5,7 +5,7 @@ import { Icon } from 'react-native-elements';
 import makeStyles from '../hooks/makeStyles';
 import Chats from './Chats';
 import UsersListPage from './UsersListPage';
-import Usage from './Usage';
+import Ranking from './RankingListPage';
 import Settings from './Settings';
 
 const Home = () => {
@@ -35,12 +35,12 @@ const Home = () => {
         }}
       />
       <Tab.Screen
-        name="Usage"
-        component={Usage}
+        name="Ranking"
+        component={Ranking}
         options={{
-          tabBarLabel: 'Usage',
+          tabBarLabel: 'Ranking',
           tabBarIcon: ({ color, size }) => (
-            <Icon name="show-chart" size={size} color={color} />
+            <Icon name="star" size={size} color={color} />
           ),
         }}
       />
